@@ -29,6 +29,14 @@
       "types": "./src/input.ts",
       "import": "./dist/input.js"
     },
+    "./radio": {
+      "types": "./src/radio.ts",
+      "import": "./dist/radio.js"
+    },
+    "./radio-group": {
+      "types": "./src/radio-group.ts",
+      "import": "./dist/radio-group.js"
+    },
     "./textarea": {
       "types": "./src/textarea.ts",
       "import": "./dist/textarea.js"
