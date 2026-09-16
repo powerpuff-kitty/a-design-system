@@ -14,9 +14,8 @@ function getDefaultRegistry(): CustomElementRegistry | undefined {
 /**
  * Registers an ADS element without touching `customElements` during SSR.
  *
- * Custom prefixes are supported by registering a generated subclass, because
- * the Custom Elements specification does not allow one constructor to be
- * registered under multiple tag names.
+ * Custom prefixes are supported by registering a generated subclass when the
+ * original constructor has already been used for another custom-element name.
  */
 export function registerAdsElement<T extends AdsElementConstructor>(
   localName: string,
@@ -31,16 +30,19 @@ export function registerAdsElement<T extends AdsElementConstructor>(
 
   const existing = registry.get(tagName);
   if (existing) {
-    if (existing === constructor || constructor.prototype instanceof existing) return tagName;
+    if (existing === constructor || existing.prototype instanceof constructor) return tagName;
     throw new DOMException(`Custom element ${tagName} is already defined`, 'NotSupportedError');
   }
 
-  const canonicalName = registry.getName?.(constructor);
-  if (canonicalName && canonicalName !== tagName) {
+  try {
+    registry.define(tagName, constructor);
+  } catch (error) {
+    if (!(error instanceof DOMException) || error.name !== 'NotSupportedError') throw error;
+
+    // A constructor can only be defined once. A subclass preserves behavior
+    // while allowing enterprise/custom prefixes without relying on getName().
     const AliasElement = class extends constructor {};
     registry.define(tagName, AliasElement);
-  } else {
-    registry.define(tagName, constructor);
   }
 
   return tagName;
