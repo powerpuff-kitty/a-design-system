@@ -12,11 +12,6 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "skipLibCheck": true,
-    "baseUrl": ".",
-    "paths": {
-      "@a-design-system/core": ["packages/core/src/index.ts"],
-      "@a-design-system/tokens": ["packages/tokens/src/index.ts"]
-    }
+    "skipLibCheck": true
   }
 }
