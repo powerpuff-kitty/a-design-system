@@ -25,6 +25,10 @@
       "types": "./src/input.ts",
       "import": "./dist/input.js"
     },
+    "./textarea": {
+      "types": "./src/textarea.ts",
+      "import": "./dist/textarea.js"
+    },
     "./runtime": {
       "types": "./src/runtime/index.ts",
       "import": "./dist/runtime/index.js"

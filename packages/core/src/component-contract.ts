@@ -15,6 +15,12 @@ export interface AdsPropertyContract {
   readonly?: boolean;
 }
 
+export interface AdsMethodContract {
+  name: string;
+  signature: string;
+  description?: string;
+}
+
 export interface AdsEventContract {
   name: string;
   detail?: string;
@@ -53,6 +59,7 @@ export interface AdsComponentContract {
   since?: string;
   attributes?: readonly AdsAttributeContract[];
   properties?: readonly AdsPropertyContract[];
+  methods?: readonly AdsMethodContract[];
   events?: readonly AdsEventContract[];
   slots?: readonly AdsSlotContract[];
   parts?: readonly AdsCssPartContract[];
