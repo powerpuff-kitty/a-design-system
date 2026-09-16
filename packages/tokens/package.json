@@ -3,8 +3,17 @@
   "version": "0.0.0",
   "type": "module",
   "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run"
+  },
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
     "./tokens.json": "./src/tokens.json"
-  }
+  },
+  "files": ["dist", "src/tokens.json"]
 }
