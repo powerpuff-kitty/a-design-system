@@ -1,9 +1,9 @@
 import { defineComponentContract } from '@a-design-system/core';
 import { css, html, nothing, type PropertyValues } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
-import type { AdsSelectionDirection } from './input.js';
 import { FormAssociatedElement } from './runtime/form-associated-element.js';
 import { registerAdsElement } from './runtime/registration.js';
+import type { AdsSelectionDirection } from './runtime/text-control.js';
 import { validityStateToFlags } from './runtime/validity.js';
 
 export type AdsTextareaWrap = 'soft' | 'hard';
@@ -118,7 +118,8 @@ export class AdsTextarea extends FormAssociatedElement {
       border-color: var(--ads-textarea-invalid-border-color, #b42318);
     }
 
-    :host([disabled]) [part='control'] {
+    :host([disabled]) [part='control'],
+    :host(:state(form-disabled)) [part='control'] {
       cursor: not-allowed;
       opacity: var(--ads-disabled-opacity, 0.5);
     }
@@ -251,8 +252,8 @@ export class AdsTextarea extends FormAssociatedElement {
     }
   }
 
-  protected override onFormDisabledChange(disabled: boolean): void {
-    this.disabled = disabled;
+  protected override onFormDisabledChange(): void {
+    void this.updateComplete.then(() => this.syncNativeState());
   }
 
   formResetCallback(): void {
@@ -270,6 +271,7 @@ export class AdsTextarea extends FormAssociatedElement {
     const textarea = this.textareaElement;
     if (!textarea) return;
 
+    const disabled = this.disabled || this.formDisabled;
     if (textarea.value !== this.value) textarea.value = this.value;
     if (textarea.validationMessage !== this.customValidityMessage && this.customValidityMessage) {
       textarea.setCustomValidity(this.customValidityMessage);
@@ -277,7 +279,8 @@ export class AdsTextarea extends FormAssociatedElement {
       textarea.setCustomValidity('');
     }
 
-    this.setFormValue(this.disabled ? null : this.value, this.value);
+    this.internals.ariaDisabled = String(disabled);
+    this.setFormValue(disabled ? null : this.value, this.value);
 
     if (textarea.validity.valid) {
       this.setValidity({});
@@ -304,6 +307,8 @@ export class AdsTextarea extends FormAssociatedElement {
   }
 
   override render() {
+    const disabled = this.disabled || this.formDisabled;
+
     return html`
       <label part="label">
         <span part="label-text">
@@ -320,7 +325,7 @@ export class AdsTextarea extends FormAssociatedElement {
             .wrap=${this.wrap}
             minlength=${this.minLength >= 0 ? String(this.minLength) : nothing}
             maxlength=${this.maxLength >= 0 ? String(this.maxLength) : nothing}
-            ?disabled=${this.disabled}
+            ?disabled=${disabled}
             ?readonly=${this.readOnly}
             ?required=${this.required}
             aria-describedby="description error"
