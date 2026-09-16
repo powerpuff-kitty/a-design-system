@@ -8,6 +8,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@a-design-system/core": "workspace:*",
     "lit": "^3.3.3"
   },
   "exports": {
@@ -18,6 +19,10 @@
     "./button": {
       "types": "./dist/button.d.ts",
       "import": "./dist/button.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime/index.js"
     }
   },
   "files": ["dist"]

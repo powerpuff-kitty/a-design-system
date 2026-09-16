@@ -1,8 +1,48 @@
-import { LitElement, css, html } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { defineComponentContract } from '@a-design-system/core';
+import { css, html } from 'lit';
+import { property } from 'lit/decorators.js';
+import { FormAssociatedElement } from './runtime/form-associated-element.js';
+import { registerAdsElement } from './runtime/registration.js';
 
 export type AdsButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 export type AdsButtonType = 'button' | 'submit' | 'reset';
+
+export const adsButtonContract = defineComponentContract({
+  name: 'Button',
+  tagName: 'ads-button',
+  description: 'Accessible action control with native form submit/reset integration.',
+  status: 'experimental',
+  attributes: [
+    { name: 'variant', type: "'primary' | 'secondary' | 'ghost' | 'danger'", default: 'primary' },
+    { name: 'type', type: "'button' | 'submit' | 'reset'", default: 'button' },
+    { name: 'disabled', type: 'boolean', default: 'false' },
+    { name: 'loading', type: 'boolean', default: 'false' },
+    { name: 'name', type: 'string', default: '' },
+    { name: 'value', type: 'string', default: '' },
+  ],
+  slots: [
+    { name: '', description: 'Button label/content.' },
+    { name: 'start', description: 'Leading icon or decoration.' },
+    { name: 'end', description: 'Trailing icon or decoration.' },
+  ],
+  parts: [
+    { name: 'button', description: 'The internal native button.' },
+    { name: 'spinner', description: 'Loading spinner rendered while loading.' },
+  ],
+  cssCustomProperties: [
+    { name: '--ads-control-size', default: '2.5rem' },
+    { name: '--ads-button-gap', default: '0.5rem' },
+    { name: '--ads-button-padding-block', default: '0.625rem' },
+    { name: '--ads-button-padding-inline', default: '0.875rem' },
+    { name: '--ads-button-radius', default: 'var(--ads-radius-control, 0.375rem)' },
+    { name: '--ads-button-font-weight', default: '600' },
+    { name: '--ads-disabled-opacity', default: '0.5' },
+  ],
+  states: [
+    { name: 'disabled', description: 'Unavailable for interaction.' },
+    { name: 'loading', description: 'Busy and unavailable for repeated activation.' },
+  ],
+});
 
 /**
  * Accessible action control for A Design System.
@@ -11,11 +51,9 @@ export type AdsButtonType = 'button' | 'submit' | 'reset';
  * @slot start - Leading icon or decoration.
  * @slot end - Trailing icon or decoration.
  * @csspart button - The native button element.
+ * @csspart spinner - Loading indicator.
  */
-@customElement('ads-button')
-export class AdsButton extends LitElement {
-  static formAssociated = true;
-
+export class AdsButton extends FormAssociatedElement {
   static override styles = css`
     :host {
       display: inline-flex;
@@ -116,8 +154,6 @@ export class AdsButton extends LitElement {
     }
   `;
 
-  private readonly internals = this.attachInternals();
-
   @property({ reflect: true }) variant: AdsButtonVariant = 'primary';
   @property({ reflect: true }) type: AdsButtonType = 'button';
   @property({ type: Boolean, reflect: true }) disabled = false;
@@ -129,12 +165,12 @@ export class AdsButton extends LitElement {
     this.internals.ariaDisabled = String(this.disabled || this.loading);
   }
 
-  formDisabledCallback(disabled: boolean): void {
+  protected override onFormDisabledChange(disabled: boolean): void {
     this.disabled = disabled;
   }
 
   private activateForm(): void {
-    const form = this.internals.form;
+    const form = this.form;
     if (!form) return;
 
     if (this.type === 'reset') {
@@ -144,8 +180,8 @@ export class AdsButton extends LitElement {
 
     if (this.type !== 'submit') return;
 
-    // A native submitter in the light DOM preserves native submit/validation
-    // semantics while the visible native <button> remains inside Shadow DOM.
+    // A transient native submitter preserves browser validation and includes
+    // the custom button's name/value in the submission.
     const submitter = document.createElement('button');
     submitter.type = 'submit';
     submitter.hidden = true;
@@ -191,6 +227,8 @@ export class AdsButton extends LitElement {
     `;
   }
 }
+
+registerAdsElement('button', AdsButton);
 
 declare global {
   interface HTMLElementTagNameMap {
