@@ -1,0 +1,24 @@
+{
+  "name": "@a-design-system/components",
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "lit": "^3.3.3"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./button": {
+      "types": "./dist/button.d.ts",
+      "import": "./dist/button.js"
+    }
+  },
+  "files": ["dist"]
+}
