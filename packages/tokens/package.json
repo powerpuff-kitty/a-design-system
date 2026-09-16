@@ -1,0 +1,10 @@
+{
+  "name": "@a-design-system/tokens",
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens.json": "./src/tokens.json"
+  }
+}
