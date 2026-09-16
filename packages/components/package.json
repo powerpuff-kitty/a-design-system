@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "sideEffects": true,
+  "types": "./src/index.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -13,17 +14,21 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./src/index.ts",
       "import": "./dist/index.js"
     },
     "./button": {
-      "types": "./dist/button.d.ts",
+      "types": "./src/button.ts",
       "import": "./dist/button.js"
     },
+    "./input": {
+      "types": "./src/input.ts",
+      "import": "./dist/input.js"
+    },
     "./runtime": {
-      "types": "./dist/runtime/index.d.ts",
+      "types": "./src/runtime/index.ts",
       "import": "./dist/runtime/index.js"
     }
   },
-  "files": ["dist"]
+  "files": ["dist", "src"]
 }
