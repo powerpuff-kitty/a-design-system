@@ -1,3 +1,5 @@
+export * from './component-contract.js';
+
 export type AdsOrientation = 'horizontal' | 'vertical';
 export type AdsDirection = 'ltr' | 'rtl';
 
