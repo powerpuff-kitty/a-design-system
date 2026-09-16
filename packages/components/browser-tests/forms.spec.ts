@@ -77,6 +77,63 @@ test.describe('form-associated ADS controls', () => {
     ).toEqual({});
   });
 
+  test('fieldset disabled state does not become a sticky component disabled attribute', async ({ page }) => {
+    await page.locator('#sandbox').evaluate((sandbox) => {
+      sandbox.innerHTML = `
+        <form id="form">
+          <fieldset id="fieldset" disabled>
+            <ads-input name="query" value="hello"></ads-input>
+            <ads-textarea name="notes" value="world"></ads-textarea>
+            <ads-button type="button">Action</ads-button>
+          </fieldset>
+        </form>
+      `;
+    });
+
+    const inputHost = page.locator('ads-input');
+    const textareaHost = page.locator('ads-textarea');
+    const buttonHost = page.locator('ads-button');
+
+    await expect(inputHost).not.toHaveAttribute('disabled', '');
+    await expect(textareaHost).not.toHaveAttribute('disabled', '');
+    await expect(buttonHost).not.toHaveAttribute('disabled', '');
+    await expect(inputHost.locator('input')).toBeDisabled();
+    await expect(textareaHost.locator('textarea')).toBeDisabled();
+    await expect(buttonHost.locator('button')).toBeDisabled();
+
+    expect(
+      await page.locator('#form').evaluate((form: HTMLFormElement) =>
+        Object.fromEntries(new FormData(form).entries()),
+      ),
+    ).toEqual({});
+
+    await page.locator('#fieldset').evaluate((fieldset: HTMLFieldSetElement) => {
+      fieldset.disabled = false;
+    });
+    await inputHost.evaluate(async (element) => {
+      await (element as HTMLElement & { updateComplete: Promise<unknown> }).updateComplete;
+    });
+    await textareaHost.evaluate(async (element) => {
+      await (element as HTMLElement & { updateComplete: Promise<unknown> }).updateComplete;
+    });
+    await buttonHost.evaluate(async (element) => {
+      await (element as HTMLElement & { updateComplete: Promise<unknown> }).updateComplete;
+    });
+
+    await expect(inputHost).not.toHaveAttribute('disabled', '');
+    await expect(textareaHost).not.toHaveAttribute('disabled', '');
+    await expect(buttonHost).not.toHaveAttribute('disabled', '');
+    await expect(inputHost.locator('input')).toBeEnabled();
+    await expect(textareaHost.locator('textarea')).toBeEnabled();
+    await expect(buttonHost.locator('button')).toBeEnabled();
+
+    expect(
+      await page.locator('#form').evaluate((form: HTMLFormElement) =>
+        Object.fromEntries(new FormData(form).entries()),
+      ),
+    ).toEqual({ query: 'hello', notes: 'world' });
+  });
+
   test('ads-button preserves validation and submitter name/value semantics', async ({ page }) => {
     await page.locator('#sandbox').evaluate((sandbox) => {
       sandbox.innerHTML = `
