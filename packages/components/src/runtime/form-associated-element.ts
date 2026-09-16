@@ -10,7 +10,7 @@ export abstract class FormAssociatedElement extends LitElement {
 
   protected readonly internals: ElementInternals;
 
-  protected constructor() {
+  constructor() {
     super();
     this.internals = this.attachInternals();
   }
