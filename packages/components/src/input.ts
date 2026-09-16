@@ -123,7 +123,8 @@ export class AdsInput extends FormAssociatedElement {
       border-color: var(--ads-input-invalid-border-color, #b42318);
     }
 
-    :host([disabled]) [part='control'] {
+    :host([disabled]) [part='control'],
+    :host(:state(form-disabled)) [part='control'] {
       cursor: not-allowed;
       opacity: var(--ads-disabled-opacity, 0.5);
     }
@@ -259,8 +260,8 @@ export class AdsInput extends FormAssociatedElement {
     }
   }
 
-  protected override onFormDisabledChange(disabled: boolean): void {
-    this.disabled = disabled;
+  protected override onFormDisabledChange(): void {
+    void this.updateComplete.then(() => this.syncNativeState());
   }
 
   formResetCallback(): void {
@@ -278,6 +279,7 @@ export class AdsInput extends FormAssociatedElement {
     const input = this.inputElement;
     if (!input) return;
 
+    const disabled = this.disabled || this.formDisabled;
     if (input.value !== this.value) input.value = this.value;
     if (input.validationMessage !== this.customValidityMessage && this.customValidityMessage) {
       input.setCustomValidity(this.customValidityMessage);
@@ -285,7 +287,8 @@ export class AdsInput extends FormAssociatedElement {
       input.setCustomValidity('');
     }
 
-    this.setFormValue(this.disabled ? null : this.value, this.value);
+    this.internals.ariaDisabled = String(disabled);
+    this.setFormValue(disabled ? null : this.value, this.value);
 
     if (input.validity.valid) {
       this.setValidity({});
@@ -312,6 +315,8 @@ export class AdsInput extends FormAssociatedElement {
   }
 
   override render() {
+    const disabled = this.disabled || this.formDisabled;
+
     return html`
       <label part="label">
         <span part="label-text">
@@ -329,7 +334,7 @@ export class AdsInput extends FormAssociatedElement {
             pattern=${this.pattern ? this.pattern : nothing}
             minlength=${this.minLength >= 0 ? String(this.minLength) : nothing}
             maxlength=${this.maxLength >= 0 ? String(this.maxLength) : nothing}
-            ?disabled=${this.disabled}
+            ?disabled=${disabled}
             ?readonly=${this.readOnly}
             ?required=${this.required}
             aria-describedby="description error"
