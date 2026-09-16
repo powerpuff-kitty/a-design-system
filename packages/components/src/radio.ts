@@ -168,7 +168,6 @@ export class AdsRadio extends LitElement {
   constructor() {
     super();
     this.#internals = this.attachInternals();
-    this.#internals.role = 'radio';
   }
 
   get effectiveDisabled(): boolean {
@@ -176,7 +175,7 @@ export class AdsRadio extends LitElement {
   }
 
   override updated(changed: PropertyValues<this>): void {
-    this.#syncAccessibility();
+    this.#syncStates();
 
     if (changed.has('value') || changed.has('disabled')) {
       this.dispatchEvent(
@@ -215,13 +214,10 @@ export class AdsRadio extends LitElement {
     else this.#internals.states.delete('group-disabled');
 
     if (changed) this.requestUpdate();
-    this.#syncAccessibility();
+    this.#syncStates();
   }
 
-  #syncAccessibility(): void {
-    this.#internals.ariaChecked = String(this.checked);
-    this.#internals.ariaDisabled = String(this.effectiveDisabled);
-
+  #syncStates(): void {
     if (this.checked) this.#internals.states.add('checked');
     else this.#internals.states.delete('checked');
   }
