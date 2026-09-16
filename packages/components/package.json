@@ -21,6 +21,10 @@
       "types": "./src/button.ts",
       "import": "./dist/button.js"
     },
+    "./checkbox": {
+      "types": "./src/checkbox.ts",
+      "import": "./dist/checkbox.js"
+    },
     "./input": {
       "types": "./src/input.ts",
       "import": "./dist/input.js"
