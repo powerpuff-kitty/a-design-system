@@ -62,6 +62,8 @@ export abstract class FormAssociatedElement extends LitElement {
   formDisabledCallback(disabled: boolean): void {
     if (disabled === this.#formDisabled) return;
     this.#formDisabled = disabled;
+    if (disabled) this.internals.states.add('form-disabled');
+    else this.internals.states.delete('form-disabled');
     this.requestUpdate();
     this.onFormDisabledChange(disabled);
   }
