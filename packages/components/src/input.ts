@@ -1,5 +1,5 @@
 import { defineComponentContract } from '@a-design-system/core';
-import { LitElement, css, html, nothing, type PropertyValues } from 'lit';
+import { css, html, nothing, type PropertyValues } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { FormAssociatedElement } from './runtime/form-associated-element.js';
 import { registerAdsElement } from './runtime/registration.js';
@@ -280,7 +280,7 @@ export class AdsInput extends FormAssociatedElement {
             .placeholder=${this.placeholder}
             .autocomplete=${this.autocomplete}
             .inputMode=${this.inputMode}
-            .pattern=${this.pattern}
+            pattern=${this.pattern ? this.pattern : nothing}
             minlength=${this.minLength >= 0 ? String(this.minLength) : nothing}
             maxlength=${this.maxLength >= 0 ? String(this.maxLength) : nothing}
             ?disabled=${this.disabled}
