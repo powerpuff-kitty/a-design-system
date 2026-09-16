@@ -162,11 +162,7 @@ export class AdsButton extends FormAssociatedElement {
   @property({ reflect: true }) value = '';
 
   override updated(): void {
-    this.internals.ariaDisabled = String(this.disabled || this.loading);
-  }
-
-  protected override onFormDisabledChange(disabled: boolean): void {
-    this.disabled = disabled;
+    this.internals.ariaDisabled = String(this.disabled || this.formDisabled || this.loading);
   }
 
   private activateForm(): void {
@@ -198,7 +194,7 @@ export class AdsButton extends FormAssociatedElement {
   }
 
   private handleClick(event: MouseEvent): void {
-    if (this.disabled || this.loading) {
+    if (this.disabled || this.formDisabled || this.loading) {
       event.preventDefault();
       event.stopImmediatePropagation();
       return;
@@ -208,7 +204,7 @@ export class AdsButton extends FormAssociatedElement {
   }
 
   override render() {
-    const unavailable = this.disabled || this.loading;
+    const unavailable = this.disabled || this.formDisabled || this.loading;
 
     return html`
       <button
