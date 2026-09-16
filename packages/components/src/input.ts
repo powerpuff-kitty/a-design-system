@@ -3,8 +3,10 @@ import { css, html, nothing, type PropertyValues } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
 import { FormAssociatedElement } from './runtime/form-associated-element.js';
 import { registerAdsElement } from './runtime/registration.js';
+import { validityStateToFlags } from './runtime/validity.js';
 
 export type AdsInputType = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url';
+export type AdsSelectionDirection = 'forward' | 'backward' | 'none';
 
 export const adsInputContract = defineComponentContract({
   name: 'Input',
@@ -30,6 +32,18 @@ export const adsInputContract = defineComponentContract({
     { name: 'form', type: 'HTMLFormElement | null', readonly: true },
     { name: 'validity', type: 'ValidityState', readonly: true },
     { name: 'validationMessage', type: 'string', readonly: true },
+    { name: 'selectionStart', type: 'number | null', readonly: true },
+    { name: 'selectionEnd', type: 'number | null', readonly: true },
+    { name: 'selectionDirection', type: "'forward' | 'backward' | 'none' | null", readonly: true },
+  ],
+  methods: [
+    { name: 'focus', signature: 'focus(options?: FocusOptions): void', description: 'Focuses the internal native input.' },
+    { name: 'blur', signature: 'blur(): void', description: 'Removes focus from the internal native input.' },
+    { name: 'select', signature: 'select(): void', description: 'Selects the text value when the input type supports selection.' },
+    { name: 'setSelectionRange', signature: "setSelectionRange(start: number, end: number, direction?: 'forward' | 'backward' | 'none'): void" },
+    { name: 'setCustomValidity', signature: 'setCustomValidity(message: string): void' },
+    { name: 'checkValidity', signature: 'checkValidity(): boolean' },
+    { name: 'reportValidity', signature: 'reportValidity(): boolean' },
   ],
   slots: [
     { name: 'label', description: 'Accessible visible label content.' },
@@ -60,21 +74,6 @@ export const adsInputContract = defineComponentContract({
     { name: 'disabled', description: 'Disabled by attribute or containing fieldset.' },
   ],
 });
-
-function validityFlags(validity: ValidityState): ValidityStateFlags {
-  return {
-    badInput: validity.badInput,
-    customError: validity.customError,
-    patternMismatch: validity.patternMismatch,
-    rangeOverflow: validity.rangeOverflow,
-    rangeUnderflow: validity.rangeUnderflow,
-    stepMismatch: validity.stepMismatch,
-    tooLong: validity.tooLong,
-    tooShort: validity.tooShort,
-    typeMismatch: validity.typeMismatch,
-    valueMissing: validity.valueMissing,
-  };
-}
 
 export class AdsInput extends FormAssociatedElement {
   static override styles = css`
@@ -172,8 +171,8 @@ export class AdsInput extends FormAssociatedElement {
     }
   `;
 
-  @property() type: AdsInputType = 'text';
-  @property() name = '';
+  @property({ reflect: true }) type: AdsInputType = 'text';
+  @property({ reflect: true }) name = '';
   @property() value = '';
   @property() label = '';
   @property() placeholder = '';
@@ -186,11 +185,24 @@ export class AdsInput extends FormAssociatedElement {
   @property({ type: Boolean, reflect: true, attribute: 'readonly' }) readOnly = false;
   @property({ type: Boolean, reflect: true }) required = false;
 
-  @query('input') private inputElement!: HTMLInputElement;
+  @query('input') private inputElement?: HTMLInputElement;
   @state() private invalid = false;
 
   private defaultValue = '';
   private defaultValueCaptured = false;
+  private customValidityMessage = '';
+
+  get selectionStart(): number | null {
+    return this.inputElement?.selectionStart ?? null;
+  }
+
+  get selectionEnd(): number | null {
+    return this.inputElement?.selectionEnd ?? null;
+  }
+
+  get selectionDirection(): AdsSelectionDirection | null {
+    return (this.inputElement?.selectionDirection as AdsSelectionDirection | null | undefined) ?? null;
+  }
 
   override connectedCallback(): void {
     if (!this.defaultValueCaptured) {
@@ -219,6 +231,34 @@ export class AdsInput extends FormAssociatedElement {
     }
   }
 
+  override focus(options?: FocusOptions): void {
+    if (this.inputElement) {
+      this.inputElement.focus(options);
+      return;
+    }
+    void this.updateComplete.then(() => this.inputElement?.focus(options));
+  }
+
+  override blur(): void {
+    this.inputElement?.blur();
+  }
+
+  select(): void {
+    this.inputElement?.select();
+  }
+
+  setSelectionRange(start: number, end: number, direction?: AdsSelectionDirection): void {
+    this.inputElement?.setSelectionRange(start, end, direction);
+  }
+
+  setCustomValidity(message: string): void {
+    this.customValidityMessage = message;
+    if (this.inputElement) {
+      this.inputElement.setCustomValidity(message);
+      this.syncNativeState();
+    }
+  }
+
   protected override onFormDisabledChange(disabled: boolean): void {
     this.disabled = disabled;
   }
@@ -239,6 +279,12 @@ export class AdsInput extends FormAssociatedElement {
     if (!input) return;
 
     if (input.value !== this.value) input.value = this.value;
+    if (input.validationMessage !== this.customValidityMessage && this.customValidityMessage) {
+      input.setCustomValidity(this.customValidityMessage);
+    } else if (!this.customValidityMessage && input.validity.customError) {
+      input.setCustomValidity('');
+    }
+
     this.setFormValue(this.disabled ? null : this.value, this.value);
 
     if (input.validity.valid) {
@@ -249,7 +295,7 @@ export class AdsInput extends FormAssociatedElement {
       return;
     }
 
-    this.setValidity(validityFlags(input.validity), input.validationMessage, input);
+    this.setValidity(validityStateToFlags(input.validity), input.validationMessage, input);
     this.invalid = true;
     this.internals.states.add('invalid');
     this.internals.ariaInvalid = 'true';
