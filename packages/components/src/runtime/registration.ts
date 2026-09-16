@@ -1,5 +1,5 @@
 export interface AdsElementConstructor extends CustomElementConstructor {
-  new (...args: never[]): HTMLElement;
+  new (...args: any[]): HTMLElement;
 }
 
 export interface RegisterAdsElementOptions {
@@ -41,7 +41,11 @@ export function registerAdsElement<T extends AdsElementConstructor>(
 
     // A constructor can only be defined once. A subclass preserves behavior
     // while allowing enterprise/custom prefixes without relying on getName().
-    const AliasElement = class extends constructor {};
+    const AliasElement = class extends constructor {
+      constructor(...args: any[]) {
+        super(...args);
+      }
+    };
     registry.define(tagName, AliasElement);
   }
 
