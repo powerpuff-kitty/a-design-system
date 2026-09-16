@@ -10,11 +10,11 @@ The project is built around interoperable Web Components (`<ads-…>`), DTCG des
 - **Accessible by default** — accessibility and keyboard behavior are release criteria, not optional enhancements.
 - **Install it or own it** — consume versioned packages or install component source through the ADS registry/CLI.
 - **Framework neutral** — canonical components are Web Components; framework adapters provide native ergonomics where useful.
-- **Token portable** — DTCG token files are the source of truth and compile to CSS and platform adapters.
+- **Token portable** — stable DTCG token files are the source of truth and compile to CSS and platform adapters.
 - **Agent readable** — component contracts, tokens, examples, migrations, and rules are exposed as structured data.
 - **Open advanced UI** — complex components such as data grids, charts, scheduling, and AI interfaces should not be artificially paywalled.
 
-## Planned workspace
+## Workspace direction
 
 ```text
 apps/
@@ -37,6 +37,8 @@ packages/
   agent/             # skills, machine-readable context, MCP tooling
 ```
 
+The repository starts with `tokens`, `core`, and `components`; the remaining workspaces are introduced as their contracts are implemented rather than as empty packages.
+
 ## Namespaces
 
 - Custom elements: `<ads-button>`, `<ads-dialog>`, `<ads-prompt-input>`
@@ -45,10 +47,18 @@ packages/
 - CSS custom properties: `--ads-*`
 - CLI: `ads`
 
+## Current foundation
+
+- pnpm monorepo with strict TypeScript
+- stable DTCG 2025.10 token source
+- framework-free headless interaction primitives
+- initial Lit-based `<ads-button>` Web Component
+- unit-test and CI foundations
+
 ## Status
 
 Early development. The public API is not stable yet.
 
 ## License
 
-Apache-2.0 (planned; license file will be added as part of repository foundation work).
+Apache-2.0.
