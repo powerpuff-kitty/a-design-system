@@ -218,7 +218,7 @@ export class AdsRadio extends LitElement {
     this.#syncAccessibility();
   }
 
-  private #syncAccessibility(): void {
+  #syncAccessibility(): void {
     this.#internals.ariaChecked = String(this.checked);
     this.#internals.ariaDisabled = String(this.effectiveDisabled);
 
