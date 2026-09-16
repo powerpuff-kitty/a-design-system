@@ -29,6 +29,10 @@
       "types": "./src/input.ts",
       "import": "./dist/input.js"
     },
+    "./switch": {
+      "types": "./src/switch.ts",
+      "import": "./dist/switch.js"
+    },
     "./textarea": {
       "types": "./src/textarea.ts",
       "import": "./dist/textarea.js"
