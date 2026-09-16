@@ -1,0 +1,16 @@
+{
+  "name": "@a-design-system/component-lab",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --host 127.0.0.1 --port 4173 --strictPort"
+  },
+  "dependencies": {
+    "@a-design-system/components": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^8.3.0"
+  }
+}

@@ -7,9 +7,11 @@
     "build": "pnpm -r --if-present build",
     "check": "pnpm typecheck && pnpm test",
     "test": "pnpm -r --if-present test",
+    "test:browser": "playwright test",
     "typecheck": "pnpm -r --if-present typecheck"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "typescript": "^7.0.2",
     "vitest": "^5.0.1"
   },
