@@ -162,7 +162,7 @@ export class AdsToastItem extends LitElement {
   @property({ type: Boolean, reflect: true }) dismissible = true;
   @property({ type: Boolean, reflect: true }) open = true;
 
-  private timeoutId?: number;
+  private timeoutId: number | undefined;
   private startedAt = 0;
   private remaining = 0;
   private pointerPaused = false;
