@@ -98,7 +98,8 @@
     color: inherit;
   }
 
-  .theme-control {
+  .theme-control,
+  .density-control {
     display: flex;
     align-items: center;
     gap: var(--ads-space-2);
@@ -318,6 +319,7 @@
     main, footer { inline-size: min(100% - 2 * var(--ads-space-3), 88rem); }
     .site-header { padding-inline: var(--ads-space-3); }
     .theme-control > span,
+    .density-control > span,
     .command-trigger > span { display: none; }
     h1 { font-size: clamp(3rem, 18vw, 5.5rem); }
     .component-row { align-items: stretch; }
