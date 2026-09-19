@@ -3,171 +3,92 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light dark" />
-    <meta
-      name="description"
-      content="A Design System — standards-first Web Components, DTCG tokens, source-owned recipes, and machine-readable tooling."
-    />
-    <title>A Design System</title>
+    <meta name="description" content="Explore A Design System components, their real API contracts, theme presets, and source-owned layout starters." />
+    <title>Components — A Design System</title>
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="/" aria-label="A Design System home">A Design System</a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#components">Components</a>
-        <a href="#workspace">Workspace</a>
-        <a href="#tokens">Tokens</a>
-      </nav>
-      <div class="header-actions">
-        <button id="command-trigger" class="command-trigger" type="button" aria-haspopup="dialog" aria-controls="command-palette">
-          <span>Commands</span><kbd>⌘ K</kbd>
-        </button>
-        <label class="theme-control">
-          <span>Theme</span>
-          <select id="theme-select">
-            <option value="minimal-light">Minimal Light</option>
-            <option value="minimal-dark">Minimal Dark</option>
-            <option value="minimal-high-contrast">High Contrast</option>
-          </select>
-        </label>
-        <label class="density-control">
-          <span>Density</span>
-          <select id="density-select">
-            <option value="compact">Compact</option>
-            <option value="default" selected>Default</option>
-            <option value="comfortable">Comfortable</option>
-          </select>
-        </label>
-      </div>
+    <a class="skip-link" href="#content">Skip to documentation</a>
+    <header class="docs-header">
+      <button class="mobile-only" id="navigation-toggle" type="button" aria-haspopup="dialog" aria-controls="panel-sheet">Library</button>
+      <a class="brand" href="#ads-button">a design system<span class="brand-detail"> / docs</span></a>
+      <span class="release-note">Early development</span>
+      <button id="command-trigger" type="button" aria-haspopup="dialog" aria-controls="command-palette">Search <kbd>Ctrl / ⌘ K</kbd></button>
+      <button id="inspector-toggle" type="button" aria-controls="inspector" aria-expanded="true">Customize</button>
     </header>
 
-    <dialog id="command-palette" class="ads-command-palette" aria-label="Command palette">
-      <label class="ads-command-palette__search">
-        <span aria-hidden="true">⌘</span>
-        <input id="command-search" type="search" aria-label="Search commands" autocomplete="off" placeholder="Tool, section, theme…" />
-        <kbd>ESC</kbd>
-      </label>
-      <div id="command-results" class="ads-command-palette__list" role="listbox" aria-label="Commands"></div>
+    <div class="docs-layout">
+      <aside id="navigation" class="library-panel" aria-label="Documentation library">
+        <label class="search-label" for="library-search">Find a component</label>
+        <input id="library-search" type="search" placeholder="Search components…" autocomplete="off" />
+        <p class="section-label">Components <span id="component-count"></span></p>
+        <nav id="component-list" aria-label="Components"></nav>
+        <p id="library-empty" role="status" hidden>No matching components.</p>
+        <p class="section-label">Layout starters</p>
+        <nav id="recipe-list" aria-label="Layout starters"></nav>
+        <p class="library-note">This catalogue reflects the components exported by this build. Experimental does not mean production-certified.</p>
+        <a class="repository-link" href="https://github.com/powerpuff-kitty/a-design-system">Repository ↗</a>
+      </aside>
+
+      <main id="content" tabindex="-1">
+        <header class="content-heading">
+          <p id="component-meta" class="section-label"></p>
+          <h1 id="component-title">Component library</h1>
+          <p id="component-description">Loading the current component contracts…</p>
+        </header>
+        <div class="view-tabs" role="tablist" aria-label="Documentation views">
+          <button id="preview-tab" role="tab" aria-controls="preview-view" aria-selected="true" type="button">Preview</button>
+          <button id="usage-tab" role="tab" aria-controls="usage-view" aria-selected="false" tabindex="-1" type="button">Usage</button>
+          <button id="api-tab" role="tab" aria-controls="api-view" aria-selected="false" tabindex="-1" type="button">API</button>
+          <button id="styling-tab" role="tab" aria-controls="styling-view" aria-selected="false" tabindex="-1" type="button">Styling</button>
+        </div>
+        <section id="preview-view" role="tabpanel" aria-labelledby="preview-tab" tabindex="0">
+          <div class="preview-toolbar"><span>Live component</span><span id="preview-mode"></span></div>
+          <div id="preview-stage" class="preview-stage"><div id="preview-content"></div></div>
+          <p id="preview-events" class="preview-events" role="status" aria-live="polite">Interact with the preview to inspect events.</p>
+        </section>
+        <section id="usage-view" role="tabpanel" aria-labelledby="usage-tab" tabindex="0" hidden>
+          <div class="section-toolbar"><h2>Source</h2><button id="copy-source" type="button">Copy source</button></div>
+          <p id="usage-note">Import the package, then use the element in HTML.</p>
+          <pre><code id="source-code"></code></pre>
+          <p id="copy-status" role="status"></p>
+        </section>
+        <section id="api-view" role="tabpanel" aria-labelledby="api-tab" tabindex="0" hidden>
+          <p class="section-intro">Generated from the exported component contract, not a separate handwritten API list.</p>
+          <div id="api-content"></div>
+        </section>
+        <section id="styling-view" role="tabpanel" aria-labelledby="styling-tab" tabindex="0" hidden>
+          <h2>Tokens, parts, and slots</h2>
+          <p>Use semantic tokens for a theme, component tokens for local overrides, and the documented CSS parts for structural styling. Ordinary external selectors do not reach inside Shadow DOM.</p>
+          <p>Native select/date pickers and other operating-system UI have platform styling limits. Changing markup or interaction behavior is not a theme override.</p>
+          <h3>Your preview overrides</h3><pre><code id="override-code"></code></pre>
+          <h3>Resolved semantic tokens</h3><dl id="resolved-tokens" class="token-values"></dl>
+          <p class="section-intro">Inspect the API view for the declared component tokens and parts. Full theme/state conformance remains experimental.</p>
+        </section>
+      </main>
+
+      <aside id="inspector" class="inspector-panel" aria-label="Preview customization">
+        <div class="section-toolbar"><h2>Customize</h2><button id="reset-overrides" type="button">Reset</button></div>
+        <p class="inspector-note">Preview settings only. No component source is changed.</p>
+        <label for="theme-select">Theme preset</label>
+        <select id="theme-select"><option value="minimal-light">Minimal Light</option><option value="minimal-dark">Minimal Dark</option><option value="minimal-high-contrast">Minimal High Contrast</option></select>
+        <label for="density-select">Density</label>
+        <select id="density-select"><option value="compact">Compact</option><option value="default" selected>Default</option><option value="comfortable">Comfortable</option></select>
+        <label for="direction-select">Preview direction</label>
+        <select id="direction-select"><option value="ltr">Left to right</option><option value="rtl">Right to left</option></select>
+        <div id="state-controls"></div>
+        <details open><summary>Component tokens</summary><p class="inspector-note">Overrides apply to this preview instance. Empty values restore the preset.</p><div id="token-controls"></div></details>
+      </aside>
+    </div>
+
+    <dialog id="command-palette" aria-label="Search documentation">
+      <label for="command-search">Search documentation</label>
+      <input id="command-search" type="search" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-controls="command-results" autocomplete="off" placeholder="Component, layout, or theme…" />
+      <div id="command-results" role="listbox" aria-label="Search results"></div>
+      <p id="command-empty" role="status" hidden>No results.</p>
+      <button id="command-close" type="button">Close search</button>
     </dialog>
-
-    <main>
-      <section class="hero">
-        <p class="eyebrow">Open source · standards first · framework neutral</p>
-        <h1>Interfaces without the ornamental noise.</h1>
-        <p class="hero-copy">
-          Web Components, DTCG tokens, headless interaction primitives, source-owned recipes,
-          and machine-readable contracts for people and coding agents.
-        </p>
-        <div class="hero-actions">
-          <a class="primary-link" href="#components">Explore components</a>
-          <a class="text-link" href="https://github.com/powerpuff-kitty/a-design-system">GitHub ↗</a>
-        </div>
-      </section>
-
-      <section id="components" class="section-grid" aria-labelledby="components-title">
-        <header class="section-heading">
-          <p class="eyebrow">01 / Components</p>
-          <h2 id="components-title">Native behavior. Minimal chrome.</h2>
-          <p>Current controls keep browser semantics while the reference theme stays restrained.</p>
-        </header>
-
-        <div class="component-stage">
-          <div class="component-row">
-            <ads-button>Primary action</ads-button>
-            <ads-button variant="secondary">Secondary</ads-button>
-            <ads-button variant="ghost">Ghost</ads-button>
-          </div>
-          <ads-input label="Project name" value="A Design System">
-            <span slot="description">Form-associated custom element.</span>
-          </ads-input>
-          <ads-textarea label="Notes" value="Sharp geometry. Hairline structure.">
-            <span slot="description">Themeable without changing semantics.</span>
-          </ads-textarea>
-          <div class="component-row">
-            <ads-checkbox checked>Minimal theme</ads-checkbox>
-            <ads-radio-group label="Density" value="default" orientation="horizontal">
-              <ads-radio value="compact">Compact</ads-radio>
-              <ads-radio value="default">Default</ads-radio>
-              <ads-radio value="comfortable">Comfortable</ads-radio>
-            </ads-radio-group>
-          </div>
-        </div>
-      </section>
-
-      <section id="workspace" class="workspace-section" aria-labelledby="workspace-title">
-        <header class="section-heading">
-          <p class="eyebrow">02 / Workspace</p>
-          <h2 id="workspace-title">Content first, controls when needed.</h2>
-          <p>The Minimal workspace recipe keeps the working surface dominant and inspectors contextual.</p>
-        </header>
-
-        <div class="ads-workspace docs-workspace">
-          <nav class="ads-workspace__rail demo-rail" aria-label="Demo tools">
-            <button type="button" aria-label="Palette">PA</button>
-            <button type="button" aria-label="Color space">3D</button>
-            <button type="button" aria-label="Export">EX</button>
-          </nav>
-
-          <aside class="ads-workspace__tools demo-inspector" data-pinned="false">
-            <div class="ads-workspace__panel-controls"><span>Tools</span></div>
-            <div class="ads-workspace__panel-content">
-              <label>Space <select><option>OKLab</option><option>Lab</option><option>sRGB</option></select></label>
-              <label>Geometry <select><option>Points</option><option>Cloud</option><option>Flow</option></select></label>
-            </div>
-          </aside>
-
-          <div class="ads-workspace__result demo-result">
-            <div class="axis axis-x"></div>
-            <div class="axis axis-y"></div>
-            <div class="demo-points" aria-label="Abstract color analysis preview">
-              <i style="--x:18%;--y:68%;--size:14px;--tone:#111"></i>
-              <i style="--x:34%;--y:38%;--size:24px;--tone:#d65a45"></i>
-              <i style="--x:54%;--y:56%;--size:18px;--tone:#e9b44c"></i>
-              <i style="--x:68%;--y:27%;--size:20px;--tone:#376d95"></i>
-              <i style="--x:79%;--y:62%;--size:16px;--tone:#5a8f69"></i>
-            </div>
-            <span class="demo-caption">OKLAB · 5 SAMPLE COLORS</span>
-          </div>
-
-          <aside class="ads-workspace__document demo-inspector" data-pinned="false">
-            <div class="ads-workspace__panel-controls"><span>Output</span></div>
-            <div class="ads-workspace__panel-content">
-              <dl>
-                <div><dt>Theme</dt><dd>Minimal</dd></div>
-                <div><dt>Radius</dt><dd>0 px</dd></div>
-                <div><dt>Surface</dt><dd>Paper</dd></div>
-              </dl>
-            </div>
-          </aside>
-
-          <div class="ads-workspace__mobile-launchers" aria-hidden="true">
-            <button type="button">Tools</button>
-            <button type="button">Document</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="tokens" class="section-grid token-section" aria-labelledby="tokens-title">
-        <header class="section-heading">
-          <p class="eyebrow">03 / Tokens</p>
-          <h2 id="tokens-title">The visual language is data.</h2>
-          <p>Minimal is a DTCG theme, not a docs-only stylesheet or product brand.</p>
-        </header>
-        <div class="token-table" role="table" aria-label="Selected Minimal tokens">
-          <div role="row"><span role="cell">surface.page</span><code role="cell">--ads-color-surface-page</code></div>
-          <div role="row"><span role="cell">line.control</span><code role="cell">--ads-color-line-control</code></div>
-          <div role="row"><span role="cell">radius.control</span><code role="cell">0px</code></div>
-          <div role="row"><span role="cell">size.control.default</span><code role="cell">36px</code></div>
-          <div role="row"><span role="cell">size.target.minimum</span><code role="cell">44px</code></div>
-        </div>
-      </section>
-    </main>
-
-    <footer>
-      <span>A Design System</span>
-      <span>Apache-2.0 · early development</span>
-    </footer>
-
+    <dialog id="panel-sheet" aria-label="Documentation panel"><button id="panel-close" type="button">Close panel</button><div id="panel-body"></div></dialog>
+    <noscript><p>Enable JavaScript to run the live component previews. Source code remains available in the repository.</p></noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
