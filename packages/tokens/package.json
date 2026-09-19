@@ -2,7 +2,9 @@
   "name": "@a-design-system/tokens",
   "version": "0.0.0",
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "types": "./src/index.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/build-minimal-themes.mjs",
