@@ -25,6 +25,16 @@ Theme sources live in:
 
 They are complete DTCG token graphs and intentionally expose the same token paths across variants.
 
+Consumers that do not need to compile DTCG at runtime can import generated CSS:
+
+```css
+@import '@a-design-system/tokens/themes/minimal.css';
+@import '@a-design-system/css/minimal-base.css';
+@import '@a-design-system/css/minimal-density.css';
+```
+
+The combined `minimal.css` bundle exposes Minimal Light at `:root` and theme-specific selectors through `data-ads-theme`. Individual `minimal-light.css`, `minimal-dark.css`, and `minimal-high-contrast.css` exports are also generated deterministically during the tokens package build.
+
 ### Color
 
 Semantic roles separate product chrome from content:
@@ -60,6 +70,8 @@ The visual control heights are:
 - compact: 32 px
 - default: 36 px
 - comfortable: 44 px
+
+`minimal-density.css` maps `data-ads-density="compact|default|comfortable"` to the public `size.control.current` alias. Components that participate in global density should consume that current-size token rather than hard-code the default mode.
 
 The minimum interactive target contract is separately represented as `size.target.minimum = 44px`. A compact visual control may therefore need padding/host hit-area composition rather than shrinking the actual accessible target.
 
