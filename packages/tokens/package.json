@@ -14,7 +14,13 @@
       "types": "./src/index.ts",
       "import": "./dist/index.js"
     },
-    "./tokens.json": "./src/tokens.json"
+    "./tokens.json": "./src/tokens.json",
+    "./themes/minimal-light.json": "./src/themes/minimal-light.json",
+    "./themes/minimal-dark.json": "./src/themes/minimal-dark.json",
+    "./themes/minimal-high-contrast.json": "./src/themes/minimal-high-contrast.json"
   },
-  "files": ["dist", "src"]
+  "files": [
+    "dist",
+    "src"
+  ]
 }
