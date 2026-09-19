@@ -2,9 +2,13 @@
   "name": "@a-design-system/css",
   "version": "0.0.0",
   "type": "module",
-  "sideEffects": ["*.css"],
+  "sideEffects": [
+    "**/*.css"
+  ],
   "exports": {
     "./minimal-workspace.css": "./src/minimal-workspace.css"
   },
-  "files": ["src"]
+  "files": [
+    "src"
+  ]
 }
