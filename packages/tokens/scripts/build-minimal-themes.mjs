@@ -21,7 +21,8 @@ for (const theme of themes) {
   const source = JSON.parse(readFileSync(join(sourceRoot, `${theme.id}.json`), 'utf8'));
   const compiled = compileTokens(source, { selector: theme.selector });
   const scheme = `${theme.selector} {\n  color-scheme: ${theme.scheme};\n}\n`;
-  const css = `/* Generated from src/themes/${theme.id}.json. Do not hand-edit. */\n${compiled.css}${scheme}`;
+  // Raw token defaults must not outrank the independent density axis.
+  const css = `/* Generated from src/themes/${theme.id}.json. Do not hand-edit. */\n@layer ads.tokens, ads.theme;\n@layer ads.tokens {\n${compiled.css}${scheme}}\n`;
   writeFileSync(join(outputRoot, `${theme.id}.css`), css);
   generated.push(css);
 }

@@ -32,7 +32,7 @@ function installTheme(theme: LabTheme): void {
   const compiled = compileTokens(THEMES[theme]);
   const style = document.createElement('style');
   style.id = 'ads-component-lab-theme';
-  style.textContent = `${compiled.css}
+  style.textContent = `@layer ads.tokens { ${compiled.css} }
     :root {
       color-scheme: ${theme === 'minimal-dark' ? 'dark' : 'light'};
       font-family: var(--ads-font-family-ui);

@@ -34,7 +34,7 @@ function store(key: string, value: string): void {
   try { localStorage.setItem(key, value); } catch { /* Preferences are optional. */ }
 }
 function applyTheme(id: ThemeId): void {
-  themeStyle.textContent = compileTokens(themes[id]).css;
+  themeStyle.textContent = `@layer ads.tokens { ${compileTokens(themes[id]).css} }`;
   document.documentElement.dataset.adsTheme = id;
   document.documentElement.style.colorScheme = id === 'minimal-dark' ? 'dark' : 'light';
   themeSelect.value = id;

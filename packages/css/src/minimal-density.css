@@ -1,3 +1,6 @@
+/* Token defaults precede density overrides, regardless of stylesheet import order. */
+@layer ads.tokens, ads.theme;
+
 @layer ads.theme {
   :root[data-ads-density='compact'],
   [data-ads-density='compact'] {
