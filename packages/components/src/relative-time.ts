@@ -45,7 +45,7 @@ export class AdsRelativeTime extends LitElement {
   @property() unit: Intl.RelativeTimeFormatUnit = 'second';
   @property() locale = '';
   @property() numeric: AdsRelativeTimeNumeric = 'auto';
-  @property() style: AdsRelativeTimeStyle = 'long';
+  @property({ attribute: 'style' }) relativeStyle: AdsRelativeTimeStyle = 'long';
   @property() fallback = '—';
   @property({ attribute: false }) options: Intl.RelativeTimeFormatOptions = {};
 
@@ -56,7 +56,7 @@ export class AdsRelativeTime extends LitElement {
       const formatter = new Intl.RelativeTimeFormat(this.locale || undefined, {
         ...this.options,
         numeric: this.numeric,
-        style: this.style,
+        style: this.relativeStyle,
       });
       return formatter.format(this.value, this.unit);
     } catch {
