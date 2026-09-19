@@ -1,0 +1,19 @@
+@layer ads.theme {
+  :root[data-ads-density='compact'],
+  [data-ads-density='compact'] {
+    --ads-size-control-current: var(--ads-size-control-compact, 2rem);
+    --ads-control-size: var(--ads-size-control-current);
+  }
+
+  :root[data-ads-density='default'],
+  [data-ads-density='default'] {
+    --ads-size-control-current: var(--ads-size-control-default, 2.25rem);
+    --ads-control-size: var(--ads-size-control-current);
+  }
+
+  :root[data-ads-density='comfortable'],
+  [data-ads-density='comfortable'] {
+    --ads-size-control-current: var(--ads-size-control-comfortable, 2.75rem);
+    --ads-control-size: var(--ads-size-control-current);
+  }
+}
