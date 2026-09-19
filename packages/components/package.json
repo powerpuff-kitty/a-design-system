@@ -44,7 +44,14 @@
     "./runtime": {
       "types": "./src/runtime/index.ts",
       "import": "./dist/runtime/index.js"
+    },
+    "./theme": {
+      "types": "./src/theme.ts",
+      "import": "./dist/theme.js"
     }
   },
-  "files": ["dist", "src"]
+  "files": [
+    "dist",
+    "src"
+  ]
 }
