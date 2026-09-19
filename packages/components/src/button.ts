@@ -30,7 +30,7 @@ export const adsButtonContract = defineComponentContract({
     { name: 'spinner', description: 'Loading spinner rendered while loading.' },
   ],
   cssCustomProperties: [
-    { name: '--ads-control-size', default: 'var(--ads-size-control-default, 2.25rem)' },
+    { name: '--ads-control-size', default: 'var(--ads-size-control-current, var(--ads-size-control-default, 2.25rem))' },
     { name: '--ads-button-gap', default: '0.5rem' },
     { name: '--ads-button-padding-block', default: '0.625rem' },
     { name: '--ads-button-padding-inline', default: '0.875rem' },
@@ -67,7 +67,7 @@ export class AdsButton extends FormAssociatedElement {
     button {
       box-sizing: border-box;
       display: inline-flex;
-      min-block-size: var(--ads-control-size, var(--ads-size-control-default, 2.25rem));
+      min-block-size: var(--ads-control-size, var(--ads-size-control-current, var(--ads-size-control-default, 2.25rem)));
       align-items: center;
       justify-content: center;
       gap: var(--ads-button-gap, 0.5rem);
