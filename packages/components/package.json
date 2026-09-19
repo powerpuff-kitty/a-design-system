@@ -77,6 +77,14 @@
       "types": "./src/input.ts",
       "import": "./dist/input.js"
     },
+    "./number-input": {
+      "types": "./src/number-input.ts",
+      "import": "./dist/number-input.js"
+    },
+    "./password-input": {
+      "types": "./src/password-input.ts",
+      "import": "./dist/password-input.js"
+    },
     "./kbd": {
       "types": "./src/kbd.ts",
       "import": "./dist/kbd.js"
@@ -104,6 +112,10 @@
     "./relative-time": {
       "types": "./src/relative-time.ts",
       "import": "./dist/relative-time.js"
+    },
+    "./search-input": {
+      "types": "./src/search-input.ts",
+      "import": "./dist/search-input.js"
     },
     "./separator": {
       "types": "./src/separator.ts",

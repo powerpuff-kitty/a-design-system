@@ -189,6 +189,10 @@ export class AdsInput extends FormAssociatedElement {
   @query('input') private inputElement?: HTMLInputElement;
   @state() private invalid = false;
 
+  protected get nativeType(): AdsInputType {
+    return this.type;
+  }
+
   private defaultValue = '';
   private defaultValueCaptured = false;
   private customValidityMessage = '';
@@ -326,7 +330,7 @@ export class AdsInput extends FormAssociatedElement {
           <slot name="start"></slot>
           <input
             part="input"
-            .type=${this.type}
+            .type=${this.nativeType}
             .value=${this.value}
             .placeholder=${this.placeholder}
             .autocomplete=${this.autocomplete}
