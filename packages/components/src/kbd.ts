@@ -1,0 +1,59 @@
+import { defineComponentContract } from '@a-design-system/core';
+import { LitElement, css, html } from 'lit';
+import { registerAdsElement } from './runtime/registration.js';
+
+export const adsKbdContract = defineComponentContract({
+  name: 'Keyboard Key',
+  tagName: 'ads-kbd',
+  description: 'Semantic keyboard-input token styled with ADS typography and chrome.',
+  status: 'experimental',
+  slots: [{ name: '', description: 'Key or shortcut label.' }],
+  parts: [{ name: 'kbd', description: 'The native kbd element.' }],
+  cssCustomProperties: [
+    { name: '--ads-kbd-background', default: '#f6f6f8' },
+    { name: '--ads-kbd-border', default: '#d7d7dc' },
+    { name: '--ads-kbd-radius', default: '0.25rem' },
+  ],
+});
+
+export class AdsKbd extends LitElement {
+  static override styles = css`
+    :host {
+      display: inline;
+    }
+
+    :host([hidden]) {
+      display: none;
+    }
+
+    kbd {
+      display: inline-flex;
+      min-inline-size: 1.5em;
+      min-block-size: 1.5em;
+      align-items: center;
+      justify-content: center;
+      padding: 0.05em 0.35em;
+      border: 1px solid var(--ads-kbd-border, #d7d7dc);
+      border-block-end-width: 2px;
+      border-radius: var(--ads-kbd-radius, 0.25rem);
+      background: var(--ads-kbd-background, #f6f6f8);
+      color: var(--ads-kbd-color, #39393f);
+      font-family: var(--ads-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+      font-size: 0.85em;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+  `;
+
+  override render() {
+    return html`<kbd part="kbd"><slot></slot></kbd>`;
+  }
+}
+
+registerAdsElement('kbd', AdsKbd);
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'ads-kbd': AdsKbd;
+  }
+}
