@@ -3,7 +3,10 @@ import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const componentRoot = join(root, 'packages/components/src');
+const roots = [
+  join(root, 'packages/components/src'),
+  join(root, 'packages/css/src'),
+];
 
 function files(directory) {
   const output = [];
@@ -11,10 +14,12 @@ function files(directory) {
     const path = join(directory, name);
     const stat = statSync(path);
     if (stat.isDirectory()) output.push(...files(path));
-    else if (path.endsWith('.ts')) output.push(path);
+    else if (path.endsWith('.ts') || path.endsWith('.css')) output.push(path);
   }
   return output;
 }
+
+const sourceFiles = roots.flatMap(files);
 
 const diagnostics = [];
 function report(path, line, rule, message) {
@@ -26,7 +31,7 @@ function report(path, line, rule, message) {
   });
 }
 
-for (const path of files(componentRoot)) {
+for (const path of sourceFiles) {
   const source = readFileSync(path, 'utf8');
   const lines = source.split('\n');
 
@@ -68,4 +73,4 @@ if (diagnostics.length) {
   process.exit(1);
 }
 
-console.log(`ADS Minimal visual conformance passed for ${files(componentRoot).length} component source files.`);
+console.log(`ADS Minimal visual conformance passed for ${sourceFiles.length} first-party component/CSS source files.`);
