@@ -60,8 +60,45 @@
   .text-link:hover,
   .text-link:focus-visible { color: var(--ads-color-text-default); }
 
-  .theme-control {
+  .header-actions {
     justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: var(--ads-space-2);
+  }
+
+  .command-trigger {
+    display: inline-flex;
+    min-block-size: var(--ads-size-control-compact);
+    align-items: center;
+    gap: var(--ads-space-2);
+    padding-inline: var(--ads-space-2);
+    border: var(--ads-border-width-hairline) solid var(--ads-color-line-default);
+    border-radius: var(--ads-radius-control);
+    background: transparent;
+    color: var(--ads-color-text-muted);
+    font: inherit;
+    font-size: var(--ads-font-size-xs);
+    cursor: pointer;
+  }
+
+  .command-trigger:hover,
+  .command-trigger:focus-visible {
+    border-color: var(--ads-color-line-control);
+    color: var(--ads-color-text-default);
+  }
+
+  .command-trigger:focus-visible {
+    outline: var(--ads-focus-width) solid var(--ads-color-focus-ring);
+    outline-offset: var(--ads-focus-offset);
+  }
+
+  .command-trigger kbd {
+    font-family: var(--ads-font-family-mono);
+    color: inherit;
+  }
+
+  .theme-control {
     display: flex;
     align-items: center;
     gap: var(--ads-space-2);
@@ -280,7 +317,8 @@
   @media (max-width: 560px) {
     main, footer { inline-size: min(100% - 2 * var(--ads-space-3), 88rem); }
     .site-header { padding-inline: var(--ads-space-3); }
-    .theme-control > span { display: none; }
+    .theme-control > span,
+    .command-trigger > span { display: none; }
     h1 { font-size: clamp(3rem, 18vw, 5.5rem); }
     .component-row { align-items: stretch; }
     footer { flex-direction: column; }
