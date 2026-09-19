@@ -143,7 +143,7 @@ export class AdsCheckbox extends FormAssociatedElement {
       inline-size: 0.6em;
       block-size: 0.12em;
       border: 0;
-      border-radius: 999px;
+      border-radius: var(--ads-radius-pill, 9999px);
       background: currentColor;
       content: '';
       transform: none;
