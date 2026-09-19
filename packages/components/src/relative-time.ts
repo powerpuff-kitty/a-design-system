@@ -16,7 +16,7 @@ export const adsRelativeTimeContract = defineComponentContract({
     { name: 'unit', type: 'Intl.RelativeTimeFormatUnit', default: 'second' },
     { name: 'locale', type: 'string', default: '' },
     { name: 'numeric', type: "'always' | 'auto'", default: 'auto' },
-    { name: 'style', type: "'long' | 'short' | 'narrow'", default: 'long' },
+    { name: 'relative-style', type: "'long' | 'short' | 'narrow'", default: 'long' },
     { name: 'fallback', type: 'string', default: '—' },
   ],
   properties: [
@@ -45,7 +45,7 @@ export class AdsRelativeTime extends LitElement {
   @property() unit: Intl.RelativeTimeFormatUnit = 'second';
   @property() locale = '';
   @property() numeric: AdsRelativeTimeNumeric = 'auto';
-  @property({ attribute: 'style' }) relativeStyle: AdsRelativeTimeStyle = 'long';
+  @property({ attribute: 'relative-style' }) relativeStyle: AdsRelativeTimeStyle = 'long';
   @property() fallback = '—';
   @property({ attribute: false }) options: Intl.RelativeTimeFormatOptions = {};
 
