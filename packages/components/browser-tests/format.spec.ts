@@ -78,7 +78,7 @@ test.describe('ADS Intl format helpers', () => {
     await page.locator('#sandbox').evaluate((sandbox) => {
       sandbox.innerHTML = `
         <ads-format-date id="date" value="not-a-date" fallback="N/A"></ads-format-date>
-        <ads-format-number id="currency" value="42" style="currency" fallback="invalid"></ads-format-number>
+        <ads-format-number id="currency" value="42" format-style="currency" fallback="invalid"></ads-format-number>
       `;
     });
 
