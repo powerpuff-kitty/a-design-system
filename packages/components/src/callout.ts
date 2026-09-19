@@ -26,9 +26,13 @@ export const adsCalloutContract = defineComponentContract({
     { name: 'actions', description: 'Actions region.' },
   ],
   cssCustomProperties: [
-    { name: '--ads-callout-border', default: '#dedee3' },
-    { name: '--ads-callout-background', default: '#f8f8fa' },
-    { name: '--ads-callout-radius', default: 'var(--ads-radius-panel, 0.375rem)' },
+    { name: '--ads-callout-color', default: 'var(--ads-color-text-default)' },
+    { name: '--ads-callout-accent', default: 'var(--ads-callout-border, var(--ads-color-line-control))', description: 'Accent border color, honored across variants.' },
+    { name: '--ads-callout-accent-width', default: '3px' },
+    { name: '--ads-callout-padding', default: '1rem' },
+    { name: '--ads-callout-border', default: 'var(--ads-color-line-control)', description: 'Fallback for the neutral accent border.' },
+    { name: '--ads-callout-background', default: 'var(--ads-color-surface-subtle)', description: 'Consumer override, honored across variants.' },
+    { name: '--ads-callout-radius', default: 'var(--ads-radius-panel, 0px)' },
   ],
 });
 
@@ -41,14 +45,23 @@ export class AdsCallout extends LitElement {
       grid-template-columns: auto minmax(0, 1fr);
       gap: 0.75rem;
       padding: var(--ads-callout-padding, 1rem);
-      border-inline-start: var(--ads-callout-accent-width, 3px) solid var(--ads-callout-accent, #85858f);
-      border-radius: var(--ads-callout-radius, var(--ads-radius-panel, 0.375rem));
-      background: var(--ads-callout-background, #f8f8fa);
-      color: var(--ads-callout-color, #29292f);
+      border-inline-start: var(--ads-callout-accent-width, 3px) solid var(--ads-callout-accent, var(--ads-callout-border, var(--ads-color-line-control, #85858f)));
+      border-radius: var(--ads-callout-radius, var(--ads-radius-panel, 0px));
+      background: var(--ads-callout-background, var(--ads-color-surface-subtle, #f8f8fa));
+      color: var(--ads-callout-color, var(--ads-color-text-default, #29292f));
     }
-    :host([variant='info']) [part='callout'] { --ads-callout-accent: var(--ads-color-action, #315efb); --ads-callout-background: #f5f8ff; }
-    :host([variant='tip']) [part='callout'] { --ads-callout-accent: var(--ads-color-success-strong, #067647); --ads-callout-background: var(--ads-color-success-subtle, #ecfdf3); }
-    :host([variant='warning']) [part='callout'] { --ads-callout-accent: var(--ads-color-warning-strong, #b54708); --ads-callout-background: var(--ads-color-warning-subtle, #fffaeb); }
+    :host([variant='info']) [part='callout'] {
+      border-inline-start-color: var(--ads-callout-accent, var(--ads-color-action, var(--ads-color-line-control, #315efb)));
+      background: var(--ads-callout-background, var(--ads-color-surface-subtle, #f5f8ff));
+    }
+    :host([variant='tip']) [part='callout'] {
+      border-inline-start-color: var(--ads-callout-accent, var(--ads-color-success-strong, var(--ads-color-line-control, #067647)));
+      background: var(--ads-callout-background, var(--ads-color-success-subtle, var(--ads-color-surface-subtle, #ecfdf3)));
+    }
+    :host([variant='warning']) [part='callout'] {
+      border-inline-start-color: var(--ads-callout-accent, var(--ads-color-warning-strong, var(--ads-color-line-control, #b54708)));
+      background: var(--ads-callout-background, var(--ads-color-warning-subtle, var(--ads-color-surface-subtle, #fffaeb)));
+    }
     [part='content'] { min-inline-size: 0; }
     [part='title'] { display: block; font-weight: 650; }
     [part='body'] { display: block; margin-block-start: 0.25rem; }
@@ -70,11 +83,7 @@ export class AdsCallout extends LitElement {
     `;
   }
 }
-
 registerAdsElement('callout', AdsCallout);
-
 declare global {
-  interface HTMLElementTagNameMap {
-    'ads-callout': AdsCallout;
-  }
+  interface HTMLElementTagNameMap { 'ads-callout': AdsCallout; }
 }

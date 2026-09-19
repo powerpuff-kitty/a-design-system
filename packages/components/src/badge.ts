@@ -20,6 +20,9 @@ export const adsBadgeContract = defineComponentContract({
     { name: 'dot', description: 'Optional status dot.' },
   ],
   cssCustomProperties: [
+    { name: '--ads-badge-background', default: 'var(--ads-color-surface-subtle)', description: 'Consumer override; honored across variants.' },
+    { name: '--ads-badge-border', default: 'var(--ads-color-line-default)', description: 'Consumer override; honored across variants.' },
+    { name: '--ads-badge-color', default: 'var(--ads-color-text-default)', description: 'Consumer override; honored across variants.' },
     { name: '--ads-badge-radius', default: 'var(--ads-radius-pill, 999px)' },
     { name: '--ads-badge-font-size', default: '0.75rem' },
   ],
@@ -27,60 +30,49 @@ export const adsBadgeContract = defineComponentContract({
 
 export class AdsBadge extends LitElement {
   static override styles = css`
-    :host {
-      display: inline-flex;
-      vertical-align: middle;
-    }
-
-    :host([hidden]) {
-      display: none;
-    }
-
+    :host { display: inline-flex; vertical-align: middle; }
+    :host([hidden]) { display: none; }
     [part='badge'] {
       display: inline-flex;
       min-block-size: 1.5rem;
       align-items: center;
       gap: 0.375rem;
       padding: 0.125rem 0.5rem;
-      border: 1px solid var(--ads-badge-border, #d7d7dc);
+      border: 1px solid var(--ads-badge-border, var(--ads-color-line-default, #d7d7dc));
       border-radius: var(--ads-badge-radius, var(--ads-radius-pill, 999px));
-      background: var(--ads-badge-background, #f5f5f7);
-      color: var(--ads-badge-color, #39393f);
+      background: var(--ads-badge-background, var(--ads-color-surface-subtle, #f5f5f7));
+      color: var(--ads-badge-color, var(--ads-color-text-default, #39393f));
       font-size: var(--ads-badge-font-size, 0.75rem);
       font-weight: 600;
       line-height: 1.2;
       white-space: nowrap;
     }
-
     [part='dot'] {
       inline-size: 0.5em;
       block-size: 0.5em;
       border-radius: 50%;
       background: currentColor;
     }
-
+    /* Variant defaults must not redeclare consumer variables on the shadow part. */
     :host([variant='accent']) [part='badge'] {
-      --ads-badge-background: var(--ads-color-accent-subtle, #eef2ff);
-      --ads-badge-border: var(--ads-color-accent-border, #c7d2fe);
-      --ads-badge-color: var(--ads-color-accent-strong, #3730a3);
+      background: var(--ads-badge-background, var(--ads-color-accent-subtle, var(--ads-color-surface-subtle, #eef2ff)));
+      border-color: var(--ads-badge-border, var(--ads-color-accent-border, var(--ads-color-line-control, #c7d2fe)));
+      color: var(--ads-badge-color, var(--ads-color-accent-strong, var(--ads-color-text-default, #3730a3)));
     }
-
     :host([variant='success']) [part='badge'] {
-      --ads-badge-background: var(--ads-color-success-subtle, #ecfdf3);
-      --ads-badge-border: var(--ads-color-success-border, #abefc6);
-      --ads-badge-color: var(--ads-color-success-strong, #067647);
+      background: var(--ads-badge-background, var(--ads-color-success-subtle, var(--ads-color-surface-subtle, #ecfdf3)));
+      border-color: var(--ads-badge-border, var(--ads-color-success-border, var(--ads-color-line-control, #abefc6)));
+      color: var(--ads-badge-color, var(--ads-color-success-strong, var(--ads-color-text-default, #067647)));
     }
-
     :host([variant='warning']) [part='badge'] {
-      --ads-badge-background: var(--ads-color-warning-subtle, #fffaeb);
-      --ads-badge-border: var(--ads-color-warning-border, #fedf89);
-      --ads-badge-color: var(--ads-color-warning-strong, #b54708);
+      background: var(--ads-badge-background, var(--ads-color-warning-subtle, var(--ads-color-surface-subtle, #fffaeb)));
+      border-color: var(--ads-badge-border, var(--ads-color-warning-border, var(--ads-color-line-control, #fedf89)));
+      color: var(--ads-badge-color, var(--ads-color-warning-strong, var(--ads-color-text-default, #b54708)));
     }
-
     :host([variant='danger']) [part='badge'] {
-      --ads-badge-background: var(--ads-color-danger-subtle, #fef3f2);
-      --ads-badge-border: var(--ads-color-danger-border, #fecdca);
-      --ads-badge-color: var(--ads-color-danger-strong, #b42318);
+      background: var(--ads-badge-background, var(--ads-color-danger-subtle, var(--ads-color-surface-subtle, #fef3f2)));
+      border-color: var(--ads-badge-border, var(--ads-color-danger-border, var(--ads-color-line-control, #fecdca)));
+      color: var(--ads-badge-color, var(--ads-color-danger-strong, var(--ads-color-text-default, #b42318)));
     }
   `;
 
@@ -96,11 +88,7 @@ export class AdsBadge extends LitElement {
     `;
   }
 }
-
 registerAdsElement('badge', AdsBadge);
-
 declare global {
-  interface HTMLElementTagNameMap {
-    'ads-badge': AdsBadge;
-  }
+  interface HTMLElementTagNameMap { 'ads-badge': AdsBadge; }
 }

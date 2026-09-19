@@ -25,9 +25,11 @@ export const adsCardContract = defineComponentContract({
     { name: 'footer', description: 'Footer region.' },
   ],
   cssCustomProperties: [
-    { name: '--ads-card-radius', default: 'var(--ads-radius-panel, 0.5rem)' },
-    { name: '--ads-card-border', default: '#dedee3' },
-    { name: '--ads-card-background', default: '#fff' },
+    { name: '--ads-card-color', default: 'var(--ads-color-text-default, inherit)' },
+    { name: '--ads-card-filled-background', default: 'var(--ads-card-background, var(--ads-color-surface-subtle))' },
+    { name: '--ads-card-radius', default: 'var(--ads-radius-panel, 0px)' },
+    { name: '--ads-card-border', default: 'var(--ads-color-line-default, #dedee3)' },
+    { name: '--ads-card-background', default: 'var(--ads-color-surface-default, #fff)' },
     { name: '--ads-card-padding', default: '1rem' },
   ],
 });
@@ -41,44 +43,25 @@ function slotHasContent(slot: HTMLSlotElement): boolean {
 
 export class AdsCard extends LitElement {
   static override styles = css`
-    :host {
-      display: block;
-    }
-
-    :host([hidden]) {
-      display: none;
-    }
-
+    :host { display: block; }
+    :host([hidden]) { display: none; }
     [part='card'] {
       overflow: hidden;
-      border: 1px solid var(--ads-card-border, #dedee3);
-      border-radius: var(--ads-card-radius, var(--ads-radius-panel, 0.5rem));
-      background: var(--ads-card-background, #fff);
-      color: var(--ads-card-color, inherit);
+      border: 1px solid var(--ads-card-border, var(--ads-color-line-default, #dedee3));
+      border-radius: var(--ads-card-radius, var(--ads-radius-panel, 0px));
+      background: var(--ads-card-background, var(--ads-color-surface-default, #fff));
+      color: var(--ads-card-color, var(--ads-color-text-default, inherit));
     }
-
     :host([variant='filled']) [part='card'] {
-      border-color: transparent;
-      background: var(--ads-card-filled-background, #f6f6f8);
+      border-color: var(--ads-card-border, transparent);
+      background: var(--ads-card-filled-background, var(--ads-card-background, var(--ads-color-surface-subtle, #f6f6f8)));
     }
-
-    [part='media'] {
-      line-height: 0;
-    }
-
-    [part='header'],
-    [part='body'],
-    [part='footer'] {
+    [part='media'] { line-height: 0; }
+    [part='header'], [part='body'], [part='footer'] {
       padding: var(--ads-card-padding, 1rem);
     }
-
-    [part='header'] + [part='body'] {
-      padding-block-start: 0;
-    }
-
-    [part='footer'] {
-      padding-block-start: 0;
-    }
+    [part='header'] + [part='body'] { padding-block-start: 0; }
+    [part='footer'] { padding-block-start: 0; }
   `;
 
   @property({ reflect: true }) variant: AdsCardVariant = 'outlined';
@@ -87,8 +70,7 @@ export class AdsCard extends LitElement {
   @state() private hasFooter = false;
 
   private handleSlotChange(kind: 'media' | 'header' | 'footer', event: Event): void {
-    const slot = event.currentTarget as HTMLSlotElement;
-    const hasContent = slotHasContent(slot);
+    const hasContent = slotHasContent(event.currentTarget as HTMLSlotElement);
     if (kind === 'media') this.hasMedia = hasContent;
     if (kind === 'header') this.hasHeader = hasContent;
     if (kind === 'footer') this.hasFooter = hasContent;
@@ -111,11 +93,7 @@ export class AdsCard extends LitElement {
     `;
   }
 }
-
 registerAdsElement('card', AdsCard);
-
 declare global {
-  interface HTMLElementTagNameMap {
-    'ads-card': AdsCard;
-  }
+  interface HTMLElementTagNameMap { 'ads-card': AdsCard; }
 }
