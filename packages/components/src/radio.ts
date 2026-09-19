@@ -49,9 +49,9 @@ export const adsRadioContract = defineComponentContract({
   cssCustomProperties: [
     { name: '--ads-radio-size', default: '1.125rem' },
     { name: '--ads-radio-gap', default: '0.5rem' },
-    { name: '--ads-radio-border-color', default: '#8a8a93' },
-    { name: '--ads-radio-background', default: '#fff' },
-    { name: '--ads-radio-checked-color', default: '#111114' },
+    { name: '--ads-radio-border-color', default: 'var(--ads-color-line-control, #6b6b65)' },
+    { name: '--ads-radio-background', default: 'var(--ads-color-surface-default, #fff)' },
+    { name: '--ads-radio-checked-color', default: 'var(--ads-color-action-primary, #111111)' },
   ],
   states: [
     { name: 'checked', description: 'This option is selected by its owning group.' },
@@ -63,7 +63,7 @@ export class AdsRadio extends LitElement {
   static override styles = css`
     :host {
       display: inline-block;
-      color: var(--ads-radio-color, #111114);
+      color: var(--ads-radio-color, var(--ads-color-text-default, #111111));
       font: inherit;
     }
 
@@ -105,9 +105,9 @@ export class AdsRadio extends LitElement {
       inline-size: 100%;
       block-size: 100%;
       place-items: center;
-      border: var(--ads-radio-border-width, 1px) solid var(--ads-radio-border-color, #8a8a93);
+      border: var(--ads-radio-border-width, 1px) solid var(--ads-radio-border-color, var(--ads-color-line-control, #6b6b65));
       border-radius: 50%;
-      background: var(--ads-radio-background, #fff);
+      background: var(--ads-radio-background, var(--ads-color-surface-default, #fff));
       transition:
         border-color var(--ads-motion-duration-fast, 120ms),
         box-shadow var(--ads-motion-duration-fast, 120ms);
@@ -117,7 +117,7 @@ export class AdsRadio extends LitElement {
       inline-size: 55%;
       block-size: 55%;
       border-radius: 50%;
-      background: var(--ads-radio-checked-color, #111114);
+      background: var(--ads-radio-checked-color, var(--ads-color-action-primary, #111111));
       content: '';
       opacity: 0;
       transform: scale(0.55);
@@ -127,12 +127,12 @@ export class AdsRadio extends LitElement {
     }
 
     input:focus-visible + [part='indicator'] {
-      outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, currentColor);
+      outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, var(--ads-color-focus-ring, currentColor));
       outline-offset: var(--ads-focus-offset, 2px);
     }
 
     input:checked + [part='indicator'] {
-      border-color: var(--ads-radio-checked-color, #111114);
+      border-color: var(--ads-radio-checked-color, var(--ads-color-action-primary, #111111));
     }
 
     input:checked + [part='indicator']::after {
@@ -143,7 +143,7 @@ export class AdsRadio extends LitElement {
     :host([disabled]) [part='label'],
     :host(:state(group-disabled)) [part='label'] {
       cursor: not-allowed;
-      opacity: var(--ads-disabled-opacity, 0.5);
+      opacity: var(--ads-disabled-opacity, var(--ads-opacity-disabled, 0.5));
     }
 
     @media (prefers-reduced-motion: reduce) {
