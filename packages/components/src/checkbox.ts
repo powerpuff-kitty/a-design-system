@@ -25,9 +25,9 @@ export const adsCheckboxContract = defineComponentContract({
     { name: 'validationMessage', type: 'string', readonly: true },
   ],
   methods: [
-    { name: 'focus', signature: 'focus(options?: FocusOptions): void', description: 'Focuses the internal native checkbox.' },
-    { name: 'blur', signature: 'blur(): void', description: 'Removes focus from the internal native checkbox.' },
-    { name: 'click', signature: 'click(): void', description: 'Activates the native checkbox interaction.' },
+    { name: 'focus', signature: 'focus(options?: FocusOptions): void' },
+    { name: 'blur', signature: 'blur(): void' },
+    { name: 'click', signature: 'click(): void' },
     { name: 'setCustomValidity', signature: 'setCustomValidity(message: string): void' },
     { name: 'checkValidity', signature: 'checkValidity(): boolean' },
     { name: 'reportValidity', signature: 'reportValidity(): boolean' },
@@ -53,11 +53,14 @@ export const adsCheckboxContract = defineComponentContract({
   cssCustomProperties: [
     { name: '--ads-checkbox-size', default: '1.125rem' },
     { name: '--ads-checkbox-gap', default: '0.5rem' },
-    { name: '--ads-checkbox-border-color', default: '#8a8a93' },
-    { name: '--ads-checkbox-background', default: '#fff' },
-    { name: '--ads-checkbox-checked-background', default: '#111114' },
-    { name: '--ads-checkbox-checked-color', default: '#fff' },
-    { name: '--ads-checkbox-radius', default: '0.25rem' },
+    { name: '--ads-checkbox-color', default: 'var(--ads-color-text-default, #111111)' },
+    { name: '--ads-checkbox-border-color', default: 'var(--ads-color-line-control, #6b6b65)' },
+    { name: '--ads-checkbox-background', default: 'var(--ads-color-surface-default, #fff)' },
+    { name: '--ads-checkbox-checked-background', default: 'var(--ads-color-action-primary, #111111)' },
+    { name: '--ads-checkbox-checked-color', default: 'var(--ads-color-action-primaryText, #fff)' },
+    { name: '--ads-checkbox-radius', default: 'var(--ads-radius-control, 0px)' },
+    { name: '--ads-checkbox-description-color', default: 'var(--ads-color-text-muted, #5d5d57)' },
+    { name: '--ads-checkbox-error-color', default: 'var(--ads-color-state-danger, #9a251f)' },
   ],
   states: [
     { name: 'checked', description: 'The checkbox is checked.' },
@@ -69,27 +72,101 @@ export const adsCheckboxContract = defineComponentContract({
 
 export class AdsCheckbox extends FormAssociatedElement {
   static override styles = css`
-    :host { display: inline-block; color: var(--ads-checkbox-color, #111114); font: inherit; }
-    :host([hidden]) { display: none; }
-    [part='label'] { display: inline-flex; align-items: flex-start; gap: var(--ads-checkbox-gap, 0.5rem); cursor: pointer; line-height: 1.4; }
-    [part='control'] { position: relative; display: inline-grid; flex: none; inline-size: var(--ads-checkbox-size, 1.125rem); block-size: var(--ads-checkbox-size, 1.125rem); margin-block-start: 0.08em; }
-    input { position: absolute; z-index: 1; inset: 0; inline-size: 100%; block-size: 100%; margin: 0; opacity: 0; cursor: inherit; }
-    [part='indicator'] {
-      box-sizing: border-box; display: grid; inline-size: 100%; block-size: 100%; place-items: center;
-      border: var(--ads-checkbox-border-width, 1px) solid var(--ads-checkbox-border-color, #8a8a93);
-      border-radius: var(--ads-checkbox-radius, 0.25rem); background: var(--ads-checkbox-background, #fff); color: var(--ads-checkbox-checked-color, #fff);
-      transition: background-color var(--ads-motion-duration-fast, 120ms), border-color var(--ads-motion-duration-fast, 120ms), box-shadow var(--ads-motion-duration-fast, 120ms);
+    :host {
+      display: inline-block;
+      color: var(--ads-checkbox-color, var(--ads-color-text-default, #111111));
+      font: inherit;
     }
-    input:focus-visible + [part='indicator'] { outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, currentColor); outline-offset: var(--ads-focus-offset, 2px); }
-    input:checked + [part='indicator'], input:indeterminate + [part='indicator'] { border-color: var(--ads-checkbox-checked-background, #111114); background: var(--ads-checkbox-checked-background, #111114); }
-    input:checked + [part='indicator']::after { inline-size: 0.45em; block-size: 0.7em; border: solid currentColor; border-width: 0 0.14em 0.14em 0; content: ''; transform: translateY(-0.06em) rotate(45deg); }
-    input:indeterminate + [part='indicator']::after { inline-size: 0.6em; block-size: 0.12em; border: 0; border-radius: 999px; background: currentColor; content: ''; transform: none; }
-    :host(:state(invalid)) [part='indicator'] { border-color: var(--ads-checkbox-invalid-border-color, #b42318); }
-    :host(:state(disabled)) [part='label'] { cursor: not-allowed; opacity: var(--ads-disabled-opacity, 0.5); }
-    [part='description'], [part='error'] { margin-block-start: var(--ads-checkbox-message-gap, 0.375rem); margin-inline-start: calc(var(--ads-checkbox-size, 1.125rem) + var(--ads-checkbox-gap, 0.5rem)); font-size: var(--ads-checkbox-message-font-size, 0.8125rem); line-height: 1.4; }
-    [part='description'] { color: var(--ads-checkbox-description-color, #606068); }
-    [part='error'] { color: var(--ads-checkbox-error-color, #b42318); }
-    @media (prefers-reduced-motion: reduce) { [part='indicator'] { transition: none; } }
+    :host([hidden]) { display: none; }
+    [part='label'] {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: var(--ads-checkbox-gap, 0.5rem);
+      cursor: pointer;
+      line-height: 1.4;
+    }
+    [part='control'] {
+      position: relative;
+      display: inline-grid;
+      flex: none;
+      inline-size: var(--ads-checkbox-size, 1.125rem);
+      block-size: var(--ads-checkbox-size, 1.125rem);
+      margin-block-start: 0.08em;
+    }
+    input {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      inline-size: 100%;
+      block-size: 100%;
+      margin: 0;
+      opacity: 0;
+      cursor: inherit;
+    }
+    [part='indicator'] {
+      box-sizing: border-box;
+      display: grid;
+      inline-size: 100%;
+      block-size: 100%;
+      place-items: center;
+      border: var(--ads-checkbox-border-width, 1px) solid var(--ads-checkbox-border-color, var(--ads-color-line-control, #6b6b65));
+      border-radius: var(--ads-checkbox-radius, var(--ads-radius-control, 0px));
+      background: var(--ads-checkbox-background, var(--ads-color-surface-default, #fff));
+      color: var(--ads-checkbox-checked-color, var(--ads-color-action-primaryText, #fff));
+      transition:
+        background-color var(--ads-motion-duration-fast, 120ms),
+        border-color var(--ads-motion-duration-fast, 120ms),
+        box-shadow var(--ads-motion-duration-fast, 120ms);
+    }
+    input:focus-visible + [part='indicator'] {
+      outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, var(--ads-color-focus-ring, currentColor));
+      outline-offset: var(--ads-focus-offset, 2px);
+    }
+    input:checked + [part='indicator'],
+    input:indeterminate + [part='indicator'] {
+      border-color: var(--ads-checkbox-checked-background, var(--ads-color-action-primary, #111111));
+      background: var(--ads-checkbox-checked-background, var(--ads-color-action-primary, #111111));
+    }
+    input:checked + [part='indicator']::after {
+      inline-size: 0.45em;
+      block-size: 0.7em;
+      border: solid currentColor;
+      border-width: 0 0.14em 0.14em 0;
+      content: '';
+      transform: translateY(-0.06em) rotate(45deg);
+    }
+    input:indeterminate + [part='indicator']::after {
+      inline-size: 0.6em;
+      block-size: 0.12em;
+      border: 0;
+      border-radius: 0;
+      background: currentColor;
+      content: '';
+      transform: none;
+    }
+    :host(:state(invalid)) [part='indicator'] {
+      border-color: var(--ads-checkbox-invalid-border-color, var(--ads-color-state-danger, #9a251f));
+    }
+    :host(:state(disabled)) [part='label'] {
+      cursor: not-allowed;
+      opacity: var(--ads-disabled-opacity, var(--ads-opacity-disabled, 0.5));
+    }
+    [part='description'],
+    [part='error'] {
+      margin-block-start: var(--ads-checkbox-message-gap, 0.375rem);
+      margin-inline-start: calc(var(--ads-checkbox-size, 1.125rem) + var(--ads-checkbox-gap, 0.5rem));
+      font-size: var(--ads-checkbox-message-font-size, 0.8125rem);
+      line-height: 1.4;
+    }
+    [part='description'] {
+      color: var(--ads-checkbox-description-color, var(--ads-color-text-muted, #5d5d57));
+    }
+    [part='error'] {
+      color: var(--ads-checkbox-error-color, var(--ads-color-state-danger, #9a251f));
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [part='indicator'] { transition: none; }
+    }
   `;
 
   @property({ reflect: true }) name = '';
@@ -115,7 +192,10 @@ export class AdsCheckbox extends FormAssociatedElement {
   }
   override firstUpdated(): void { this.syncNativeState(); }
   override updated(changed: PropertyValues<this>): void {
-    if (changed.has('checked') || changed.has('indeterminate') || changed.has('value') || changed.has('required') || changed.has('disabled')) this.syncNativeState();
+    if (
+      changed.has('checked') || changed.has('indeterminate') || changed.has('value') ||
+      changed.has('required') || changed.has('disabled')
+    ) this.syncNativeState();
   }
   override focus(options?: FocusOptions): void {
     if (this.inputElement) this.inputElement.focus(options);
@@ -140,7 +220,10 @@ export class AdsCheckbox extends FormAssociatedElement {
   protected override onFormDisabledChange(): void {
     void this.updateComplete.then(() => this.syncNativeState());
   }
-  formResetCallback(): void { this.checked = this.defaultChecked; this.syncNativeState(); }
+  formResetCallback(): void {
+    this.checked = this.defaultChecked;
+    this.syncNativeState();
+  }
   formStateRestoreCallback(state: string | File | FormData | null): void {
     if (typeof state !== 'string') return;
     this.checked = state === 'checked';
@@ -176,7 +259,6 @@ export class AdsCheckbox extends FormAssociatedElement {
     this.syncNativeState();
   }
   private handleChange(event: Event): void {
-    // Native change does not cross the shadow root. Expose one host-level commit event.
     event.stopPropagation();
     this.syncNativeState();
     this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
@@ -199,4 +281,6 @@ export class AdsCheckbox extends FormAssociatedElement {
   }
 }
 registerAdsElement('checkbox', AdsCheckbox);
-declare global { interface HTMLElementTagNameMap { 'ads-checkbox': AdsCheckbox; } }
+declare global {
+  interface HTMLElementTagNameMap { 'ads-checkbox': AdsCheckbox; }
+}
