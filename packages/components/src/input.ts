@@ -61,7 +61,7 @@ export const adsInputContract = defineComponentContract({
     { name: 'error', description: 'Error container.' },
   ],
   cssCustomProperties: [
-    { name: '--ads-input-min-block-size', default: 'var(--ads-size-control-default, 2.25rem)' },
+    { name: '--ads-input-min-block-size', default: 'var(--ads-size-control-current, var(--ads-size-control-default, 2.25rem))' },
     { name: '--ads-input-padding-inline', default: '0.75rem' },
     { name: '--ads-input-gap', default: '0.5rem' },
     { name: '--ads-input-border-color', default: 'var(--ads-color-line-control, #6b6b65)' },
@@ -101,7 +101,7 @@ export class AdsInput extends FormAssociatedElement {
     [part='control'] {
       box-sizing: border-box;
       display: flex;
-      min-block-size: var(--ads-input-min-block-size, var(--ads-size-control-default, 2.25rem));
+      min-block-size: var(--ads-input-min-block-size, var(--ads-size-control-current, var(--ads-size-control-default, 2.25rem)));
       align-items: center;
       gap: var(--ads-input-gap, 0.5rem);
       padding-inline: var(--ads-input-padding-inline, 0.75rem);
