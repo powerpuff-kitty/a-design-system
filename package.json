@@ -5,10 +5,11 @@
   "packageManager": "pnpm@10.17.1",
   "scripts": {
     "build": "pnpm -r --if-present build",
-    "check": "pnpm typecheck && pnpm test",
+    "check": "pnpm typecheck && pnpm test && pnpm check:minimal",
     "test": "pnpm -r --if-present test",
     "test:browser": "playwright test",
-    "typecheck": "pnpm -r --if-present typecheck"
+    "typecheck": "pnpm -r --if-present typecheck",
+    "check:minimal": "node scripts/check-minimal-style.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
