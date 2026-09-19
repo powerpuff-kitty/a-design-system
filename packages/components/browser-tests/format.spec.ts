@@ -41,7 +41,7 @@ test.describe('ADS Intl format helpers', () => {
         <ads-format-number
           value="1234.5"
           locale="en-US"
-          style="currency"
+          format-style="currency"
           currency="USD"
           minimum-fraction-digits="2"
           maximum-fraction-digits="2"
