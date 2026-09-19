@@ -253,7 +253,7 @@ const panelDialog = element<HTMLDialogElement>('#panel-sheet');
 let movedPanel: HTMLElement | null = null;
 let panelMarker: Comment | null = null;
 let panelOpener: HTMLElement | null = null;
-let restoreHidden = false;
+let restoreHidden: HTMLElement['hidden'] = false;
 function openPanel(id: 'navigation' | 'inspector', opener: HTMLElement): void {
   if (panelDialog.open) return;
   movedPanel = element(`#${id}`); panelMarker = document.createComment('panel position');
