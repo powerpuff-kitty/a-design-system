@@ -52,7 +52,10 @@ export const adsCheckboxGroupContract = defineComponentContract({
     { name: '--ads-checkbox-group-message-gap', default: '0.5rem' },
     { name: '--ads-checkbox-group-color', default: 'var(--ads-color-text-default, #111114)' },
     { name: '--ads-checkbox-group-description-color', default: 'var(--ads-color-text-muted, #606068)' },
-    { name: '--ads-checkbox-group-error-color', default: 'var(--ads-color-status-danger, #b42318)' },
+    { name: '--ads-checkbox-group-error-color', default: 'var(--ads-color-state-danger, #b42318)' },
+    { name: '--ads-checkbox-group-label-font-size', default: '0.875rem', description: 'Visible label text size.' },
+    { name: '--ads-checkbox-group-label-font-weight', default: '600', description: 'Visible label font weight.' },
+    { name: '--ads-checkbox-group-message-font-size', default: '0.8125rem', description: 'Supporting description and error text size.' },
   ],
   states: [
     { name: 'invalid', description: 'Required/custom group validation currently fails.' },
@@ -74,7 +77,7 @@ export class AdsCheckboxGroup extends FormAssociatedElement {
     :host([orientation='horizontal']) [part='group'] { flex-flow: row wrap; align-items: center; }
     [part='description'], [part='error'] { margin-block-start: var(--ads-checkbox-group-message-gap, 0.5rem); font-size: var(--ads-checkbox-group-message-font-size, 0.8125rem); line-height: 1.4; }
     [part='description'] { color: var(--ads-checkbox-group-description-color, var(--ads-color-text-muted, #606068)); }
-    [part='error'] { color: var(--ads-checkbox-group-error-color, var(--ads-color-status-danger, #b42318)); }
+    [part='error'] { color: var(--ads-checkbox-group-error-color, var(--ads-color-state-danger, #b42318)); }
   `;
   @property({ reflect: true }) name = '';
   @property() label = '';

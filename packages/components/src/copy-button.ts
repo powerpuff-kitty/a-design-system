@@ -38,9 +38,10 @@ export const adsCopyButtonContract = defineComponentContract({
   slots: [{ name: '', description: 'Optional visible button label/content.' }],
   parts: [{ name: 'button', description: 'The internal native button.' }],
   cssCustomProperties: [
-    { name: '--ads-copy-button-radius', default: 'var(--ads-radius-control, 0.375rem)' },
-    { name: '--ads-copy-button-background', default: '#fff' },
-    { name: '--ads-copy-button-border', default: '#d7d7dc' },
+    { name: '--ads-copy-button-radius', default: 'var(--ads-radius-control, 0px)' },
+    { name: '--ads-copy-button-background', default: 'var(--ads-color-surface-default, #fff)' },
+    { name: '--ads-copy-button-border', default: 'var(--ads-color-line-control, #d7d7dc)' },
+    { name: '--ads-copy-button-color', default: 'var(--ads-color-text-default, #111114)', description: 'Text color inherited by the component content.' },
   ],
 });
 
@@ -69,10 +70,10 @@ export class AdsCopyButton extends LitElement {
       gap: 0.375rem;
       margin: 0;
       padding: 0.5rem 0.75rem;
-      border: 1px solid var(--ads-copy-button-border, #d7d7dc);
-      border-radius: var(--ads-copy-button-radius, var(--ads-radius-control, 0.375rem));
-      background: var(--ads-copy-button-background, #fff);
-      color: var(--ads-copy-button-color, #111114);
+      border: 1px solid var(--ads-copy-button-border, var(--ads-color-line-control, #d7d7dc));
+      border-radius: var(--ads-copy-button-radius, var(--ads-radius-control, 0px));
+      background: var(--ads-copy-button-background, var(--ads-color-surface-default, #fff));
+      color: var(--ads-copy-button-color, var(--ads-color-text-default, #111114));
       font: inherit;
       font-weight: 600;
       line-height: 1;

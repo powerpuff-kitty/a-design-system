@@ -35,8 +35,10 @@ export const adsFieldContract = defineComponentContract({
     { name: '--ads-field-label-color', default: 'inherit' },
     { name: '--ads-field-label-font-size', default: '0.875rem' },
     { name: '--ads-field-label-font-weight', default: '600' },
-    { name: '--ads-field-description-color', default: '#606068' },
-    { name: '--ads-field-error-color', default: 'var(--ads-color-danger-strong, #b42318)' },
+    { name: '--ads-field-description-color', default: 'var(--ads-color-text-muted, #606068)' },
+    { name: '--ads-field-error-color', default: 'var(--ads-color-danger-strong, var(--ads-color-state-danger, #b42318))' },
+    { name: '--ads-field-color', default: 'inherit', description: 'Text color inherited by the component content.' },
+    { name: '--ads-field-message-font-size', default: '0.8125rem', description: 'Supporting description and error text size.' },
   ],
   states: [
     { name: 'invalid', description: 'Field is presented as invalid.' },
@@ -89,7 +91,7 @@ export class AdsField extends LitElement {
 
     [part='required'] {
       margin-inline-start: 0.2em;
-      color: var(--ads-field-error-color, var(--ads-color-danger-strong, #b42318));
+      color: var(--ads-field-error-color, var(--ads-color-danger-strong, var(--ads-color-state-danger, #b42318)));
     }
 
     [part='control'] {
@@ -103,11 +105,11 @@ export class AdsField extends LitElement {
     }
 
     [part='description'] {
-      color: var(--ads-field-description-color, #606068);
+      color: var(--ads-field-description-color, var(--ads-color-text-muted, #606068));
     }
 
     [part='error'] {
-      color: var(--ads-field-error-color, var(--ads-color-danger-strong, #b42318));
+      color: var(--ads-field-error-color, var(--ads-color-danger-strong, var(--ads-color-state-danger, #b42318)));
     }
 
     :host([disabled]) {

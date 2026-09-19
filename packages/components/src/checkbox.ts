@@ -61,6 +61,10 @@ export const adsCheckboxContract = defineComponentContract({
     { name: '--ads-checkbox-radius', default: 'var(--ads-radius-control, 0px)' },
     { name: '--ads-checkbox-description-color', default: 'var(--ads-color-text-muted, #5d5d57)' },
     { name: '--ads-checkbox-error-color', default: 'var(--ads-color-state-danger, #9a251f)' },
+    { name: '--ads-checkbox-border-width', default: '1px', description: 'Control border width.' },
+    { name: '--ads-checkbox-invalid-border-color', default: 'var(--ads-color-state-danger, #9a251f)', description: 'Control border color while invalid.' },
+    { name: '--ads-checkbox-message-font-size', default: '0.8125rem', description: 'Supporting description and error text size.' },
+    { name: '--ads-checkbox-message-gap', default: '0.375rem', description: 'Logical spacing before supporting description and error regions.' },
   ],
   states: [
     { name: 'checked', description: 'The checkbox is checked.' },

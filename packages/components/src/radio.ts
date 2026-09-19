@@ -52,6 +52,8 @@ export const adsRadioContract = defineComponentContract({
     { name: '--ads-radio-border-color', default: 'var(--ads-color-line-control, #6b6b65)' },
     { name: '--ads-radio-background', default: 'var(--ads-color-surface-default, #fff)' },
     { name: '--ads-radio-checked-color', default: 'var(--ads-color-action-primary, #111111)' },
+    { name: '--ads-radio-border-width', default: '1px', description: 'Control border width.' },
+    { name: '--ads-radio-color', default: 'var(--ads-color-text-default, #111111)', description: 'Text color inherited by the component content.' },
   ],
   states: [
     { name: 'checked', description: 'This option is selected by its owning group.' },

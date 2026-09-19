@@ -18,9 +18,12 @@ export const adsCodeContract = defineComponentContract({
     { name: 'code', description: 'Native code element.' },
   ],
   cssCustomProperties: [
-    { name: '--ads-code-background', default: '#f6f6f8' },
-    { name: '--ads-code-border', default: '#dedee3' },
-    { name: '--ads-code-radius', default: '0.25rem' },
+    { name: '--ads-code-background', default: 'var(--ads-color-surface-subtle, #f6f6f8)' },
+    { name: '--ads-code-border', default: 'var(--ads-color-line-default, #dedee3)' },
+    { name: '--ads-code-radius', default: 'var(--ads-radius-control, 0px)' },
+    { name: '--ads-code-block-font-size', default: '0.8125rem', description: 'Code text size in block mode only.' },
+    { name: '--ads-code-block-padding', default: '1rem', description: 'Padding of the preformatted block container.' },
+    { name: '--ads-code-color', default: 'var(--ads-color-text-default, #242429)', description: 'Text color inherited by the component content.' },
   ],
 });
 
@@ -39,10 +42,10 @@ export class AdsCode extends LitElement {
     }
 
     code {
-      border-radius: var(--ads-code-radius, 0.25rem);
-      background: var(--ads-code-background, #f6f6f8);
-      color: var(--ads-code-color, #242429);
-      font-family: var(--ads-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+      border-radius: var(--ads-code-radius, var(--ads-radius-control, 0px));
+      background: var(--ads-code-background, var(--ads-color-surface-subtle, #f6f6f8));
+      color: var(--ads-code-color, var(--ads-color-text-default, #242429));
+      font-family: var(--ads-font-mono, var(--ads-font-family-mono, ui-monospace, SFMono-Regular, Consolas, monospace));
       font-size: 0.875em;
     }
 
@@ -54,9 +57,9 @@ export class AdsCode extends LitElement {
       overflow: auto;
       margin: 0;
       padding: var(--ads-code-block-padding, 1rem);
-      border: 1px solid var(--ads-code-border, #dedee3);
-      border-radius: var(--ads-code-radius, 0.25rem);
-      background: var(--ads-code-background, #f6f6f8);
+      border: 1px solid var(--ads-code-border, var(--ads-color-line-default, #dedee3));
+      border-radius: var(--ads-code-radius, var(--ads-radius-control, 0px));
+      background: var(--ads-code-background, var(--ads-color-surface-subtle, #f6f6f8));
       tab-size: 2;
     }
 

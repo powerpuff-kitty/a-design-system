@@ -31,9 +31,11 @@ jobs:
         run: pnpm typecheck
       - name: Test
         run: pnpm test
+      - name: Test styling audit
+        run: node --test scripts/styling-surface.test.mjs
       - name: Build
         run: pnpm build
-      - name: Validate component package and docs parity
+      - name: Validate component package, docs and styling contracts
         run: node scripts/check-component-surface.mjs
       - name: Upload integrated build evidence
         if: ${{ !cancelled() }}

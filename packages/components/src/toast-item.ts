@@ -54,10 +54,15 @@ export const adsToastItemContract = defineComponentContract({
   ],
   cssCustomProperties: [
     { name: '--ads-toast-width', default: 'min(24rem, calc(100vw - 2rem))' },
-    { name: '--ads-toast-background', default: '#fff' },
-    { name: '--ads-toast-border', default: '#dedee3' },
-    { name: '--ads-toast-radius', default: 'var(--ads-radius-panel, 0.5rem)' },
-    { name: '--ads-toast-shadow', default: '0 12px 32px rgb(0 0 0 / 0.14)' },
+    { name: '--ads-toast-background', default: 'var(--ads-color-surface-default, #fff)' },
+    { name: '--ads-toast-border', default: 'var(--ads-color-line-default, #dedee3)' },
+    { name: '--ads-toast-radius', default: 'var(--ads-radius-panel, 0px)' },
+    { name: '--ads-toast-shadow', default: 'var(--ads-elevation-overlay, none)' },
+    { name: '--ads-toast-accent', default: 'var(--ads-color-line-control, #85858f)', description: 'Leading border color; variants supply a fallback without masking consumer overrides.' },
+    { name: '--ads-toast-accent-width', default: '3px', description: 'Logical leading border width.' },
+    { name: '--ads-toast-color', default: 'var(--ads-color-text-default, #202025)', description: 'Notification foreground color.' },
+    { name: '--ads-toast-message-color', default: 'var(--ads-color-text-muted, #5b5b65)', description: 'Notification message text color.' },
+    { name: '--ads-toast-padding', default: '0.875rem', description: 'Notification surface padding.' },
   ],
 });
 
@@ -81,29 +86,29 @@ export class AdsToastItem extends LitElement {
       align-items: start;
       gap: 0.75rem;
       padding: var(--ads-toast-padding, 0.875rem);
-      border: 1px solid var(--ads-toast-border, #dedee3);
+      border: 1px solid var(--ads-toast-border, var(--ads-color-line-default, #dedee3));
       border-inline-start: var(--ads-toast-accent-width, 3px) solid
-        var(--ads-toast-accent, #85858f);
-      border-radius: var(--ads-toast-radius, var(--ads-radius-panel, 0.5rem));
-      background: var(--ads-toast-background, #fff);
-      color: var(--ads-toast-color, #202025);
-      box-shadow: var(--ads-toast-shadow, 0 12px 32px rgb(0 0 0 / 0.14));
+        var(--ads-toast-accent, var(--ads-color-line-control, #85858f));
+      border-radius: var(--ads-toast-radius, var(--ads-radius-panel, 0px));
+      background: var(--ads-toast-background, var(--ads-color-surface-default, #fff));
+      color: var(--ads-toast-color, var(--ads-color-text-default, #202025));
+      box-shadow: var(--ads-toast-shadow, var(--ads-elevation-overlay, none));
     }
 
     :host([variant='info']) [part='toast'] {
-      --ads-toast-accent: var(--ads-color-action, #315efb);
+      border-inline-start-color: var(--ads-toast-accent, var(--ads-color-action, var(--ads-color-action-primary, #315efb)));
     }
 
     :host([variant='success']) [part='toast'] {
-      --ads-toast-accent: var(--ads-color-success-strong, #067647);
+      border-inline-start-color: var(--ads-toast-accent, var(--ads-color-success-strong, #067647));
     }
 
     :host([variant='warning']) [part='toast'] {
-      --ads-toast-accent: var(--ads-color-warning-strong, #b54708);
+      border-inline-start-color: var(--ads-toast-accent, var(--ads-color-warning-strong, #b54708));
     }
 
     :host([variant='danger']) [part='toast'] {
-      --ads-toast-accent: var(--ads-color-danger-strong, #b42318);
+      border-inline-start-color: var(--ads-toast-accent, var(--ads-color-danger-strong, var(--ads-color-state-danger, #b42318)));
     }
 
     [part='content'] {
@@ -118,7 +123,7 @@ export class AdsToastItem extends LitElement {
     [part='message'] {
       display: block;
       margin-block-start: 0.125rem;
-      color: var(--ads-toast-message-color, #5b5b65);
+      color: var(--ads-toast-message-color, var(--ads-color-text-muted, #5b5b65));
       line-height: 1.45;
     }
 

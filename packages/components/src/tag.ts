@@ -30,8 +30,9 @@ export const adsTagContract = defineComponentContract({
   ],
   cssCustomProperties: [
     { name: '--ads-tag-radius', default: 'var(--ads-radius-pill, 999px)' },
-    { name: '--ads-tag-background', default: '#f5f5f7' },
-    { name: '--ads-tag-color', default: '#39393f' },
+    { name: '--ads-tag-background', default: 'var(--ads-color-surface-subtle, #f5f5f7)' },
+    { name: '--ads-tag-color', default: 'var(--ads-color-text-default, #39393f)' },
+    { name: '--ads-tag-border', default: 'var(--ads-color-line-control, #d7d7dc)', description: 'Border color; the accent variant supplies a semantic fallback without masking overrides.' },
   ],
 });
 
@@ -52,10 +53,10 @@ export class AdsTag extends LitElement {
       align-items: center;
       gap: 0.375rem;
       padding: 0.125rem 0.375rem 0.125rem 0.625rem;
-      border: 1px solid var(--ads-tag-border, #d7d7dc);
+      border: 1px solid var(--ads-tag-border, var(--ads-color-line-control, #d7d7dc));
       border-radius: var(--ads-tag-radius, var(--ads-radius-pill, 999px));
-      background: var(--ads-tag-background, #f5f5f7);
-      color: var(--ads-tag-color, #39393f);
+      background: var(--ads-tag-background, var(--ads-color-surface-subtle, #f5f5f7));
+      color: var(--ads-tag-color, var(--ads-color-text-default, #39393f));
       font-size: 0.8125rem;
       line-height: 1.2;
     }
@@ -65,9 +66,9 @@ export class AdsTag extends LitElement {
     }
 
     :host([variant='accent']) [part='tag'] {
-      --ads-tag-background: var(--ads-color-accent-subtle, #eef2ff);
-      --ads-tag-border: var(--ads-color-accent-border, #c7d2fe);
-      --ads-tag-color: var(--ads-color-accent-strong, #3730a3);
+      background: var(--ads-tag-background, var(--ads-color-accent-subtle, var(--ads-color-surface-subtle, #eef2ff)));
+      border-color: var(--ads-tag-border, var(--ads-color-accent-border, var(--ads-color-line-control, #c7d2fe)));
+      color: var(--ads-tag-color, var(--ads-color-accent-strong, var(--ads-color-text-default, #3730a3)));
     }
 
     [part='remove-button'] {

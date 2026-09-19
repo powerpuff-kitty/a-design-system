@@ -21,9 +21,10 @@ export const adsLinkContract = defineComponentContract({
   ],
   parts: [{ name: 'link', description: 'The internal native anchor.' }],
   cssCustomProperties: [
-    { name: '--ads-link-color', default: 'var(--ads-color-action, #315efb)' },
+    { name: '--ads-link-color', default: 'var(--ads-color-action, var(--ads-color-action-primary, #315efb))' },
     { name: '--ads-link-decoration-thickness', default: '0.08em' },
     { name: '--ads-link-underline-offset', default: '0.18em' },
+    { name: '--ads-link-gap', default: '0.25em', description: 'Gap between link content and slotted leading or trailing decorations.' },
   ],
 });
 
@@ -38,7 +39,7 @@ export class AdsLink extends LitElement {
     }
 
     a {
-      color: var(--ads-link-color, var(--ads-color-action, #315efb));
+      color: var(--ads-link-color, var(--ads-color-action, var(--ads-color-action-primary, #315efb)));
       text-decoration-thickness: var(--ads-link-decoration-thickness, 0.08em);
       text-underline-offset: var(--ads-link-underline-offset, 0.18em);
     }

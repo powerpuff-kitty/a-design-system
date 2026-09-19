@@ -1,7 +1,7 @@
 import { defineComponentContract } from '@a-design-system/core';
 import { html, nothing, type PropertyValues } from 'lit';
 import { property, query, state } from 'lit/decorators.js';
-import { AdsInput } from './input.js';
+import { AdsInput, adsInputContract } from './input.js';
 import { FormAssociatedElement } from './runtime/form-associated-element.js';
 import { registerAdsElement } from './runtime/registration.js';
 import { validityStateToFlags } from './runtime/validity.js';
@@ -53,24 +53,13 @@ export const adsNumberInputContract = defineComponentContract({
     { name: 'description', description: 'Description container.' },
     { name: 'error', description: 'Error container.' },
   ],
-  cssCustomProperties: adsNumberInputCssProperties(),
+  cssCustomProperties: adsInputContract.cssCustomProperties,
   states: [
     { name: 'invalid', description: 'Native constraint validation currently fails.' },
     { name: 'disabled', description: 'Disabled by attribute or containing fieldset.' },
   ],
 });
 
-function adsNumberInputCssProperties() {
-  return [
-    { name: '--ads-input-min-block-size' as const, default: '2.5rem' },
-    { name: '--ads-input-padding-inline' as const, default: '0.75rem' },
-    { name: '--ads-input-gap' as const, default: '0.5rem' },
-    { name: '--ads-input-border-color' as const, default: '#d7d7dc' },
-    { name: '--ads-input-background' as const, default: '#fff' },
-    { name: '--ads-input-color' as const, default: '#111114' },
-    { name: '--ads-input-radius' as const, default: 'var(--ads-radius-control, 0.375rem)' },
-  ];
-}
 
 export class AdsNumberInput extends FormAssociatedElement {
   static override styles = AdsInput.styles;

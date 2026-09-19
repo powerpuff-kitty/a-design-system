@@ -74,6 +74,16 @@ export const adsSelectContract = defineComponentContract({
     { name: '--ads-select-background', default: 'var(--ads-color-surface-default, #fff)' },
     { name: '--ads-select-color', default: 'var(--ads-color-text-default, #111114)' },
     { name: '--ads-select-radius', default: 'var(--ads-radius-control, 0px)' },
+    { name: '--ads-select-border-width', default: '1px', description: 'Control border width.' },
+    { name: '--ads-select-description-color', default: 'var(--ads-color-text-muted, #606068)', description: 'Supporting description text color.' },
+    { name: '--ads-select-error-border-color', default: 'var(--ads-color-state-danger, #b42318)', description: 'Control border color while invalid.' },
+    { name: '--ads-select-error-color', default: 'var(--ads-color-state-danger, #b42318)', description: 'Validation message text color.' },
+    { name: '--ads-select-inline-size', default: 'auto', description: 'Logical width of the select host.' },
+    { name: '--ads-select-label-font-size', default: '0.875rem', description: 'Visible label text size.' },
+    { name: '--ads-select-label-font-weight', default: '600', description: 'Visible label font weight.' },
+    { name: '--ads-select-label-gap', default: '0.375rem', description: 'Spacing between the visible label and control.' },
+    { name: '--ads-select-message-font-size', default: '0.8125rem', description: 'Supporting description and error text size.' },
+    { name: '--ads-select-padding-block', default: '0.5rem', description: 'Native select vertical padding in dropdown and listbox modes.' },
   ],
   states: [
     { name: 'invalid', description: 'Native select validity currently fails.' },
@@ -106,13 +116,13 @@ export class AdsSelect extends FormAssociatedElement {
     }
     [data-listbox] select { padding-inline-end: var(--ads-select-padding-inline, 0.75rem); appearance: auto; }
     select:focus-visible { outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, var(--ads-color-focus-ring, currentColor)); outline-offset: var(--ads-focus-offset, 2px); }
-    :host(:state(invalid)) select { border-color: var(--ads-select-error-border-color, var(--ads-color-status-danger, #b42318)); }
+    :host(:state(invalid)) select { border-color: var(--ads-select-error-border-color, var(--ads-color-state-danger, #b42318)); }
     select:disabled { cursor: not-allowed; opacity: var(--ads-disabled-opacity, 0.5); }
     [part='indicator'] { position: absolute; inset-block-start: 50%; inset-inline-end: var(--ads-select-padding-inline, 0.75rem); inline-size: 0.45rem; block-size: 0.45rem; border-inline-end: 1.5px solid currentColor; border-block-end: 1.5px solid currentColor; transform: translateY(-65%) rotate(45deg); pointer-events: none; }
     [data-listbox] [part='indicator'] { display: none; }
     [part='description'], [part='error'] { font-size: var(--ads-select-message-font-size, 0.8125rem); line-height: 1.4; }
     [part='description'] { color: var(--ads-select-description-color, var(--ads-color-text-muted, #606068)); }
-    [part='error'] { color: var(--ads-select-error-color, var(--ads-color-status-danger, #b42318)); }
+    [part='error'] { color: var(--ads-select-error-color, var(--ads-color-state-danger, #b42318)); }
     [part='source'] { display: none; }
   `;
 

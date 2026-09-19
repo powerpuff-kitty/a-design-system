@@ -16,9 +16,11 @@ export const adsSkeletonContract = defineComponentContract({
   ],
   parts: [{ name: 'skeleton', description: 'Skeleton placeholder surface.' }],
   cssCustomProperties: [
-    { name: '--ads-skeleton-background', default: '#ececf0' },
-    { name: '--ads-skeleton-highlight', default: '#f6f6f8' },
-    { name: '--ads-skeleton-radius', default: 'var(--ads-radius-control, 0.375rem)' },
+    { name: '--ads-skeleton-background', default: 'var(--ads-color-surface-subtle, #ececf0)' },
+    { name: '--ads-skeleton-highlight', default: 'var(--ads-color-surface-default, #f6f6f8)' },
+    { name: '--ads-skeleton-radius', default: 'var(--ads-radius-control, 0px)' },
+    { name: '--ads-skeleton-height', default: '1rem', description: 'Placeholder height: 1rem for rect, 0.75em for text, and 2.5rem for circle by default.' },
+    { name: '--ads-skeleton-width', default: '100%', description: 'Placeholder width: 100% for rect/text and 2.5rem for circle by default.' },
   ],
 });
 
@@ -27,10 +29,12 @@ export class AdsSkeleton extends LitElement {
     :host { display: block; }
     :host([hidden]) { display: none; }
     [part='skeleton'] {
+      display: block;
+      box-sizing: border-box;
       inline-size: var(--ads-skeleton-width, 100%);
       block-size: var(--ads-skeleton-height, 1rem);
-      border-radius: var(--ads-skeleton-radius, var(--ads-radius-control, 0.375rem));
-      background: var(--ads-skeleton-background, #ececf0);
+      border-radius: var(--ads-skeleton-radius, var(--ads-radius-control, 0px));
+      background: var(--ads-skeleton-background, var(--ads-color-surface-subtle, #ececf0));
     }
     :host([shape='text']) [part='skeleton'] {
       block-size: var(--ads-skeleton-height, 0.75em);
@@ -43,15 +47,15 @@ export class AdsSkeleton extends LitElement {
     }
     :host([animated]) [part='skeleton'] {
       background:
-        linear-gradient(100deg, transparent 0 35%, var(--ads-skeleton-highlight, #f6f6f8) 50%, transparent 65% 100%),
-        var(--ads-skeleton-background, #ececf0);
+        linear-gradient(100deg, transparent 0 35%, var(--ads-skeleton-highlight, var(--ads-color-surface-default, #f6f6f8)) 50%, transparent 65% 100%),
+        var(--ads-skeleton-background, var(--ads-color-surface-subtle, #ececf0));
       background-size: 200% 100%;
       animation: ads-skeleton-shimmer 1.5s ease-in-out infinite;
     }
     @media (prefers-reduced-motion: reduce) {
       :host([animated]) [part='skeleton'] {
         animation: none;
-        background: var(--ads-skeleton-background, #ececf0);
+        background: var(--ads-skeleton-background, var(--ads-color-surface-subtle, #ececf0));
       }
     }
     @keyframes ads-skeleton-shimmer {

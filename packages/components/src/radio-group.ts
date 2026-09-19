@@ -62,6 +62,13 @@ export const adsRadioGroupContract = defineComponentContract({
   cssCustomProperties: [
     { name: '--ads-radio-group-gap', default: '0.625rem' },
     { name: '--ads-radio-group-label-gap', default: '0.5rem' },
+    { name: '--ads-radio-group-color', default: 'var(--ads-color-text-default, #111111)', description: 'Text color inherited by the component content.' },
+    { name: '--ads-radio-group-description-color', default: 'var(--ads-color-text-muted, #5d5d57)', description: 'Supporting description text color.' },
+    { name: '--ads-radio-group-error-color', default: 'var(--ads-color-state-danger, #9a251f)', description: 'Validation message text color.' },
+    { name: '--ads-radio-group-label-font-size', default: '0.875rem', description: 'Visible label text size.' },
+    { name: '--ads-radio-group-label-font-weight', default: 'var(--ads-font-weight-medium, 500)', description: 'Visible label font weight.' },
+    { name: '--ads-radio-group-message-font-size', default: '0.8125rem', description: 'Supporting description and error text size.' },
+    { name: '--ads-radio-group-message-gap', default: '0.5rem', description: 'Logical spacing before supporting description and error regions.' },
   ],
   states: [
     { name: 'invalid', description: 'Required/custom constraint validation currently fails.' },

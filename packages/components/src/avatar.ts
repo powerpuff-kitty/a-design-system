@@ -23,9 +23,10 @@ export const adsAvatarContract = defineComponentContract({
   ],
   cssCustomProperties: [
     { name: '--ads-avatar-size', default: '2.5rem' },
-    { name: '--ads-avatar-background', default: '#ececf0' },
-    { name: '--ads-avatar-color', default: '#39393f' },
+    { name: '--ads-avatar-background', default: 'var(--ads-color-surface-subtle, #ececf0)' },
+    { name: '--ads-avatar-color', default: 'var(--ads-color-text-default, #39393f)' },
     { name: '--ads-avatar-radius', default: '50%' },
+    { name: '--ads-avatar-square-radius', default: 'var(--ads-radius-control, 0px)', description: 'Corner radius when shape is square; overrides the default circular radius.' },
   ],
 });
 
@@ -47,8 +48,8 @@ export class AdsAvatar extends LitElement {
       display: inline-grid;
       place-items: center;
       border-radius: var(--ads-avatar-radius, 50%);
-      background: var(--ads-avatar-background, #ececf0);
-      color: var(--ads-avatar-color, #39393f);
+      background: var(--ads-avatar-background, var(--ads-color-surface-subtle, #ececf0));
+      color: var(--ads-avatar-color, var(--ads-color-text-default, #39393f));
       font-size: calc(var(--ads-avatar-size, 2.5rem) * 0.36);
       font-weight: 650;
       line-height: 1;
@@ -57,7 +58,7 @@ export class AdsAvatar extends LitElement {
     }
 
     :host([shape='square']) [part='avatar'] {
-      border-radius: var(--ads-avatar-square-radius, var(--ads-radius-control, 0.375rem));
+      border-radius: var(--ads-avatar-square-radius, var(--ads-radius-control, 0px));
     }
 
     [part='image'] {
