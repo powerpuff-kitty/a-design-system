@@ -104,12 +104,42 @@ function formatNumber(value: number): string {
   return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(6)));
 }
 
+function serializeColorObject(value: JsonRecord): string | undefined {
+  if (typeof value.colorSpace !== 'string' || !Array.isArray(value.components)) return undefined;
+  const components = value.components
+    .map((component) => typeof component === 'number' ? formatNumber(component) : String(component))
+    .join(' ');
+  const alpha = typeof value.alpha === 'number' ? formatNumber(value.alpha) : '1';
+  const colorSpace = value.colorSpace.toLowerCase();
+
+  if (colorSpace === 'srgb' || colorSpace === 'srgb-linear' || colorSpace === 'display-p3') {
+    return `color(${colorSpace} ${components} / ${alpha})`;
+  }
+
+  return `${colorSpace}(${components} / ${alpha})`;
+}
+
+function serializeShadow(value: unknown): string {
+  const shadows = Array.isArray(value) ? value : [value];
+  return shadows.map((entry) => {
+    if (!isRecord(entry)) throw new TypeError('Shadow token must be an object or array of objects');
+    const color = isRecord(entry.color) ? serializeColorObject(entry.color) : undefined;
+    if (!color) throw new TypeError('Shadow token requires a DTCG color object');
+    const offsetX = serializeCssValue(entry.offsetX, 'dimension');
+    const offsetY = serializeCssValue(entry.offsetY, 'dimension');
+    const blur = serializeCssValue(entry.blur, 'dimension');
+    const spread = serializeCssValue(entry.spread ?? { value: 0, unit: 'px' }, 'dimension');
+    return `${offsetX} ${offsetY} ${blur} ${spread} ${color}`;
+  }).join(', ');
+}
+
 function serializeCssValue(value: unknown, type?: string): string {
   if (typeof value === 'string') return value;
   if (typeof value === 'number') return formatNumber(value);
   if (typeof value === 'boolean') return String(value);
 
   if (Array.isArray(value)) {
+    if (type === 'shadow') return serializeShadow(value);
     if (type === 'cubicBezier' && value.length === 4 && value.every((item) => typeof item === 'number')) {
       return `cubic-bezier(${value.map((item) => formatNumber(item as number)).join(', ')})`;
     }
@@ -121,19 +151,12 @@ function serializeCssValue(value: unknown, type?: string): string {
       return `${formatNumber(value.value)}${value.unit}`;
     }
 
-    if (type === 'color' && typeof value.colorSpace === 'string' && Array.isArray(value.components)) {
-      const components = value.components
-        .map((component) => typeof component === 'number' ? formatNumber(component) : String(component))
-        .join(' ');
-      const alpha = typeof value.alpha === 'number' ? formatNumber(value.alpha) : '1';
-      const colorSpace = value.colorSpace.toLowerCase();
-
-      if (colorSpace === 'srgb' || colorSpace === 'srgb-linear' || colorSpace === 'display-p3') {
-        return `color(${colorSpace} ${components} / ${alpha})`;
-      }
-
-      return `${colorSpace}(${components} / ${alpha})`;
+    if (type === 'color') {
+      const color = serializeColorObject(value);
+      if (color) return color;
     }
+
+    if (type === 'shadow') return serializeShadow(value);
 
     // Composite tokens remain usable as custom-property payloads even when ADS
     // does not yet have a dedicated serializer for that DTCG token type.

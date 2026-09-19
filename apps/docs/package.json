@@ -1,0 +1,19 @@
+{
+  "name": "@a-design-system/docs",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test:browser": "playwright test --config ../../playwright.docs.config.ts",
+    "dev": "vite --host 127.0.0.1 --port 4175 --strictPort"
+  },
+  "dependencies": {
+    "@a-design-system/components": "workspace:*",
+    "@a-design-system/css": "workspace:*",
+    "@a-design-system/tokens": "workspace:*",
+    "@a-design-system/core": "workspace:*"
+  },
+  "devDependencies": { "vite": "^8.3.0" }
+}

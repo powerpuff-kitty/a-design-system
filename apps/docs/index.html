@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Explore A Design System components, their real API contracts, theme presets, and source-owned layout starters." />
+    <title>Components — A Design System</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to documentation</a>
+    <header class="docs-header">
+      <button class="mobile-only" id="navigation-toggle" type="button" aria-haspopup="dialog" aria-controls="panel-sheet">Library</button>
+      <a class="brand" href="#ads-button">a design system<span class="brand-detail"> / docs</span></a>
+      <span class="release-note">Early development</span>
+      <button id="command-trigger" type="button" aria-haspopup="dialog" aria-controls="command-palette">Search <kbd>Ctrl / ⌘ K</kbd></button>
+      <button id="inspector-toggle" type="button" aria-controls="inspector" aria-expanded="true">Customize</button>
+    </header>
+
+    <div class="docs-layout">
+      <aside id="navigation" class="library-panel" aria-label="Documentation library">
+        <label class="search-label" for="library-search">Find a component</label>
+        <input id="library-search" type="search" placeholder="Search components…" autocomplete="off" />
+        <p class="section-label">Components <span id="component-count"></span></p>
+        <nav id="component-list" aria-label="Components"></nav>
+        <p id="library-empty" role="status" hidden>No matching components.</p>
+        <p class="section-label">Layout starters</p>
+        <nav id="recipe-list" aria-label="Layout starters"></nav>
+        <p class="library-note">This catalogue reflects the components exported by this build. Experimental does not mean production-certified.</p>
+        <a class="repository-link" href="https://github.com/powerpuff-kitty/a-design-system">Repository ↗</a>
+      </aside>
+
+      <main id="content" tabindex="-1">
+        <header class="content-heading">
+          <p id="component-meta" class="section-label"></p>
+          <h1 id="component-title">Component library</h1>
+          <p id="component-description">Loading the current component contracts…</p>
+        </header>
+        <div class="view-tabs" role="tablist" aria-label="Documentation views">
+          <button id="preview-tab" role="tab" aria-controls="preview-view" aria-selected="true" type="button">Preview</button>
+          <button id="usage-tab" role="tab" aria-controls="usage-view" aria-selected="false" tabindex="-1" type="button">Usage</button>
+          <button id="api-tab" role="tab" aria-controls="api-view" aria-selected="false" tabindex="-1" type="button">API</button>
+          <button id="styling-tab" role="tab" aria-controls="styling-view" aria-selected="false" tabindex="-1" type="button">Styling</button>
+        </div>
+        <section id="preview-view" role="tabpanel" aria-labelledby="preview-tab" tabindex="0">
+          <div class="preview-toolbar"><span>Live component</span><span id="preview-mode"></span></div>
+          <div id="preview-stage" class="preview-stage"><div id="preview-content"></div></div>
+          <p id="preview-events" class="preview-events" role="status" aria-live="polite">Interact with the preview to inspect events.</p>
+        </section>
+        <section id="usage-view" role="tabpanel" aria-labelledby="usage-tab" tabindex="0" hidden>
+          <div class="section-toolbar"><h2>Source</h2><button id="copy-source" type="button">Copy source</button></div>
+          <p id="usage-note">Import the package, then use the element in HTML.</p>
+          <pre><code id="source-code"></code></pre>
+          <p id="copy-status" role="status"></p>
+        </section>
+        <section id="api-view" role="tabpanel" aria-labelledby="api-tab" tabindex="0" hidden>
+          <p class="section-intro">Generated from the exported component contract, not a separate handwritten API list.</p>
+          <div id="api-content"></div>
+        </section>
+        <section id="styling-view" role="tabpanel" aria-labelledby="styling-tab" tabindex="0" hidden>
+          <h2>Tokens, parts, and slots</h2>
+          <p>Use semantic tokens for a theme, component tokens for local overrides, and the documented CSS parts for structural styling. Ordinary external selectors do not reach inside Shadow DOM.</p>
+          <p>Native select/date pickers and other operating-system UI have platform styling limits. Changing markup or interaction behavior is not a theme override.</p>
+          <h3>Your preview overrides</h3><pre><code id="override-code"></code></pre>
+          <h3>Resolved semantic tokens</h3><dl id="resolved-tokens" class="token-values"></dl>
+          <p class="section-intro">Inspect the API view for the declared component tokens and parts. Full theme/state conformance remains experimental.</p>
+        </section>
+      </main>
+
+      <aside id="inspector" class="inspector-panel" aria-label="Preview customization">
+        <div class="section-toolbar"><h2>Customize</h2><button id="reset-overrides" type="button">Reset</button></div>
+        <p class="inspector-note">Preview settings only. No component source is changed.</p>
+        <label for="theme-select">Theme preset</label>
+        <select id="theme-select"><option value="minimal-light">Minimal Light</option><option value="minimal-dark">Minimal Dark</option><option value="minimal-high-contrast">Minimal High Contrast</option></select>
+        <label for="density-select">Density</label>
+        <select id="density-select"><option value="compact">Compact</option><option value="default" selected>Default</option><option value="comfortable">Comfortable</option></select>
+        <label for="direction-select">Preview direction</label>
+        <select id="direction-select"><option value="ltr">Left to right</option><option value="rtl">Right to left</option></select>
+        <div id="state-controls"></div>
+        <details open><summary>Component tokens</summary><p class="inspector-note">Overrides apply to this preview instance. Empty values restore the preset.</p><div id="token-controls"></div></details>
+      </aside>
+    </div>
+
+    <dialog id="command-palette" aria-label="Search documentation">
+      <label for="command-search">Search documentation</label>
+      <input id="command-search" type="search" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-controls="command-results" autocomplete="off" placeholder="Component, layout, or theme…" />
+      <div id="command-results" role="listbox" aria-label="Search results"></div>
+      <p id="command-empty" role="status" hidden>No results.</p>
+      <button id="command-close" type="button">Close search</button>
+    </dialog>
+    <dialog id="panel-sheet" aria-label="Documentation panel"><button id="panel-close" type="button">Close panel</button><div id="panel-body"></div></dialog>
+    <noscript><p>Enable JavaScript to run the live component previews. Source code remains available in the repository.</p></noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

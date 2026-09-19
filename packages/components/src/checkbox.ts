@@ -25,12 +25,16 @@ export const adsCheckboxContract = defineComponentContract({
     { name: 'validationMessage', type: 'string', readonly: true },
   ],
   methods: [
-    { name: 'focus', signature: 'focus(options?: FocusOptions): void', description: 'Focuses the internal native checkbox.' },
-    { name: 'blur', signature: 'blur(): void', description: 'Removes focus from the internal native checkbox.' },
-    { name: 'click', signature: 'click(): void', description: 'Activates the native checkbox interaction.' },
+    { name: 'focus', signature: 'focus(options?: FocusOptions): void' },
+    { name: 'blur', signature: 'blur(): void' },
+    { name: 'click', signature: 'click(): void' },
     { name: 'setCustomValidity', signature: 'setCustomValidity(message: string): void' },
     { name: 'checkValidity', signature: 'checkValidity(): boolean' },
     { name: 'reportValidity', signature: 'reportValidity(): boolean' },
+  ],
+  events: [
+    { name: 'input', detail: 'Event', bubbles: true, composed: true },
+    { name: 'change', detail: 'Event', bubbles: true, composed: true },
   ],
   slots: [
     { name: '', description: 'Checkbox label content.' },
@@ -49,17 +53,24 @@ export const adsCheckboxContract = defineComponentContract({
   cssCustomProperties: [
     { name: '--ads-checkbox-size', default: '1.125rem' },
     { name: '--ads-checkbox-gap', default: '0.5rem' },
-    { name: '--ads-checkbox-border-color', default: '#8a8a93' },
-    { name: '--ads-checkbox-background', default: '#fff' },
-    { name: '--ads-checkbox-checked-background', default: '#111114' },
-    { name: '--ads-checkbox-checked-color', default: '#fff' },
-    { name: '--ads-checkbox-radius', default: '0.25rem' },
+    { name: '--ads-checkbox-color', default: 'var(--ads-color-text-default, #111111)' },
+    { name: '--ads-checkbox-border-color', default: 'var(--ads-color-line-control, #6b6b65)' },
+    { name: '--ads-checkbox-background', default: 'var(--ads-color-surface-default, #fff)' },
+    { name: '--ads-checkbox-checked-background', default: 'var(--ads-color-action-primary, #111111)' },
+    { name: '--ads-checkbox-checked-color', default: 'var(--ads-color-action-primaryText, #fff)' },
+    { name: '--ads-checkbox-radius', default: 'var(--ads-radius-control, 0px)' },
+    { name: '--ads-checkbox-description-color', default: 'var(--ads-color-text-muted, #5d5d57)' },
+    { name: '--ads-checkbox-error-color', default: 'var(--ads-color-state-danger, #9a251f)' },
+    { name: '--ads-checkbox-border-width', default: '1px', description: 'Control border width.' },
+    { name: '--ads-checkbox-invalid-border-color', default: 'var(--ads-color-state-danger, #9a251f)', description: 'Control border color while invalid.' },
+    { name: '--ads-checkbox-message-font-size', default: '0.8125rem', description: 'Supporting description and error text size.' },
+    { name: '--ads-checkbox-message-gap', default: '0.375rem', description: 'Logical spacing before supporting description and error regions.' },
   ],
   states: [
     { name: 'checked', description: 'The checkbox is checked.' },
     { name: 'indeterminate', description: 'The checkbox is visually indeterminate.' },
     { name: 'invalid', description: 'Native constraint validation currently fails.' },
-    { name: 'disabled', description: 'Disabled by attribute or containing fieldset.' },
+    { name: 'disabled', description: 'Disabled by attribute, group or containing fieldset.' },
   ],
 });
 
@@ -67,14 +78,10 @@ export class AdsCheckbox extends FormAssociatedElement {
   static override styles = css`
     :host {
       display: inline-block;
-      color: var(--ads-checkbox-color, #111114);
+      color: var(--ads-checkbox-color, var(--ads-color-text-default, #111111));
       font: inherit;
     }
-
-    :host([hidden]) {
-      display: none;
-    }
-
+    :host([hidden]) { display: none; }
     [part='label'] {
       display: inline-flex;
       align-items: flex-start;
@@ -82,7 +89,6 @@ export class AdsCheckbox extends FormAssociatedElement {
       cursor: pointer;
       line-height: 1.4;
     }
-
     [part='control'] {
       position: relative;
       display: inline-grid;
@@ -91,7 +97,6 @@ export class AdsCheckbox extends FormAssociatedElement {
       block-size: var(--ads-checkbox-size, 1.125rem);
       margin-block-start: 0.08em;
     }
-
     input {
       position: absolute;
       z-index: 1;
@@ -102,34 +107,30 @@ export class AdsCheckbox extends FormAssociatedElement {
       opacity: 0;
       cursor: inherit;
     }
-
     [part='indicator'] {
       box-sizing: border-box;
       display: grid;
       inline-size: 100%;
       block-size: 100%;
       place-items: center;
-      border: var(--ads-checkbox-border-width, 1px) solid var(--ads-checkbox-border-color, #8a8a93);
-      border-radius: var(--ads-checkbox-radius, 0.25rem);
-      background: var(--ads-checkbox-background, #fff);
-      color: var(--ads-checkbox-checked-color, #fff);
+      border: var(--ads-checkbox-border-width, 1px) solid var(--ads-checkbox-border-color, var(--ads-color-line-control, #6b6b65));
+      border-radius: var(--ads-checkbox-radius, var(--ads-radius-control, 0px));
+      background: var(--ads-checkbox-background, var(--ads-color-surface-default, #fff));
+      color: var(--ads-checkbox-checked-color, var(--ads-color-action-primaryText, #fff));
       transition:
         background-color var(--ads-motion-duration-fast, 120ms),
         border-color var(--ads-motion-duration-fast, 120ms),
         box-shadow var(--ads-motion-duration-fast, 120ms);
     }
-
     input:focus-visible + [part='indicator'] {
-      outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, currentColor);
+      outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, var(--ads-color-focus-ring, currentColor));
       outline-offset: var(--ads-focus-offset, 2px);
     }
-
     input:checked + [part='indicator'],
     input:indeterminate + [part='indicator'] {
-      border-color: var(--ads-checkbox-checked-background, #111114);
-      background: var(--ads-checkbox-checked-background, #111114);
+      border-color: var(--ads-checkbox-checked-background, var(--ads-color-action-primary, #111111));
+      background: var(--ads-checkbox-checked-background, var(--ads-color-action-primary, #111111));
     }
-
     input:checked + [part='indicator']::after {
       inline-size: 0.45em;
       block-size: 0.7em;
@@ -138,27 +139,22 @@ export class AdsCheckbox extends FormAssociatedElement {
       content: '';
       transform: translateY(-0.06em) rotate(45deg);
     }
-
     input:indeterminate + [part='indicator']::after {
       inline-size: 0.6em;
       block-size: 0.12em;
       border: 0;
-      border-radius: 999px;
+      border-radius: 0;
       background: currentColor;
       content: '';
       transform: none;
     }
-
     :host(:state(invalid)) [part='indicator'] {
-      border-color: var(--ads-checkbox-invalid-border-color, #b42318);
+      border-color: var(--ads-checkbox-invalid-border-color, var(--ads-color-state-danger, #9a251f));
     }
-
-    :host([disabled]) [part='label'],
-    :host(:state(form-disabled)) [part='label'] {
+    :host(:state(disabled)) [part='label'] {
       cursor: not-allowed;
-      opacity: var(--ads-disabled-opacity, 0.5);
+      opacity: var(--ads-disabled-opacity, var(--ads-opacity-disabled, 0.5));
     }
-
     [part='description'],
     [part='error'] {
       margin-block-start: var(--ads-checkbox-message-gap, 0.375rem);
@@ -166,19 +162,14 @@ export class AdsCheckbox extends FormAssociatedElement {
       font-size: var(--ads-checkbox-message-font-size, 0.8125rem);
       line-height: 1.4;
     }
-
     [part='description'] {
-      color: var(--ads-checkbox-description-color, #606068);
+      color: var(--ads-checkbox-description-color, var(--ads-color-text-muted, #5d5d57));
     }
-
     [part='error'] {
-      color: var(--ads-checkbox-error-color, #b42318);
+      color: var(--ads-checkbox-error-color, var(--ads-color-state-danger, #9a251f));
     }
-
     @media (prefers-reduced-motion: reduce) {
-      [part='indicator'] {
-        transition: none;
-      }
+      [part='indicator'] { transition: none; }
     }
   `;
 
@@ -189,13 +180,12 @@ export class AdsCheckbox extends FormAssociatedElement {
   @property({ type: Boolean, reflect: true }) indeterminate = false;
   @property({ type: Boolean, reflect: true }) disabled = false;
   @property({ type: Boolean, reflect: true }) required = false;
-
   @query('input') private inputElement?: HTMLInputElement;
   @state() private invalid = false;
-
   private defaultChecked = false;
   private defaultCheckedCaptured = false;
   private customValidityMessage = '';
+  private groupDisabled = false;
 
   override connectedCallback(): void {
     if (!this.defaultCheckedCaptured) {
@@ -204,132 +194,87 @@ export class AdsCheckbox extends FormAssociatedElement {
     }
     super.connectedCallback();
   }
-
-  override firstUpdated(): void {
-    this.syncNativeState();
-  }
-
+  override firstUpdated(): void { this.syncNativeState(); }
   override updated(changed: PropertyValues<this>): void {
     if (
-      changed.has('checked') ||
-      changed.has('indeterminate') ||
-      changed.has('value') ||
-      changed.has('required') ||
-      changed.has('disabled')
-    ) {
-      this.syncNativeState();
-    }
+      changed.has('checked') || changed.has('indeterminate') || changed.has('value') ||
+      changed.has('required') || changed.has('disabled')
+    ) this.syncNativeState();
   }
-
   override focus(options?: FocusOptions): void {
-    if (this.inputElement) {
-      this.inputElement.focus(options);
-      return;
-    }
-    void this.updateComplete.then(() => this.inputElement?.focus(options));
+    if (this.inputElement) this.inputElement.focus(options);
+    else void this.updateComplete.then(() => this.inputElement?.focus(options));
   }
-
-  override blur(): void {
-    this.inputElement?.blur();
-  }
-
+  override blur(): void { this.inputElement?.blur(); }
   override click(): void {
-    if (this.inputElement) {
-      this.inputElement.click();
-      return;
-    }
-    void this.updateComplete.then(() => this.inputElement?.click());
+    if (this.inputElement) this.inputElement.click();
+    else void this.updateComplete.then(() => this.inputElement?.click());
   }
-
+  /** @internal The owning group does not overwrite the consumer's disabled attribute. */
+  setGroupDisabled(disabled: boolean): void {
+    if (this.groupDisabled === disabled) return;
+    this.groupDisabled = disabled;
+    this.syncNativeState();
+    this.requestUpdate();
+  }
   setCustomValidity(message: string): void {
     this.customValidityMessage = message;
-    if (this.inputElement) {
-      this.inputElement.setCustomValidity(message);
-      this.syncNativeState();
-    }
+    this.syncNativeState();
   }
-
   protected override onFormDisabledChange(): void {
     void this.updateComplete.then(() => this.syncNativeState());
   }
-
   formResetCallback(): void {
     this.checked = this.defaultChecked;
     this.syncNativeState();
   }
-
   formStateRestoreCallback(state: string | File | FormData | null): void {
     if (typeof state !== 'string') return;
     this.checked = state === 'checked';
     this.syncNativeState();
   }
-
   private syncNativeState(): void {
     const input = this.inputElement;
     if (!input) return;
-
-    const disabled = this.disabled || this.formDisabled;
+    const disabled = this.disabled || this.formDisabled || this.groupDisabled;
+    input.disabled = disabled;
+    input.required = this.required;
     input.checked = this.checked;
     input.indeterminate = this.indeterminate;
     input.value = this.value;
-    if (input.validationMessage !== this.customValidityMessage && this.customValidityMessage) {
-      input.setCustomValidity(this.customValidityMessage);
-    } else if (!this.customValidityMessage && input.validity.customError) {
-      input.setCustomValidity('');
-    }
-
+    input.setCustomValidity(this.customValidityMessage);
     this.internals.ariaChecked = this.indeterminate ? 'mixed' : String(this.checked);
     this.internals.ariaDisabled = String(disabled);
     this.setFormValue(disabled || !this.checked ? null : this.value, this.checked ? 'checked' : 'unchecked');
-
-    if (this.checked) this.internals.states.add('checked');
-    else this.internals.states.delete('checked');
-    if (this.indeterminate) this.internals.states.add('indeterminate');
-    else this.internals.states.delete('indeterminate');
-
-    if (input.validity.valid) {
-      this.setValidity({});
-      this.invalid = false;
-      this.internals.states.delete('invalid');
-      this.internals.ariaInvalid = 'false';
-      return;
+    for (const [name, active] of [['checked', this.checked], ['indeterminate', this.indeterminate], ['disabled', disabled]] as const) {
+      if (active) this.internals.states.add(name);
+      else this.internals.states.delete(name);
     }
-
+    this.invalid = !input.validity.valid;
     this.setValidity(validityStateToFlags(input.validity), input.validationMessage, input);
-    this.invalid = true;
-    this.internals.states.add('invalid');
-    this.internals.ariaInvalid = 'true';
+    this.internals.ariaInvalid = String(this.invalid);
+    if (this.invalid) this.internals.states.add('invalid');
+    else this.internals.states.delete('invalid');
   }
-
-  private handleInput(event: InputEvent): void {
+  private handleInput(event: Event): void {
     const input = event.currentTarget as HTMLInputElement;
     this.checked = input.checked;
     this.indeterminate = input.indeterminate;
     this.syncNativeState();
   }
-
-  private handleChange(): void {
+  private handleChange(event: Event): void {
+    event.stopPropagation();
     this.syncNativeState();
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
-
   override render() {
-    const disabled = this.disabled || this.formDisabled;
-
+    const disabled = this.disabled || this.formDisabled || this.groupDisabled;
     return html`
       <label part="label">
         <span part="control">
-          <input
-            part="input"
-            type="checkbox"
-            .checked=${this.checked}
-            .value=${this.value}
-            ?disabled=${disabled}
-            ?required=${this.required}
-            aria-describedby="description error"
-            aria-invalid=${this.invalid ? 'true' : 'false'}
-            @input=${this.handleInput}
-            @change=${this.handleChange}
-          />
+          <input part="input" type="checkbox" .checked=${this.checked} .value=${this.value}
+            ?disabled=${disabled} ?required=${this.required} aria-describedby="description error"
+            aria-invalid=${String(this.invalid)} @input=${this.handleInput} @change=${this.handleChange} />
           <span part="indicator" aria-hidden="true"></span>
         </span>
         <span part="label-text"><slot>${this.label}</slot></span>
@@ -339,11 +284,7 @@ export class AdsCheckbox extends FormAssociatedElement {
     `;
   }
 }
-
 registerAdsElement('checkbox', AdsCheckbox);
-
 declare global {
-  interface HTMLElementTagNameMap {
-    'ads-checkbox': AdsCheckbox;
-  }
+  interface HTMLElementTagNameMap { 'ads-checkbox': AdsCheckbox; }
 }

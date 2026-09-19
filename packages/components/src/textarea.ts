@@ -61,11 +61,22 @@ export const adsTextareaContract = defineComponentContract({
   cssCustomProperties: [
     { name: '--ads-textarea-min-block-size', default: '5rem' },
     { name: '--ads-textarea-padding', default: '0.625rem 0.75rem' },
-    { name: '--ads-textarea-border-color', default: '#d7d7dc' },
-    { name: '--ads-textarea-background', default: '#fff' },
-    { name: '--ads-textarea-color', default: '#111114' },
-    { name: '--ads-textarea-radius', default: 'var(--ads-radius-control, 0.375rem)' },
+    { name: '--ads-textarea-border-color', default: 'var(--ads-color-line-control, #6b6b65)' },
+    { name: '--ads-textarea-background', default: 'var(--ads-color-surface-default, #fff)' },
+    { name: '--ads-textarea-color', default: 'var(--ads-color-text-default, #111111)' },
+    { name: '--ads-textarea-radius', default: 'var(--ads-radius-control, 0px)' },
     { name: '--ads-textarea-resize', default: 'vertical' },
+    { name: '--ads-textarea-border-width', default: '1px', description: 'Control border width.' },
+    { name: '--ads-textarea-description-color', default: 'var(--ads-color-text-muted, #5d5d57)', description: 'Supporting description text color.' },
+    { name: '--ads-textarea-error-color', default: 'var(--ads-color-state-danger, #9a251f)', description: 'Validation message text color.' },
+    { name: '--ads-textarea-focus-border-color', default: 'var(--ads-color-focus-ring, currentColor)', description: 'Control border color while focus is inside the control.' },
+    { name: '--ads-textarea-invalid-border-color', default: 'var(--ads-color-state-danger, #9a251f)', description: 'Control border color while invalid.' },
+    { name: '--ads-textarea-label-font-size', default: '0.875rem', description: 'Visible label text size.' },
+    { name: '--ads-textarea-label-font-weight', default: 'var(--ads-font-weight-medium, 500)', description: 'Visible label font weight.' },
+    { name: '--ads-textarea-label-gap', default: '0.375rem', description: 'Spacing between the visible label and control.' },
+    { name: '--ads-textarea-message-font-size', default: '0.8125rem', description: 'Supporting description and error text size.' },
+    { name: '--ads-textarea-message-gap', default: '0.375rem', description: 'Logical spacing before supporting description and error regions.' },
+    { name: '--ads-textarea-placeholder-color', default: 'var(--ads-color-text-subtle, #76766f)', description: 'Native textarea placeholder text color.' },
   ],
   states: [
     { name: 'invalid', description: 'Native constraint validation currently fails.' },
@@ -77,7 +88,7 @@ export class AdsTextarea extends FormAssociatedElement {
   static override styles = css`
     :host {
       display: block;
-      color: var(--ads-textarea-color, #111114);
+      color: var(--ads-textarea-color, var(--ads-color-text-default, #111111));
       font: inherit;
     }
 
@@ -92,7 +103,7 @@ export class AdsTextarea extends FormAssociatedElement {
 
     [part='label-text'] {
       font-size: var(--ads-textarea-label-font-size, 0.875rem);
-      font-weight: var(--ads-textarea-label-font-weight, 600);
+      font-weight: var(--ads-textarea-label-font-weight, var(--ads-font-weight-medium, 500));
       line-height: 1.3;
     }
 
@@ -100,28 +111,28 @@ export class AdsTextarea extends FormAssociatedElement {
       box-sizing: border-box;
       display: flex;
       min-block-size: var(--ads-textarea-min-block-size, 5rem);
-      border: var(--ads-textarea-border-width, 1px) solid var(--ads-textarea-border-color, #d7d7dc);
-      border-radius: var(--ads-textarea-radius, var(--ads-radius-control, 0.375rem));
-      background: var(--ads-textarea-background, #fff);
+      border: var(--ads-textarea-border-width, 1px) solid var(--ads-textarea-border-color, var(--ads-color-line-control, #6b6b65));
+      border-radius: var(--ads-textarea-radius, var(--ads-radius-control, 0px));
+      background: var(--ads-textarea-background, var(--ads-color-surface-default, #fff));
       transition:
         border-color var(--ads-motion-duration-fast, 120ms),
         box-shadow var(--ads-motion-duration-fast, 120ms);
     }
 
     [part='control']:focus-within {
-      border-color: var(--ads-textarea-focus-border-color, currentColor);
+      border-color: var(--ads-textarea-focus-border-color, var(--ads-color-focus-ring, currentColor));
       box-shadow: 0 0 0 var(--ads-focus-width, 2px)
-        color-mix(in srgb, var(--ads-focus-color, currentColor) 24%, transparent);
+        color-mix(in srgb, var(--ads-focus-color, var(--ads-color-focus-ring, currentColor)) 24%, transparent);
     }
 
     :host(:state(invalid)) [part='control'] {
-      border-color: var(--ads-textarea-invalid-border-color, #b42318);
+      border-color: var(--ads-textarea-invalid-border-color, var(--ads-color-state-danger, #9a251f));
     }
 
     :host([disabled]) [part='control'],
     :host(:state(form-disabled)) [part='control'] {
       cursor: not-allowed;
-      opacity: var(--ads-disabled-opacity, 0.5);
+      opacity: var(--ads-disabled-opacity, var(--ads-opacity-disabled, 0.5));
     }
 
     textarea {
@@ -140,7 +151,7 @@ export class AdsTextarea extends FormAssociatedElement {
     }
 
     textarea::placeholder {
-      color: var(--ads-textarea-placeholder-color, #707078);
+      color: var(--ads-textarea-placeholder-color, var(--ads-color-text-subtle, #76766f));
       opacity: 1;
     }
 
@@ -152,11 +163,11 @@ export class AdsTextarea extends FormAssociatedElement {
     }
 
     [part='description'] {
-      color: var(--ads-textarea-description-color, #606068);
+      color: var(--ads-textarea-description-color, var(--ads-color-text-muted, #5d5d57));
     }
 
     [part='error'] {
-      color: var(--ads-textarea-error-color, #b42318);
+      color: var(--ads-textarea-error-color, var(--ads-color-state-danger, #9a251f));
     }
 
     @media (prefers-reduced-motion: reduce) {

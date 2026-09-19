@@ -30,13 +30,24 @@ export const adsButtonContract = defineComponentContract({
     { name: 'spinner', description: 'Loading spinner rendered while loading.' },
   ],
   cssCustomProperties: [
-    { name: '--ads-control-size', default: '2.5rem' },
+    { name: '--ads-control-size', default: 'var(--ads-size-control-current, var(--ads-size-control-default, 2.25rem))' },
     { name: '--ads-button-gap', default: '0.5rem' },
     { name: '--ads-button-padding-block', default: '0.625rem' },
     { name: '--ads-button-padding-inline', default: '0.875rem' },
-    { name: '--ads-button-radius', default: 'var(--ads-radius-control, 0.375rem)' },
-    { name: '--ads-button-font-weight', default: '600' },
-    { name: '--ads-disabled-opacity', default: '0.5' },
+    { name: '--ads-button-radius', default: 'var(--ads-radius-control, 0px)' },
+    { name: '--ads-button-font-weight', default: 'var(--ads-font-weight-medium, 500)' },
+    { name: '--ads-disabled-opacity', default: 'var(--ads-opacity-disabled, 0.5)' },
+    { name: '--ads-button-active-brightness', default: '0.9', description: 'Unitless brightness multiplier during enabled pointer activation.' },
+    { name: '--ads-button-border-width', default: '1px', description: 'Border width for all button variants; transparent borders still occupy space.' },
+    { name: '--ads-button-danger-background', default: 'var(--ads-color-state-danger, #9a251f)', description: 'Danger variant background color.' },
+    { name: '--ads-button-danger-color', default: 'var(--ads-color-state-dangerText, #fff)', description: 'Danger variant foreground color.' },
+    { name: '--ads-button-ghost-color', default: 'var(--ads-color-text-default, #111111)', description: 'Ghost variant foreground color.' },
+    { name: '--ads-button-hover-brightness', default: '0.96', description: 'Unitless brightness multiplier on enabled hover.' },
+    { name: '--ads-button-primary-background', default: 'var(--ads-color-action-primary, #111111)', description: 'Primary variant background color.' },
+    { name: '--ads-button-primary-color', default: 'var(--ads-color-action-primaryText, #fff)', description: 'Primary variant foreground color.' },
+    { name: '--ads-button-secondary-background', default: 'var(--ads-color-surface-default, #fff)', description: 'Secondary variant background color.' },
+    { name: '--ads-button-secondary-border', default: 'var(--ads-color-line-control, #6b6b65)', description: 'Secondary variant border color.' },
+    { name: '--ads-button-secondary-color', default: 'var(--ads-color-text-default, #111111)', description: 'Secondary variant foreground color.' },
   ],
   states: [
     { name: 'disabled', description: 'Unavailable for interaction.' },
@@ -67,7 +78,7 @@ export class AdsButton extends FormAssociatedElement {
     button {
       box-sizing: border-box;
       display: inline-flex;
-      min-block-size: var(--ads-control-size, 2.5rem);
+      min-block-size: var(--ads-control-size, var(--ads-size-control-current, var(--ads-size-control-default, 2.25rem)));
       align-items: center;
       justify-content: center;
       gap: var(--ads-button-gap, 0.5rem);
@@ -75,9 +86,9 @@ export class AdsButton extends FormAssociatedElement {
       padding: var(--ads-button-padding-block, 0.625rem)
         var(--ads-button-padding-inline, 0.875rem);
       border: var(--ads-button-border-width, 1px) solid transparent;
-      border-radius: var(--ads-button-radius, var(--ads-radius-control, 0.375rem));
+      border-radius: var(--ads-button-radius, var(--ads-radius-control, 0px));
       font: inherit;
-      font-weight: var(--ads-button-font-weight, 600);
+      font-weight: var(--ads-button-font-weight, var(--ads-font-weight-medium, 500));
       line-height: 1;
       text-decoration: none;
       white-space: nowrap;
@@ -90,34 +101,34 @@ export class AdsButton extends FormAssociatedElement {
     }
 
     button:focus-visible {
-      outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, currentColor);
+      outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, var(--ads-color-focus-ring, currentColor));
       outline-offset: var(--ads-focus-offset, 2px);
     }
 
     button:disabled {
       cursor: not-allowed;
-      opacity: var(--ads-disabled-opacity, 0.5);
+      opacity: var(--ads-disabled-opacity, var(--ads-opacity-disabled, 0.5));
     }
 
     :host([variant='primary']) button {
-      background: var(--ads-button-primary-background, #111114);
-      color: var(--ads-button-primary-color, #fff);
+      background: var(--ads-button-primary-background, var(--ads-color-action-primary, #111111));
+      color: var(--ads-button-primary-color, var(--ads-color-action-primaryText, #fff));
     }
 
     :host([variant='secondary']) button {
-      border-color: var(--ads-button-secondary-border, #d7d7dc);
-      background: var(--ads-button-secondary-background, #fff);
-      color: var(--ads-button-secondary-color, #111114);
+      border-color: var(--ads-button-secondary-border, var(--ads-color-line-control, #6b6b65));
+      background: var(--ads-button-secondary-background, var(--ads-color-surface-default, #fff));
+      color: var(--ads-button-secondary-color, var(--ads-color-text-default, #111111));
     }
 
     :host([variant='ghost']) button {
       background: transparent;
-      color: var(--ads-button-ghost-color, #111114);
+      color: var(--ads-button-ghost-color, var(--ads-color-text-default, #111111));
     }
 
     :host([variant='danger']) button {
-      background: var(--ads-button-danger-background, #b42318);
-      color: var(--ads-button-danger-color, #fff);
+      background: var(--ads-button-danger-background, var(--ads-color-state-danger, #9a251f));
+      color: var(--ads-button-danger-color, var(--ads-color-state-dangerText, #fff));
     }
 
     button:not(:disabled):hover {

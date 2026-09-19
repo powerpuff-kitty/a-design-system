@@ -19,26 +19,35 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
           node-version: 24
-
       - name: Enable Corepack
         run: corepack enable
-
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
-
       - name: Typecheck
         run: pnpm typecheck
-
       - name: Test
         run: pnpm test
-
+      - name: Test styling audit
+        run: node --test scripts/styling-surface.test.mjs
       - name: Build
         run: pnpm build
+      - name: Validate component package, docs and styling contracts
+        run: node scripts/check-component-surface.mjs
+      - name: Upload integrated build evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: integrated-build-evidence
+          path: |
+            artifacts/
+            apps/docs/dist/
+            apps/docs/src/
+            packages/components/src/
+          retention-days: 7
 
   browser:
     needs: verify
@@ -47,28 +56,32 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
           node-version: 24
-
       - name: Enable Corepack
         run: corepack enable
-
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
-
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium firefox webkit
-
       - name: Browser component tests
         run: pnpm test:browser
-
-      - name: Upload Playwright report
-        if: failure()
+      - name: Browser documentation tests
+        if: ${{ !cancelled() }}
+        run: pnpm exec playwright test --config playwright.docs.config.ts
+      - name: Upload component report
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v6
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 7
+      - name: Upload documentation report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: playwright-report-docs
+          path: playwright-report-docs/
           retention-days: 7

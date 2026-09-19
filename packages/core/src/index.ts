@@ -79,3 +79,7 @@ export class DisclosureState extends EventTarget {
     this.open = !this.open;
   }
 }
+
+export * from './workspace.js';
+
+export * from './command-palette.js';

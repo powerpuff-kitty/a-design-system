@@ -1,0 +1,17 @@
+{
+  "name": "@a-design-system/css",
+  "version": "0.0.0",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    "./minimal-workspace.css": "./src/minimal-workspace.css",
+    "./minimal-command-palette.css": "./src/minimal-command-palette.css",
+    "./minimal-base.css": "./src/minimal-base.css",
+    "./minimal-density.css": "./src/minimal-density.css"
+  },
+  "files": [
+    "src"
+  ]
+}
