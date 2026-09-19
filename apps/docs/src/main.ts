@@ -13,7 +13,7 @@ import './styles.css';
 type ThemeId = 'minimal-light' | 'minimal-dark' | 'minimal-high-contrast';
 type DensityId = 'compact' | 'default' | 'comfortable';
 type DocsCommand = CommandPaletteItem & Readonly<{
-  group: 'Navigate' | 'Theme';
+  group: 'Navigate' | 'Theme' | 'Density';
   shortcut?: string;
   run: () => void;
 }>;
@@ -143,6 +143,30 @@ const commands: readonly DocsCommand[] = [
     keywords: ['theme', 'contrast', 'accessibility'],
     group: 'Theme',
     run: () => applyTheme('minimal-high-contrast'),
+  },
+  {
+    id: 'density-compact',
+    label: 'Density · Compact',
+    description: 'Use 32px visual controls while preserving accessible target guidance.',
+    keywords: ['density', 'compact', 'small'],
+    group: 'Density',
+    run: () => applyDensity('compact'),
+  },
+  {
+    id: 'density-default',
+    label: 'Density · Default',
+    description: 'Use the 36px default Minimal control density.',
+    keywords: ['density', 'default'],
+    group: 'Density',
+    run: () => applyDensity('default'),
+  },
+  {
+    id: 'density-comfortable',
+    label: 'Density · Comfortable',
+    description: 'Use 44px comfortable control chrome.',
+    keywords: ['density', 'comfortable', 'large'],
+    group: 'Density',
+    run: () => applyDensity('comfortable'),
   },
 ];
 
