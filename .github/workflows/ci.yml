@@ -33,6 +33,19 @@ jobs:
         run: pnpm test
       - name: Build
         run: pnpm build
+      - name: Validate component package and docs parity
+        run: node scripts/check-component-surface.mjs
+      - name: Upload integrated build evidence
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: integrated-build-evidence
+          path: |
+            artifacts/
+            apps/docs/dist/
+            apps/docs/src/
+            packages/components/src/
+          retention-days: 7
 
   browser:
     needs: verify
