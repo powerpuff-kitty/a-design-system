@@ -36,7 +36,7 @@ export const adsThemeContract = defineComponentContract({
 });
 
 export class AdsTheme extends LitElement {
-  static override styles = css\`
+  static override styles = css`
     :host {
       display: contents;
     }
@@ -44,7 +44,7 @@ export class AdsTheme extends LitElement {
     :host([hidden]) {
       display: none;
     }
-  \`;
+  `;
 
   @property({ reflect: true })
   theme: AdsThemeName = 'minimal-light';
@@ -80,7 +80,7 @@ export class AdsTheme extends LitElement {
   }
 
   override render() {
-    return html\`<span part="content"><slot></slot></span>\`;
+    return html`<span part="content"><slot></slot></span>`;
   }
 }
 
