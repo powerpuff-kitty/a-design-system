@@ -7,7 +7,8 @@
   ],
   "exports": {
     "./minimal-workspace.css": "./src/minimal-workspace.css",
-    "./minimal-command-palette.css": "./src/minimal-command-palette.css"
+    "./minimal-command-palette.css": "./src/minimal-command-palette.css",
+    "./minimal-base.css": "./src/minimal-base.css"
   },
   "files": [
     "src"
