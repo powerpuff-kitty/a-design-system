@@ -1,0 +1,47 @@
+name: Branch integration audit
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/branch-integration-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  branch-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Capture public repository history and branch ancestry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin '+refs/heads/*:refs/remotes/origin/*'
+          mkdir -p /tmp/ads-branch-audit
+          git bundle create /tmp/ads-branch-audit/repository.bundle --all
+          python3 - <<'PY'
+          import json, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          base = git('rev-parse', 'refs/remotes/origin/main')
+          records = []
+          for line in git('for-each-ref', '--format=%(refname) %(objectname)', 'refs/remotes/origin/').splitlines():
+              ref, sha = line.split()
+              if ref.endswith('/HEAD'):
+                  continue
+              behind, ahead = map(int, git('rev-list', '--left-right', '--count', base + '...' + sha).split())
+              records.append({'branch': ref.removeprefix('refs/remotes/origin/'), 'sha': sha, 'aheadOfMain': ahead, 'behindMain': behind})
+          with open('/tmp/ads-branch-audit/branches.json', 'w') as f:
+              json.dump({'repository': 'powerpuff-kitty/a-design-system', 'main': base, 'branches': records}, f, indent=2)
+          print(json.dumps(records, indent=2))
+          PY
+      - uses: actions/upload-artifact@v6
+        with:
+          name: branch-integration-audit
+          path: /tmp/ads-branch-audit/
+          retention-days: 7
