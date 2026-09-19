@@ -109,6 +109,14 @@
       "types": "./src/textarea.ts",
       "import": "./dist/textarea.js"
     },
+    "./toast": {
+      "types": "./src/toast.ts",
+      "import": "./dist/toast.js"
+    },
+    "./toast-item": {
+      "types": "./src/toast-item.ts",
+      "import": "./dist/toast-item.js"
+    },
     "./visually-hidden": {
       "types": "./src/visually-hidden.ts",
       "import": "./dist/visually-hidden.js"
