@@ -96,4 +96,40 @@ test.describe('ADS Minimal reference theme', () => {
     expect(dark.focus).toBe('2px');
     expect(contrast.focus).toBe('3px');
   });
+
+  test('density modes alter control chrome without changing component APIs', async ({ page }) => {
+    await page.goto('/?theme=minimal-light&density=compact');
+    await expect(page.locator('html')).toHaveAttribute('data-ads-ready', 'true');
+    await expect(page.locator('html')).toHaveAttribute('data-ads-density', 'compact');
+    await page.locator('#sandbox').evaluate((sandbox) => {
+      sandbox.innerHTML = `
+        <ads-button>Compact</ads-button>
+        <ads-input label="Compact input"></ads-input>
+      `;
+    });
+
+    const compact = await page.evaluate(() => {
+      const button = document.querySelector('ads-button')?.shadowRoot?.querySelector('button');
+      const input = document.querySelector('ads-input')?.shadowRoot?.querySelector('[part="control"]');
+      if (!button || !input) throw new Error('Density fixtures did not render');
+      return {
+        button: getComputedStyle(button).minBlockSize,
+        input: getComputedStyle(input).minBlockSize,
+      };
+    });
+    expect(compact).toEqual({ button: '32px', input: '32px' });
+
+    await page.evaluate(() => { document.documentElement.dataset.adsDensity = 'comfortable'; });
+    const comfortable = await page.evaluate(() => {
+      const button = document.querySelector('ads-button')?.shadowRoot?.querySelector('button');
+      const input = document.querySelector('ads-input')?.shadowRoot?.querySelector('[part="control"]');
+      if (!button || !input) throw new Error('Density fixtures did not render');
+      return {
+        button: getComputedStyle(button).minBlockSize,
+        input: getComputedStyle(input).minBlockSize,
+      };
+    });
+    expect(comfortable).toEqual({ button: '44px', input: '44px' });
+  });
+
 });
