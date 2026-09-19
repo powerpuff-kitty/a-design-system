@@ -57,6 +57,18 @@
       "types": "./src/copy-button.ts",
       "import": "./dist/copy-button.js"
     },
+    "./format-bytes": {
+      "types": "./src/format-bytes.ts",
+      "import": "./dist/format-bytes.js"
+    },
+    "./format-date": {
+      "types": "./src/format-date.ts",
+      "import": "./dist/format-date.js"
+    },
+    "./format-number": {
+      "types": "./src/format-number.ts",
+      "import": "./dist/format-number.js"
+    },
     "./icon-button": {
       "types": "./src/icon-button.ts",
       "import": "./dist/icon-button.js"
@@ -88,6 +100,10 @@
     "./radio-group": {
       "types": "./src/radio-group.ts",
       "import": "./dist/radio-group.js"
+    },
+    "./relative-time": {
+      "types": "./src/relative-time.ts",
+      "import": "./dist/relative-time.js"
     },
     "./separator": {
       "types": "./src/separator.ts",
