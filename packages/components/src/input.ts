@@ -61,13 +61,13 @@ export const adsInputContract = defineComponentContract({
     { name: 'error', description: 'Error container.' },
   ],
   cssCustomProperties: [
-    { name: '--ads-input-min-block-size', default: '2.5rem' },
+    { name: '--ads-input-min-block-size', default: 'var(--ads-size-control-default, 2.25rem)' },
     { name: '--ads-input-padding-inline', default: '0.75rem' },
     { name: '--ads-input-gap', default: '0.5rem' },
-    { name: '--ads-input-border-color', default: '#d7d7dc' },
-    { name: '--ads-input-background', default: '#fff' },
-    { name: '--ads-input-color', default: '#111114' },
-    { name: '--ads-input-radius', default: 'var(--ads-radius-control, 0.375rem)' },
+    { name: '--ads-input-border-color', default: 'var(--ads-color-line-control, #6b6b65)' },
+    { name: '--ads-input-background', default: 'var(--ads-color-surface-default, #fff)' },
+    { name: '--ads-input-color', default: 'var(--ads-color-text-default, #111111)' },
+    { name: '--ads-input-radius', default: 'var(--ads-radius-control, 0px)' },
   ],
   states: [
     { name: 'invalid', description: 'Native constraint validation currently fails.' },
@@ -79,7 +79,7 @@ export class AdsInput extends FormAssociatedElement {
   static override styles = css`
     :host {
       display: block;
-      color: var(--ads-input-color, #111114);
+      color: var(--ads-input-color, var(--ads-color-text-default, #111111));
       font: inherit;
     }
 
@@ -94,39 +94,39 @@ export class AdsInput extends FormAssociatedElement {
 
     [part='label-text'] {
       font-size: var(--ads-input-label-font-size, 0.875rem);
-      font-weight: var(--ads-input-label-font-weight, 600);
+      font-weight: var(--ads-input-label-font-weight, var(--ads-font-weight-medium, 500));
       line-height: 1.3;
     }
 
     [part='control'] {
       box-sizing: border-box;
       display: flex;
-      min-block-size: var(--ads-input-min-block-size, 2.5rem);
+      min-block-size: var(--ads-input-min-block-size, var(--ads-size-control-default, 2.25rem));
       align-items: center;
       gap: var(--ads-input-gap, 0.5rem);
       padding-inline: var(--ads-input-padding-inline, 0.75rem);
-      border: var(--ads-input-border-width, 1px) solid var(--ads-input-border-color, #d7d7dc);
-      border-radius: var(--ads-input-radius, var(--ads-radius-control, 0.375rem));
-      background: var(--ads-input-background, #fff);
+      border: var(--ads-input-border-width, 1px) solid var(--ads-input-border-color, var(--ads-color-line-control, #6b6b65));
+      border-radius: var(--ads-input-radius, var(--ads-radius-control, 0px));
+      background: var(--ads-input-background, var(--ads-color-surface-default, #fff));
       transition:
         border-color var(--ads-motion-duration-fast, 120ms),
         box-shadow var(--ads-motion-duration-fast, 120ms);
     }
 
     [part='control']:focus-within {
-      border-color: var(--ads-input-focus-border-color, currentColor);
+      border-color: var(--ads-input-focus-border-color, var(--ads-color-focus-ring, currentColor));
       box-shadow: 0 0 0 var(--ads-focus-width, 2px)
-        color-mix(in srgb, var(--ads-focus-color, currentColor) 24%, transparent);
+        color-mix(in srgb, var(--ads-focus-color, var(--ads-color-focus-ring, currentColor)) 24%, transparent);
     }
 
     :host(:state(invalid)) [part='control'] {
-      border-color: var(--ads-input-invalid-border-color, #b42318);
+      border-color: var(--ads-input-invalid-border-color, var(--ads-color-state-danger, #9a251f));
     }
 
     :host([disabled]) [part='control'],
     :host(:state(form-disabled)) [part='control'] {
       cursor: not-allowed;
-      opacity: var(--ads-disabled-opacity, 0.5);
+      opacity: var(--ads-disabled-opacity, var(--ads-opacity-disabled, 0.5));
     }
 
     input {
@@ -141,7 +141,7 @@ export class AdsInput extends FormAssociatedElement {
     }
 
     input::placeholder {
-      color: var(--ads-input-placeholder-color, #707078);
+      color: var(--ads-input-placeholder-color, var(--ads-color-text-subtle, #76766f));
       opacity: 1;
     }
 
@@ -158,11 +158,11 @@ export class AdsInput extends FormAssociatedElement {
     }
 
     [part='description'] {
-      color: var(--ads-input-description-color, #606068);
+      color: var(--ads-input-description-color, var(--ads-color-text-muted, #5d5d57));
     }
 
     [part='error'] {
-      color: var(--ads-input-error-color, #b42318);
+      color: var(--ads-input-error-color, var(--ads-color-state-danger, #9a251f));
     }
 
     @media (prefers-reduced-motion: reduce) {
