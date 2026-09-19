@@ -49,9 +49,17 @@ test('select styling is instance-scoped and the integrated checkbox group keeps 
   await page.goto('/#ads-select');
   await expect(page.locator('html')).toHaveAttribute('data-ads-ready', 'true');
   const radius = page.getByRole('textbox', { name: '--ads-select-radius', exact: true });
+  const select = page.locator('#preview-content ads-select select');
+  // A live inspector must update before blur, including the last field in Firefox.
   await radius.fill('12px');
+  await expect(radius).toBeFocused();
+  await expect(select).toHaveCSS('border-radius', '12px');
+  await radius.fill('');
+  await expect(select).toHaveCSS('border-radius', '0px');
+  await radius.fill('12px');
+  await expect(select).toHaveCSS('border-radius', '12px');
   await radius.press('Tab');
-  await expect(page.locator('#preview-content ads-select select')).toHaveCSS('border-radius', '12px');
+  await expect(select).toHaveCSS('border-radius', '12px');
   await expect(page.locator('#command-trigger')).toHaveCSS('border-radius', '0px');
   await page.locator('#component-list a[href="#ads-checkbox-group"]').click();
   await page.locator('#state-controls').getByLabel('disabled', { exact: true }).check();
