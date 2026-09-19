@@ -1,5 +1,6 @@
 import '@a-design-system/components';
 import '@a-design-system/css/minimal-base.css';
+import '@a-design-system/css/minimal-density.css';
 import '@a-design-system/css/minimal-workspace.css';
 import '@a-design-system/css/minimal-command-palette.css';
 import { compileTokens } from '@a-design-system/tokens';
