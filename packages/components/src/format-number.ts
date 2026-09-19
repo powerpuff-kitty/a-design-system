@@ -46,7 +46,7 @@ export class AdsFormatNumber extends LitElement {
 
   @property({ type: Number }) value = 0;
   @property() locale = '';
-  @property() style: AdsNumberStyle = 'decimal';
+  @property({ attribute: 'style' }) formatStyle: AdsNumberStyle = 'decimal';
   @property() currency = '';
   @property() unit = '';
   @property() notation: AdsNumberNotation = 'standard';
@@ -60,7 +60,7 @@ export class AdsFormatNumber extends LitElement {
 
     const options: Intl.NumberFormatOptions = {
       ...this.options,
-      style: this.style,
+      style: this.formatStyle,
       notation: this.notation,
     };
 
