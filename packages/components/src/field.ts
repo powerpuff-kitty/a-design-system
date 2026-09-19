@@ -125,9 +125,10 @@ export class AdsField extends LitElement {
   @query('slot[name="description"]') private descriptionSlot?: HTMLSlotElement;
   @query('slot[name="error"]') private errorSlot?: HTMLSlotElement;
 
-  private ownedLabelTarget?: HTMLElement;
-  private ownedDescriptionTarget?: HTMLElement;
-  private ownedInvalidTarget?: HTMLElement;
+  private managedControlLabel: { control: LabelAwareControl; previous: string } | null = null;
+  private managedAriaLabel: { target: HTMLElement; previous: string | null } | null = null;
+  private managedDescription: { target: HTMLElement; previous: string | null } | null = null;
+  private managedInvalid: { target: HTMLElement; previous: string | null } | null = null;
 
   override firstUpdated(): void {
     this.syncControlContext();
@@ -174,50 +175,128 @@ export class AdsField extends LitElement {
     return slotText(this.labelSlot) || this.label.trim();
   }
 
+  private restoreManagedContext(): void {
+    if (this.managedControlLabel) {
+      this.managedControlLabel.control.label = this.managedControlLabel.previous;
+      this.managedControlLabel = null;
+    }
+
+    if (this.managedAriaLabel) {
+      const { target, previous } = this.managedAriaLabel;
+      if (previous === null) target.removeAttribute('aria-label');
+      else target.setAttribute('aria-label', previous);
+      this.managedAriaLabel = null;
+    }
+
+    if (this.managedDescription) {
+      const { target, previous } = this.managedDescription;
+      if (previous === null) target.removeAttribute('aria-description');
+      else target.setAttribute('aria-description', previous);
+      this.managedDescription = null;
+    }
+
+    if (this.managedInvalid) {
+      const { target, previous } = this.managedInvalid;
+      if (previous === null) target.removeAttribute('aria-invalid');
+      else target.setAttribute('aria-invalid', previous);
+      this.managedInvalid = null;
+    }
+  }
+
   private syncControlContext(): void {
     const control = this.control;
     const target = this.controlTarget;
-    if (!control || !target) return;
+    if (!control || !target) {
+      this.restoreManagedContext();
+      return;
+    }
 
     const label = this.labelText;
     const description = slotText(this.descriptionSlot);
     const error = slotText(this.errorSlot);
 
-    if ('label' in control && typeof control.label === 'string' && label) {
-      control.label = label;
+    if (this.managedControlLabel?.control !== control) {
+      if (this.managedControlLabel) {
+        this.managedControlLabel.control.label = this.managedControlLabel.previous;
+      }
+      this.managedControlLabel = null;
+    }
+
+    if (this.managedAriaLabel?.target !== target) {
+      if (this.managedAriaLabel) {
+        const { target: previousTarget, previous } = this.managedAriaLabel;
+        if (previous === null) previousTarget.removeAttribute('aria-label');
+        else previousTarget.setAttribute('aria-label', previous);
+      }
+      this.managedAriaLabel = null;
+    }
+
+    if ('label' in control && typeof control.label === 'string') {
+      if (label) {
+        if (!this.managedControlLabel) {
+          this.managedControlLabel = { control, previous: control.label };
+        }
+        control.label = label;
+      } else if (this.managedControlLabel) {
+        control.label = this.managedControlLabel.previous;
+        this.managedControlLabel = null;
+      }
     } else if (label) {
-      if (this.ownedLabelTarget && this.ownedLabelTarget !== target) {
-        this.ownedLabelTarget.removeAttribute('aria-label');
+      if (!this.managedAriaLabel) {
+        this.managedAriaLabel = { target, previous: target.getAttribute('aria-label') };
       }
       target.setAttribute('aria-label', label);
-      this.ownedLabelTarget = target;
-    } else if (this.ownedLabelTarget === target) {
-      target.removeAttribute('aria-label');
-      this.ownedLabelTarget = undefined;
+    } else if (this.managedAriaLabel) {
+      const previous = this.managedAriaLabel.previous;
+      if (previous === null) target.removeAttribute('aria-label');
+      else target.setAttribute('aria-label', previous);
+      this.managedAriaLabel = null;
+    }
+
+    if (this.managedDescription?.target !== target) {
+      if (this.managedDescription) {
+        const { target: previousTarget, previous } = this.managedDescription;
+        if (previous === null) previousTarget.removeAttribute('aria-description');
+        else previousTarget.setAttribute('aria-description', previous);
+      }
+      this.managedDescription = null;
     }
 
     const describedText = [description, error].filter(Boolean).join(' ');
     if (describedText) {
-      if (this.ownedDescriptionTarget && this.ownedDescriptionTarget !== target) {
-        this.ownedDescriptionTarget.removeAttribute('aria-description');
+      if (!this.managedDescription) {
+        this.managedDescription = {
+          target,
+          previous: target.getAttribute('aria-description'),
+        };
       }
       target.setAttribute('aria-description', describedText);
-      this.ownedDescriptionTarget = target;
-    } else if (this.ownedDescriptionTarget === target) {
-      target.removeAttribute('aria-description');
-      this.ownedDescriptionTarget = undefined;
+    } else if (this.managedDescription) {
+      const previous = this.managedDescription.previous;
+      if (previous === null) target.removeAttribute('aria-description');
+      else target.setAttribute('aria-description', previous);
+      this.managedDescription = null;
+    }
+
+    if (this.managedInvalid?.target !== target) {
+      if (this.managedInvalid) {
+        const { target: previousTarget, previous } = this.managedInvalid;
+        if (previous === null) previousTarget.removeAttribute('aria-invalid');
+        else previousTarget.setAttribute('aria-invalid', previous);
+      }
+      this.managedInvalid = null;
     }
 
     if (this.invalid || Boolean(error)) {
+      if (!this.managedInvalid) {
+        this.managedInvalid = { target, previous: target.getAttribute('aria-invalid') };
+      }
       target.setAttribute('aria-invalid', 'true');
-      this.ownedInvalidTarget = target;
-    } else if (this.ownedInvalidTarget === target) {
-      target.removeAttribute('aria-invalid');
-      this.ownedInvalidTarget = undefined;
-    }
-
-    if (this.disabled && 'disabled' in control) {
-      control.disabled = true;
+    } else if (this.managedInvalid) {
+      const previous = this.managedInvalid.previous;
+      if (previous === null) target.removeAttribute('aria-invalid');
+      else target.setAttribute('aria-invalid', previous);
+      this.managedInvalid = null;
     }
   }
 
