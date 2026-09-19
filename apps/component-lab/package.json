@@ -8,7 +8,8 @@
     "dev": "vite --host 127.0.0.1 --port 4173 --strictPort"
   },
   "dependencies": {
-    "@a-design-system/components": "workspace:*"
+    "@a-design-system/components": "workspace:*",
+    "@a-design-system/tokens": "workspace:*"
   },
   "devDependencies": {
     "vite": "^8.3.0"
