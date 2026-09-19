@@ -18,15 +18,29 @@
         <a href="#workspace">Workspace</a>
         <a href="#tokens">Tokens</a>
       </nav>
-      <label class="theme-control">
-        <span>Theme</span>
-        <select id="theme-select">
-          <option value="minimal-light">Minimal Light</option>
-          <option value="minimal-dark">Minimal Dark</option>
-          <option value="minimal-high-contrast">High Contrast</option>
-        </select>
-      </label>
+      <div class="header-actions">
+        <button id="command-trigger" class="command-trigger" type="button" aria-haspopup="dialog" aria-controls="command-palette">
+          <span>Commands</span><kbd>⌘ K</kbd>
+        </button>
+        <label class="theme-control">
+          <span>Theme</span>
+          <select id="theme-select">
+            <option value="minimal-light">Minimal Light</option>
+            <option value="minimal-dark">Minimal Dark</option>
+            <option value="minimal-high-contrast">High Contrast</option>
+          </select>
+        </label>
+      </div>
     </header>
+
+    <dialog id="command-palette" class="ads-command-palette" aria-label="Command palette">
+      <label class="ads-command-palette__search">
+        <span aria-hidden="true">⌘</span>
+        <input id="command-search" type="search" aria-label="Search commands" autocomplete="off" placeholder="Tool, section, theme…" />
+        <kbd>ESC</kbd>
+      </label>
+      <div id="command-results" class="ads-command-palette__list" role="listbox" aria-label="Commands"></div>
+    </dialog>
 
     <main>
       <section class="hero">
