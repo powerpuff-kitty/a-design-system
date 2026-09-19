@@ -431,6 +431,10 @@
           "value": 44,
           "unit": "px"
         }
+      },
+      "current": {
+        "$type": "dimension",
+        "$value": "{size.control.default}"
       }
     },
     "target": {
