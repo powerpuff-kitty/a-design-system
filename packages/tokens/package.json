@@ -5,7 +5,7 @@
   "sideEffects": false,
   "types": "./src/index.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && node scripts/build-minimal-themes.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run"
   },
@@ -17,7 +17,11 @@
     "./tokens.json": "./src/tokens.json",
     "./themes/minimal-light.json": "./src/themes/minimal-light.json",
     "./themes/minimal-dark.json": "./src/themes/minimal-dark.json",
-    "./themes/minimal-high-contrast.json": "./src/themes/minimal-high-contrast.json"
+    "./themes/minimal-high-contrast.json": "./src/themes/minimal-high-contrast.json",
+    "./themes/minimal.css": "./dist/themes/minimal.css",
+    "./themes/minimal-light.css": "./dist/themes/minimal-light.css",
+    "./themes/minimal-dark.css": "./dist/themes/minimal-dark.css",
+    "./themes/minimal-high-contrast.css": "./dist/themes/minimal-high-contrast.css"
   },
   "files": [
     "dist",
