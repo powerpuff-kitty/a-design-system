@@ -11,6 +11,7 @@ import minimalHighContrast from '@a-design-system/tokens/themes/minimal-high-con
 import './styles.css';
 
 type ThemeId = 'minimal-light' | 'minimal-dark' | 'minimal-high-contrast';
+type DensityId = 'compact' | 'default' | 'comfortable';
 type DocsCommand = CommandPaletteItem & Readonly<{
   group: 'Navigate' | 'Theme';
   shortcut?: string;
@@ -24,6 +25,7 @@ const themes = {
 } as const;
 
 const select = document.querySelector<HTMLSelectElement>('#theme-select');
+const densitySelect = document.querySelector<HTMLSelectElement>('#density-select');
 const themeStyle = document.createElement('style');
 themeStyle.id = 'ads-docs-theme';
 document.head.append(themeStyle);
@@ -46,6 +48,22 @@ function initialTheme(): ThemeId {
   return 'minimal-light';
 }
 
+function applyDensity(id: DensityId): void {
+  document.documentElement.dataset.adsDensity = id;
+  if (densitySelect) densitySelect.value = id;
+  try { localStorage.setItem('ads.docs.density', id); } catch { /* Density preference is optional. */ }
+}
+
+function initialDensity(): DensityId {
+  const query = new URLSearchParams(location.search).get('density');
+  if (query === 'compact' || query === 'comfortable' || query === 'default') return query;
+  try {
+    const saved = localStorage.getItem('ads.docs.density');
+    if (saved === 'compact' || saved === 'comfortable' || saved === 'default') return saved;
+  } catch { /* Ignore unavailable storage. */ }
+  return 'default';
+}
+
 const initial = initialTheme();
 if (select) {
   select.value = initial;
@@ -55,6 +73,15 @@ if (select) {
   });
 }
 applyTheme(initial);
+const density = initialDensity();
+if (densitySelect) {
+  densitySelect.value = density;
+  densitySelect.addEventListener('change', () => {
+    const value = densitySelect.value;
+    if (value === 'compact' || value === 'comfortable' || value === 'default') applyDensity(value);
+  });
+}
+applyDensity(density);
 
 const dialog = document.querySelector<HTMLDialogElement>('#command-palette');
 const trigger = document.querySelector<HTMLButtonElement>('#command-trigger');
