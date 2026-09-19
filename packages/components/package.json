@@ -17,17 +17,53 @@
       "types": "./src/index.ts",
       "import": "./dist/index.js"
     },
+    "./avatar": {
+      "types": "./src/avatar.ts",
+      "import": "./dist/avatar.js"
+    },
+    "./badge": {
+      "types": "./src/badge.ts",
+      "import": "./dist/badge.js"
+    },
     "./button": {
       "types": "./src/button.ts",
       "import": "./dist/button.js"
+    },
+    "./button-group": {
+      "types": "./src/button-group.ts",
+      "import": "./dist/button-group.js"
+    },
+    "./card": {
+      "types": "./src/card.ts",
+      "import": "./dist/card.js"
     },
     "./checkbox": {
       "types": "./src/checkbox.ts",
       "import": "./dist/checkbox.js"
     },
+    "./code": {
+      "types": "./src/code.ts",
+      "import": "./dist/code.js"
+    },
+    "./copy-button": {
+      "types": "./src/copy-button.ts",
+      "import": "./dist/copy-button.js"
+    },
+    "./icon-button": {
+      "types": "./src/icon-button.ts",
+      "import": "./dist/icon-button.js"
+    },
     "./input": {
       "types": "./src/input.ts",
       "import": "./dist/input.js"
+    },
+    "./kbd": {
+      "types": "./src/kbd.ts",
+      "import": "./dist/kbd.js"
+    },
+    "./link": {
+      "types": "./src/link.ts",
+      "import": "./dist/link.js"
     },
     "./radio": {
       "types": "./src/radio.ts",
@@ -36,6 +72,14 @@
     "./radio-group": {
       "types": "./src/radio-group.ts",
       "import": "./dist/radio-group.js"
+    },
+    "./separator": {
+      "types": "./src/separator.ts",
+      "import": "./dist/separator.js"
+    },
+    "./tag": {
+      "types": "./src/tag.ts",
+      "import": "./dist/tag.js"
     },
     "./textarea": {
       "types": "./src/textarea.ts",
