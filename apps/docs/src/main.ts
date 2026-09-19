@@ -183,17 +183,26 @@ function renderInspector(): void {
     const input = document.createElement('input');
     input.type = 'text'; input.placeholder = token.default ?? 'Inherited / fallback';
     input.setAttribute('aria-label', token.name);
-    input.addEventListener('change', () => {
+    const applyOverride = (reportError = false): void => {
       const value = input.value.trim();
       // Set one allowlisted property, never execute or interpolate user-authored CSS rules.
       const unsafe = /[;{}<>@]/.test(value) || /(?:url|image-set|expression)\s*\(/i.test(value);
       input.setCustomValidity(unsafe ? 'Use a CSS value without rules, URLs, or external resources.' : '');
       input.setAttribute('aria-invalid', String(unsafe));
-      if (unsafe) { input.reportValidity(); return; }
+      if (unsafe) {
+        if (reportError) input.reportValidity();
+        return;
+      }
       if (value) control.style.setProperty(token.name, value);
       else control.style.removeProperty(token.name);
       renderResolvedTokens();
+    };
+    // Live previews must not depend on the last inspector field losing browser focus.
+    input.addEventListener('input', (event) => {
+      if (!(event as InputEvent).isComposing) applyOverride();
     });
+    input.addEventListener('compositionend', () => applyOverride());
+    input.addEventListener('change', () => applyOverride(true));
     label.append(name, input); tokenControls.append(label);
   }
 }
