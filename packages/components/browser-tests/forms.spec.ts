@@ -29,25 +29,37 @@ test.describe('form-associated ADS controls', () => {
     const nativeInput = host.locator('input');
 
     await expect(nativeInput).toHaveValue('start@example.com');
-    expect(await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity())).toBe(true);
+    expect(
+      await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity()),
+    ).toBe(true);
 
     await nativeInput.fill('next@example.com');
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ email: 'next@example.com' });
 
     await nativeInput.fill('not-an-email');
-    expect(await host.evaluate((element: HTMLElement & { checkValidity(): boolean }) => element.checkValidity())).toBe(false);
-    expect(await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity())).toBe(false);
+    expect(
+      await host.evaluate((element: HTMLElement & { checkValidity(): boolean }) =>
+        element.checkValidity(),
+      ),
+    ).toBe(false);
+    expect(
+      await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity()),
+    ).toBe(false);
     await expect(nativeInput).toHaveAttribute('aria-invalid', 'true');
 
     await nativeInput.fill('');
-    expect(await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity())).toBe(false);
+    expect(
+      await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity()),
+    ).toBe(false);
   });
 
-  test('ads-input resets to its initial value and disabled inputs leave FormData', async ({ page }) => {
+  test('ads-input resets to its initial value and disabled inputs leave FormData', async ({
+    page,
+  }) => {
     await page.locator('#sandbox').evaluate((sandbox) => {
       sandbox.innerHTML = `
         <form id="form">
@@ -64,20 +76,22 @@ test.describe('form-associated ADS controls', () => {
     await expect(nativeInput).toHaveValue('initial');
 
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ query: 'initial' });
 
     await host.evaluate((element) => element.setAttribute('disabled', ''));
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({});
   });
 
-  test('fieldset disabled state does not become a sticky component disabled attribute', async ({ page }) => {
+  test('fieldset disabled state does not become a sticky component disabled attribute', async ({
+    page,
+  }) => {
     await page.locator('#sandbox').evaluate((sandbox) => {
       sandbox.innerHTML = `
         <form id="form">
@@ -102,9 +116,9 @@ test.describe('form-associated ADS controls', () => {
     await expect(buttonHost.locator('button')).toBeDisabled();
 
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({});
 
     await page.locator('#fieldset').evaluate((fieldset: HTMLFieldSetElement) => {
@@ -128,9 +142,9 @@ test.describe('form-associated ADS controls', () => {
     await expect(buttonHost.locator('button')).toBeEnabled();
 
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ query: 'hello', notes: 'world' });
   });
 
@@ -148,20 +162,26 @@ test.describe('form-associated ADS controls', () => {
       const form = document.querySelector<HTMLFormElement>('#form');
       if (!form) throw new Error('Test form not found');
 
-      (window as Window & { adsSubmissions?: Array<Record<string, FormDataEntryValue>> }).adsSubmissions = [];
+      (
+        window as Window & { adsSubmissions?: Array<Record<string, FormDataEntryValue>> }
+      ).adsSubmissions = [];
       form.addEventListener('submit', (event) => {
         event.preventDefault();
         const submitEvent = event as SubmitEvent;
         const data = Object.fromEntries(new FormData(form, submitEvent.submitter).entries());
-        (window as Window & { adsSubmissions: Array<Record<string, FormDataEntryValue>> }).adsSubmissions.push(data);
+        (
+          window as Window & { adsSubmissions: Array<Record<string, FormDataEntryValue>> }
+        ).adsSubmissions.push(data);
       });
     });
 
     const submitButton = page.locator('ads-button').locator('button');
     await submitButton.click();
     expect(
-      await page.evaluate(() =>
-        (window as Window & { adsSubmissions?: Array<Record<string, FormDataEntryValue>> }).adsSubmissions?.length,
+      await page.evaluate(
+        () =>
+          (window as Window & { adsSubmissions?: Array<Record<string, FormDataEntryValue>> })
+            .adsSubmissions?.length,
       ),
     ).toBe(0);
 
@@ -169,8 +189,10 @@ test.describe('form-associated ADS controls', () => {
     await submitButton.click();
 
     expect(
-      await page.evaluate(() =>
-        (window as Window & { adsSubmissions?: Array<Record<string, FormDataEntryValue>> }).adsSubmissions,
+      await page.evaluate(
+        () =>
+          (window as Window & { adsSubmissions?: Array<Record<string, FormDataEntryValue>> })
+            .adsSubmissions,
       ),
     ).toEqual([{ email: 'valid@example.com', intent: 'save' }]);
   });
@@ -189,5 +211,80 @@ test.describe('form-associated ADS controls', () => {
     await input.fill('changed');
     await page.locator('ads-button').locator('button').click();
     await expect(input).toHaveValue('initial');
+  });
+
+  test('ads-select participates in FormData, validation, and reset', async ({ page }) => {
+    await page.locator('#sandbox').evaluate((sandbox) => {
+      sandbox.innerHTML = `
+        <form id="form">
+          <ads-select name="country" label="Country" required value="be">
+            <option value="">Choose a country</option>
+            <option value="be">Belgium</option>
+            <option value="nl">Netherlands</option>
+          </ads-select>
+        </form>
+      `;
+    });
+
+    const host = page.locator('ads-select');
+    const select = host.locator('select');
+    await expect(select).toHaveValue('be');
+    expect(
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
+    ).toEqual({ country: 'be' });
+
+    await select.selectOption('');
+    expect(
+      await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity()),
+    ).toBe(false);
+    await select.selectOption('nl');
+    expect(
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
+    ).toEqual({ country: 'nl' });
+
+    await page.locator('#form').evaluate((form: HTMLFormElement) => form.reset());
+    await expect(select).toHaveValue('be');
+  });
+
+  test('ads-slider participates in FormData and fieldset disabled state', async ({ page }) => {
+    await page.locator('#sandbox').evaluate((sandbox) => {
+      sandbox.innerHTML = `
+        <form id="form">
+          <fieldset id="fieldset">
+            <ads-slider name="volume" label="Volume" value="25"></ads-slider>
+          </fieldset>
+        </form>
+      `;
+    });
+
+    const slider = page.locator('ads-slider');
+    const input = slider.locator('input');
+    await expect(input).toHaveValue('25');
+    expect(
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
+    ).toEqual({ volume: '25' });
+
+    await input.fill('60');
+    expect(
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
+    ).toEqual({ volume: '60' });
+
+    await page.locator('#fieldset').evaluate((fieldset: HTMLFieldSetElement) => {
+      fieldset.disabled = true;
+    });
+    await expect(input).toBeDisabled();
+    expect(
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
+    ).toEqual({});
   });
 });

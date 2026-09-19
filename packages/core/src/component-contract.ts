@@ -71,7 +71,9 @@ export interface AdsComponentContract {
  * Defines and validates the machine-readable contract used to generate docs,
  * manifests, framework adapters, registry metadata, and compatibility checks.
  */
-export function defineComponentContract<const T extends AdsComponentContract>(contract: T): Readonly<T> {
+export function defineComponentContract<const T extends AdsComponentContract>(
+  contract: T,
+): Readonly<T> {
   if (!contract.tagName.includes('-')) {
     throw new TypeError(`Custom element tag must contain a hyphen: ${contract.tagName}`);
   }
@@ -82,7 +84,9 @@ export function defineComponentContract<const T extends AdsComponentContract>(co
 
   for (const token of contract.cssCustomProperties ?? []) {
     if (!token.name.startsWith('--ads-')) {
-      throw new TypeError(`ADS CSS custom properties must use the --ads-* namespace: ${token.name}`);
+      throw new TypeError(
+        `ADS CSS custom properties must use the --ads-* namespace: ${token.name}`,
+      );
     }
   }
 

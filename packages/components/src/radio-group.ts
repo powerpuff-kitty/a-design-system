@@ -26,7 +26,11 @@ export const adsRadioGroupContract = defineComponentContract({
     { name: 'validationMessage', type: 'string', readonly: true },
   ],
   methods: [
-    { name: 'focus', signature: 'focus(options?: FocusOptions): void', description: 'Focuses the selected radio, or the first enabled option.' },
+    {
+      name: 'focus',
+      signature: 'focus(options?: FocusOptions): void',
+      description: 'Focuses the selected radio, or the first enabled option.',
+    },
     { name: 'setCustomValidity', signature: 'setCustomValidity(message: string): void' },
     { name: 'checkValidity', signature: 'checkValidity(): boolean' },
     { name: 'reportValidity', signature: 'reportValidity(): boolean' },
@@ -232,7 +236,11 @@ export class AdsRadioGroup extends FormAssociatedElement {
     const disabled = this.groupDisabled;
 
     radios.forEach((radio, index) => {
-      radio.setGroupState(index === selectedIndex, !disabled && index === focusIndex ? 0 : -1, disabled);
+      radio.setGroupState(
+        index === selectedIndex,
+        !disabled && index === focusIndex ? 0 : -1,
+        disabled,
+      );
     });
 
     const selected = selectedIndex >= 0 ? radios[selectedIndex] : undefined;
@@ -298,7 +306,7 @@ export class AdsRadioGroup extends FormAssociatedElement {
   private handleKeyDown(event: KeyboardEvent): void {
     if (this.groupDisabled) return;
 
-    let delta: 1 | -1 | 0 = 0;
+    let delta: 1 | -1;
     if (event.key === 'ArrowDown') delta = 1;
     else if (event.key === 'ArrowUp') delta = -1;
     else if (event.key === 'ArrowRight') {

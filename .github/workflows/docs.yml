@@ -1,0 +1,62 @@
+name: Docs
+
+on:
+  pull_request:
+    paths:
+      - apps/docs/**
+      - packages/components/**
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - .node-version
+      - .github/workflows/docs.yml
+  push:
+    branches: [main]
+    paths:
+      - apps/docs/**
+      - packages/components/**
+      - package.json
+      - pnpm-lock.yaml
+      - pnpm-workspace.yaml
+      - .node-version
+      - .github/workflows/docs.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build static docs site
+        run: |
+          pnpm check:docs
+          pnpm --filter @a-design-system/docs typecheck
+          pnpm docs:build
+
+      - name: Upload deployable docs artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: docs-site
+          path: apps/docs/dist/
+          if-no-files-found: error
+          retention-days: 7

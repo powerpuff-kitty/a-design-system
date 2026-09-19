@@ -37,10 +37,22 @@ export const adsTextareaContract = defineComponentContract({
     { name: 'selectionDirection', type: "'forward' | 'backward' | 'none'", readonly: true },
   ],
   methods: [
-    { name: 'focus', signature: 'focus(options?: FocusOptions): void', description: 'Focuses the internal native textarea.' },
-    { name: 'blur', signature: 'blur(): void', description: 'Removes focus from the internal native textarea.' },
+    {
+      name: 'focus',
+      signature: 'focus(options?: FocusOptions): void',
+      description: 'Focuses the internal native textarea.',
+    },
+    {
+      name: 'blur',
+      signature: 'blur(): void',
+      description: 'Removes focus from the internal native textarea.',
+    },
     { name: 'select', signature: 'select(): void', description: 'Selects the full text value.' },
-    { name: 'setSelectionRange', signature: "setSelectionRange(start: number, end: number, direction?: 'forward' | 'backward' | 'none'): void" },
+    {
+      name: 'setSelectionRange',
+      signature:
+        "setSelectionRange(start: number, end: number, direction?: 'forward' | 'backward' | 'none'): void",
+    },
     { name: 'setCustomValidity', signature: 'setCustomValidity(message: string): void' },
     { name: 'checkValidity', signature: 'checkValidity(): boolean' },
     { name: 'reportValidity', signature: 'reportValidity(): boolean' },
@@ -196,7 +208,9 @@ export class AdsTextarea extends FormAssociatedElement {
   }
 
   get selectionDirection(): AdsSelectionDirection {
-    return (this.textareaElement?.selectionDirection as AdsSelectionDirection | undefined) ?? 'none';
+    return (
+      (this.textareaElement?.selectionDirection as AdsSelectionDirection | undefined) ?? 'none'
+    );
   }
 
   override connectedCallback(): void {

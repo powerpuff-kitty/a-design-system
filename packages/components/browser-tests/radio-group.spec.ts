@@ -36,32 +36,38 @@ test.describe('ads-radio-group', () => {
     await expect(page.getByRole('radio', { name: 'Pro' })).toHaveCount(1);
     await expect(page.getByRole('radio', { name: 'Team' })).toBeDisabled();
 
-    expect(await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity())).toBe(false);
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity()),
+    ).toBe(false);
+    expect(
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({});
-    expect(await inputs.evaluateAll((elements) => elements.map((element) => (element as HTMLInputElement).tabIndex))).toEqual([
-      0,
-      -1,
-      -1,
-    ]);
+    expect(
+      await inputs.evaluateAll((elements) =>
+        elements.map((element) => (element as HTMLInputElement).tabIndex),
+      ),
+    ).toEqual([0, -1, -1]);
 
     await inputs.nth(1).check();
     await expect(inputs.nth(1)).toBeChecked();
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('pro');
-    expect(await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity())).toBe(true);
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'pro',
+    );
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity()),
+    ).toBe(true);
+    expect(
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ plan: 'pro' });
-    expect(await inputs.evaluateAll((elements) => elements.map((element) => (element as HTMLInputElement).tabIndex))).toEqual([
-      -1,
-      0,
-      -1,
-    ]);
+    expect(
+      await inputs.evaluateAll((elements) =>
+        elements.map((element) => (element as HTMLInputElement).tabIndex),
+      ),
+    ).toEqual([-1, 0, -1]);
   });
 
   test('dispatches group input/change once for a new user selection', async ({ page }) => {
@@ -78,22 +84,24 @@ test.describe('ads-radio-group', () => {
       const group = document.querySelector('ads-radio-group');
       if (!group) throw new Error('radio group not found');
       (window as Window & { radioEvents?: string[] }).radioEvents = [];
-      group.addEventListener('input', () => (window as Window & { radioEvents: string[] }).radioEvents.push('input'));
-      group.addEventListener('change', () => (window as Window & { radioEvents: string[] }).radioEvents.push('change'));
+      group.addEventListener('input', () =>
+        (window as Window & { radioEvents: string[] }).radioEvents.push('input'),
+      );
+      group.addEventListener('change', () =>
+        (window as Window & { radioEvents: string[] }).radioEvents.push('change'),
+      );
     });
 
     const inputs = radioInputs(page.locator('ads-radio-group'));
     await inputs.nth(1).check();
-    expect(await page.evaluate(() => (window as Window & { radioEvents?: string[] }).radioEvents)).toEqual([
-      'input',
-      'change',
-    ]);
+    expect(
+      await page.evaluate(() => (window as Window & { radioEvents?: string[] }).radioEvents),
+    ).toEqual(['input', 'change']);
 
     await inputs.nth(1).click();
-    expect(await page.evaluate(() => (window as Window & { radioEvents?: string[] }).radioEvents)).toEqual([
-      'input',
-      'change',
-    ]);
+    expect(
+      await page.evaluate(() => (window as Window & { radioEvents?: string[] }).radioEvents),
+    ).toEqual(['input', 'change']);
   });
 
   test('arrow keys select, focus, skip disabled options, and wrap', async ({ page }) => {
@@ -112,20 +120,30 @@ test.describe('ads-radio-group', () => {
 
     await inputs.nth(0).focus();
     await page.keyboard.press('ArrowRight');
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('three');
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'three',
+    );
     await expect(inputs.nth(2)).toBeChecked();
-    expect(await inputs.nth(2).evaluate((element) => element === element.getRootNode().activeElement)).toBe(true);
+    expect(
+      await inputs.nth(2).evaluate((element) => element === element.getRootNode().activeElement),
+    ).toBe(true);
 
     await page.keyboard.press('ArrowDown');
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('one');
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'one',
+    );
     await expect(inputs.nth(0)).toBeChecked();
 
     await page.keyboard.press('ArrowLeft');
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('three');
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'three',
+    );
     await expect(inputs.nth(2)).toBeChecked();
 
     await page.keyboard.press('ArrowUp');
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('one');
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'one',
+    );
     await expect(inputs.nth(0)).toBeChecked();
   });
 
@@ -147,11 +165,15 @@ test.describe('ads-radio-group', () => {
     await inputs.nth(0).focus();
 
     await page.keyboard.press('ArrowRight');
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('c');
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'c',
+    );
     await expect(inputs.nth(2)).toBeChecked();
 
     await page.keyboard.press('ArrowLeft');
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('a');
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'a',
+    );
     await expect(inputs.nth(0)).toBeChecked();
   });
 
@@ -172,18 +194,24 @@ test.describe('ads-radio-group', () => {
     const inputs = radioInputs(group);
 
     await group.evaluate((element: HTMLElement & { focus(): void }) => element.focus());
-    expect(await inputs.nth(1).evaluate((element) => element === element.getRootNode().activeElement)).toBe(true);
+    expect(
+      await inputs.nth(1).evaluate((element) => element === element.getRootNode().activeElement),
+    ).toBe(true);
 
     await inputs.nth(2).check();
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('large');
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'large',
+    );
 
     await page.locator('#form').evaluate((form: HTMLFormElement) => form.reset());
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('medium');
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'medium',
+    );
     await expect(inputs.nth(1)).toBeChecked();
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ size: 'medium' });
   });
 
@@ -200,16 +228,20 @@ test.describe('ads-radio-group', () => {
     });
 
     const group = page.locator('ads-radio-group');
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('blue');
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'blue',
+    );
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ color: 'blue' });
 
     await radioInputs(group).nth(0).check();
     await page.locator('#form').evaluate((form: HTMLFormElement) => form.reset());
-    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe('blue');
+    expect(await group.evaluate((element: HTMLElement & { value: string }) => element.value)).toBe(
+      'blue',
+    );
   });
 
   test('fieldset disabling is reversible and omits the group from FormData', async ({ page }) => {
@@ -232,9 +264,9 @@ test.describe('ads-radio-group', () => {
     await expect(inputs.nth(0)).toBeDisabled();
     await expect(inputs.nth(1)).toBeDisabled();
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({});
 
     await page.locator('#fieldset').evaluate((fieldset: HTMLFieldSetElement) => {
@@ -247,9 +279,9 @@ test.describe('ads-radio-group', () => {
     await expect(group).not.toHaveAttribute('disabled', '');
     await expect(inputs.nth(0)).toBeEnabled();
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ mode: 'auto' });
   });
 

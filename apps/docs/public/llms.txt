@@ -1,0 +1,13 @@
+# A Design System
+
+Open-source, standards-first Web Components and design tokens.
+
+## Primary references
+
+- Component catalogue: /#catalog
+- Component contracts: /packages/components/custom-elements.json
+- API snapshot: /packages/components/api-snapshot.json
+- Token documentation: /docs/tokens.md
+- Contribution guide: /CONTRIBUTING.md
+
+Use the generated custom-elements metadata as the source of truth for tags, attributes, properties, slots, parts, events, and maturity.

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "type": "module",
   "sideEffects": true,
-  "types": "./src/index.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -14,37 +14,242 @@
   },
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
     "./button": {
-      "types": "./src/button.ts",
+      "types": "./dist/button.d.ts",
       "import": "./dist/button.js"
     },
     "./checkbox": {
-      "types": "./src/checkbox.ts",
+      "types": "./dist/checkbox.d.ts",
       "import": "./dist/checkbox.js"
     },
     "./input": {
-      "types": "./src/input.ts",
+      "types": "./dist/input.d.ts",
       "import": "./dist/input.js"
     },
     "./radio": {
-      "types": "./src/radio.ts",
+      "types": "./dist/radio.d.ts",
       "import": "./dist/radio.js"
     },
     "./radio-group": {
-      "types": "./src/radio-group.ts",
+      "types": "./dist/radio-group.d.ts",
       "import": "./dist/radio-group.js"
     },
     "./textarea": {
-      "types": "./src/textarea.ts",
+      "types": "./dist/textarea.d.ts",
       "import": "./dist/textarea.js"
     },
+    "./link": {
+      "types": "./dist/link.d.ts",
+      "import": "./dist/link.js"
+    },
+    "./icon-button": {
+      "types": "./dist/icon-button.d.ts",
+      "import": "./dist/icon-button.js"
+    },
+    "./button-group": {
+      "types": "./dist/button-group.d.ts",
+      "import": "./dist/button-group.js"
+    },
+    "./breadcrumb": {
+      "types": "./dist/breadcrumb.d.ts",
+      "import": "./dist/breadcrumb.js"
+    },
+    "./avatar": {
+      "types": "./dist/avatar.d.ts",
+      "import": "./dist/avatar.js"
+    },
+    "./badge": {
+      "types": "./dist/badge.d.ts",
+      "import": "./dist/badge.js"
+    },
+    "./tag": {
+      "types": "./dist/tag.d.ts",
+      "import": "./dist/tag.js"
+    },
+    "./card": {
+      "types": "./dist/card.d.ts",
+      "import": "./dist/card.js"
+    },
+    "./separator": {
+      "types": "./dist/separator.d.ts",
+      "import": "./dist/separator.js"
+    },
+    "./kbd": {
+      "types": "./dist/kbd.d.ts",
+      "import": "./dist/kbd.js"
+    },
+    "./code": {
+      "types": "./dist/code.d.ts",
+      "import": "./dist/code.js"
+    },
+    "./copy-button": {
+      "types": "./dist/copy-button.d.ts",
+      "import": "./dist/copy-button.js"
+    },
+    "./alert": {
+      "types": "./dist/alert.d.ts",
+      "import": "./dist/alert.js"
+    },
+    "./callout": {
+      "types": "./dist/callout.d.ts",
+      "import": "./dist/callout.js"
+    },
+    "./spinner": {
+      "types": "./dist/spinner.d.ts",
+      "import": "./dist/spinner.js"
+    },
+    "./skeleton": {
+      "types": "./dist/skeleton.d.ts",
+      "import": "./dist/skeleton.js"
+    },
+    "./progress": {
+      "types": "./dist/progress.d.ts",
+      "import": "./dist/progress.js"
+    },
+    "./visually-hidden": {
+      "types": "./dist/visually-hidden.d.ts",
+      "import": "./dist/visually-hidden.js"
+    },
+    "./progress-ring": {
+      "types": "./dist/progress-ring.d.ts",
+      "import": "./dist/progress-ring.js"
+    },
+    "./toast": {
+      "types": "./dist/toast.d.ts",
+      "import": "./dist/toast.js"
+    },
+    "./toast-item": {
+      "types": "./dist/toast-item.d.ts",
+      "import": "./dist/toast-item.js"
+    },
+    "./field": {
+      "types": "./dist/field.d.ts",
+      "import": "./dist/field.js"
+    },
+    "./label": {
+      "types": "./dist/label.d.ts",
+      "import": "./dist/label.js"
+    },
+    "./description": {
+      "types": "./dist/description.d.ts",
+      "import": "./dist/description.js"
+    },
+    "./dialog": {
+      "types": "./dist/dialog.d.ts",
+      "import": "./dist/dialog.js"
+    },
+    "./alert-dialog": {
+      "types": "./dist/alert-dialog.d.ts",
+      "import": "./dist/alert-dialog.js"
+    },
+    "./popover": {
+      "types": "./dist/popover.d.ts",
+      "import": "./dist/popover.js"
+    },
+    "./menu": {
+      "types": "./dist/menu.d.ts",
+      "import": "./dist/menu.js"
+    },
+    "./drawer": {
+      "types": "./dist/drawer.d.ts",
+      "import": "./dist/drawer.js"
+    },
+    "./error": {
+      "types": "./dist/error.d.ts",
+      "import": "./dist/error.js"
+    },
+    "./switch": {
+      "types": "./dist/switch.d.ts",
+      "import": "./dist/switch.js"
+    },
+    "./search-input": {
+      "types": "./dist/search-input.d.ts",
+      "import": "./dist/search-input.js"
+    },
+    "./password-input": {
+      "types": "./dist/password-input.d.ts",
+      "import": "./dist/password-input.js"
+    },
+    "./pagination": {
+      "types": "./dist/pagination.d.ts",
+      "import": "./dist/pagination.js"
+    },
+    "./stepper": {
+      "types": "./dist/stepper.d.ts",
+      "import": "./dist/stepper.js"
+    },
+    "./number-input": {
+      "types": "./dist/number-input.d.ts",
+      "import": "./dist/number-input.js"
+    },
+    "./slider": {
+      "types": "./dist/slider.d.ts",
+      "import": "./dist/slider.js"
+    },
+    "./range-slider": {
+      "types": "./dist/range-slider.d.ts",
+      "import": "./dist/range-slider.js"
+    },
+    "./checkbox-group": {
+      "types": "./dist/checkbox-group.d.ts",
+      "import": "./dist/checkbox-group.js"
+    },
+    "./select": {
+      "types": "./dist/select.d.ts",
+      "import": "./dist/select.js"
+    },
+    "./date-input": {
+      "types": "./dist/date-input.d.ts",
+      "import": "./dist/date-input.js"
+    },
+    "./collapsible": {
+      "types": "./dist/collapsible.d.ts",
+      "import": "./dist/collapsible.js"
+    },
+    "./tabs": {
+      "types": "./dist/tabs.d.ts",
+      "import": "./dist/tabs.js"
+    },
+    "./tab": {
+      "types": "./dist/tab.d.ts",
+      "import": "./dist/tab.js"
+    },
+    "./tab-panel": {
+      "types": "./dist/tab-panel.d.ts",
+      "import": "./dist/tab-panel.js"
+    },
+    "./time-input": {
+      "types": "./dist/time-input.d.ts",
+      "import": "./dist/time-input.js"
+    },
+    "./table": {
+      "types": "./dist/table.d.ts",
+      "import": "./dist/table.js"
+    },
+    "./tree": {
+      "types": "./dist/tree.d.ts",
+      "import": "./dist/tree.js"
+    },
     "./runtime": {
-      "types": "./src/runtime/index.ts",
+      "types": "./dist/runtime/index.d.ts",
       "import": "./dist/runtime/index.js"
     }
   },
-  "files": ["dist", "src"]
+  "files": [
+    "dist",
+    "src",
+    "!src/**/*.test.ts"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/powerpuff-kitty/a-design-system.git",
+    "directory": "packages/components"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

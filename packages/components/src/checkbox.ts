@@ -25,9 +25,21 @@ export const adsCheckboxContract = defineComponentContract({
     { name: 'validationMessage', type: 'string', readonly: true },
   ],
   methods: [
-    { name: 'focus', signature: 'focus(options?: FocusOptions): void', description: 'Focuses the internal native checkbox.' },
-    { name: 'blur', signature: 'blur(): void', description: 'Removes focus from the internal native checkbox.' },
-    { name: 'click', signature: 'click(): void', description: 'Activates the native checkbox interaction.' },
+    {
+      name: 'focus',
+      signature: 'focus(options?: FocusOptions): void',
+      description: 'Focuses the internal native checkbox.',
+    },
+    {
+      name: 'blur',
+      signature: 'blur(): void',
+      description: 'Removes focus from the internal native checkbox.',
+    },
+    {
+      name: 'click',
+      signature: 'click(): void',
+      description: 'Activates the native checkbox interaction.',
+    },
     { name: 'setCustomValidity', signature: 'setCustomValidity(message: string): void' },
     { name: 'checkValidity', signature: 'checkValidity(): boolean' },
     { name: 'reportValidity', signature: 'reportValidity(): boolean' },
@@ -162,7 +174,9 @@ export class AdsCheckbox extends FormAssociatedElement {
     [part='description'],
     [part='error'] {
       margin-block-start: var(--ads-checkbox-message-gap, 0.375rem);
-      margin-inline-start: calc(var(--ads-checkbox-size, 1.125rem) + var(--ads-checkbox-gap, 0.5rem));
+      margin-inline-start: calc(
+        var(--ads-checkbox-size, 1.125rem) + var(--ads-checkbox-gap, 0.5rem)
+      );
       font-size: var(--ads-checkbox-message-font-size, 0.8125rem);
       line-height: 1.4;
     }
@@ -280,7 +294,10 @@ export class AdsCheckbox extends FormAssociatedElement {
 
     this.internals.ariaChecked = this.indeterminate ? 'mixed' : String(this.checked);
     this.internals.ariaDisabled = String(disabled);
-    this.setFormValue(disabled || !this.checked ? null : this.value, this.checked ? 'checked' : 'unchecked');
+    this.setFormValue(
+      disabled || !this.checked ? null : this.value,
+      this.checked ? 'checked' : 'unchecked',
+    );
 
     if (this.checked) this.internals.states.add('checked');
     else this.internals.states.delete('checked');

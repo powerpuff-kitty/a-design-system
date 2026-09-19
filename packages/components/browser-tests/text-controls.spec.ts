@@ -10,7 +10,9 @@ test.describe('ADS text controls', () => {
     await openLab(page);
   });
 
-  test('ads-input mirrors native focus, selection, custom validity, and programmatic name semantics', async ({ page }) => {
+  test('ads-input mirrors native focus, selection, custom validity, and programmatic name semantics', async ({
+    page,
+  }) => {
     await page.locator('#sandbox').evaluate((sandbox) => {
       sandbox.innerHTML = `
         <form id="form">
@@ -46,15 +48,18 @@ test.describe('ADS text controls', () => {
 
     expect(
       await host.evaluate((element) => {
-        const control = element as HTMLElement & { selectionStart: number | null; selectionEnd: number | null };
+        const control = element as HTMLElement & {
+          selectionStart: number | null;
+          selectionEnd: number | null;
+        };
         return [control.selectionStart, control.selectionEnd];
       }),
     ).toEqual([0, 11]);
 
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ message: 'hello world' });
 
     expect(
@@ -102,22 +107,32 @@ test.describe('ADS text controls', () => {
 
     await textarea.fill('updated notes');
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ notes: 'updated notes' });
-    expect(await host.evaluate((element: HTMLElement & { checkValidity(): boolean }) => element.checkValidity())).toBe(true);
+    expect(
+      await host.evaluate((element: HTMLElement & { checkValidity(): boolean }) =>
+        element.checkValidity(),
+      ),
+    ).toBe(true);
 
     await textarea.fill('');
-    expect(await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity())).toBe(false);
+    expect(
+      await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity()),
+    ).toBe(false);
     await expect(textarea).toHaveAttribute('aria-invalid', 'true');
 
     await page.locator('#form').evaluate((form: HTMLFormElement) => form.reset());
     await expect(textarea).toHaveValue('initial');
-    expect(await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity())).toBe(true);
+    expect(
+      await page.locator('#form').evaluate((form: HTMLFormElement) => form.checkValidity()),
+    ).toBe(true);
   });
 
-  test('ads-textarea mirrors native focus, selection, custom validity, and disabled semantics', async ({ page }) => {
+  test('ads-textarea mirrors native focus, selection, custom validity, and disabled semantics', async ({
+    page,
+  }) => {
     await page.locator('#sandbox').evaluate((sandbox) => {
       sandbox.innerHTML = `
         <form id="form">
@@ -133,7 +148,11 @@ test.describe('ADS text controls', () => {
         updateComplete: Promise<unknown>;
         name: string;
         focus(): void;
-        setSelectionRange(start: number, end: number, direction?: 'forward' | 'backward' | 'none'): void;
+        setSelectionRange(
+          start: number,
+          end: number,
+          direction?: 'forward' | 'backward' | 'none',
+        ): void;
       };
       control.name = 'body';
       await control.updateComplete;
@@ -148,14 +167,19 @@ test.describe('ADS text controls', () => {
           selectionEnd: number;
           selectionDirection: string;
         };
-        return [control.selectionStart, control.selectionEnd, control.selectionDirection, element.shadowRoot?.activeElement?.tagName];
+        return [
+          control.selectionStart,
+          control.selectionEnd,
+          control.selectionDirection,
+          element.shadowRoot?.activeElement?.tagName,
+        ];
       }),
     ).toEqual([1, 4, 'forward', 'TEXTAREA']);
 
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ body: 'abcdef' });
 
     expect(
@@ -171,15 +195,18 @@ test.describe('ADS text controls', () => {
     ).toEqual([false, 'Custom error']);
 
     await host.evaluate((element) => {
-      const control = element as HTMLElement & { setCustomValidity(message: string): void; disabled: boolean };
+      const control = element as HTMLElement & {
+        setCustomValidity(message: string): void;
+        disabled: boolean;
+      };
       control.setCustomValidity('');
       control.disabled = true;
     });
 
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({});
   });
 });

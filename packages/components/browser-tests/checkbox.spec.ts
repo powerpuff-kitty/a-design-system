@@ -25,15 +25,21 @@ test.describe('ads-checkbox', () => {
 
     expect(await form.evaluate((element: HTMLFormElement) => element.checkValidity())).toBe(false);
     expect(
-      await form.evaluate((element: HTMLFormElement) => Object.fromEntries(new FormData(element).entries())),
+      await form.evaluate((element: HTMLFormElement) =>
+        Object.fromEntries(new FormData(element).entries()),
+      ),
     ).toEqual({});
 
     await input.check();
     await expect(input).toBeChecked();
-    expect(await host.evaluate((element: HTMLElement & { checked: boolean }) => element.checked)).toBe(true);
+    expect(
+      await host.evaluate((element: HTMLElement & { checked: boolean }) => element.checked),
+    ).toBe(true);
     expect(await form.evaluate((element: HTMLFormElement) => element.checkValidity())).toBe(true);
     expect(
-      await form.evaluate((element: HTMLFormElement) => Object.fromEntries(new FormData(element).entries())),
+      await form.evaluate((element: HTMLFormElement) =>
+        Object.fromEntries(new FormData(element).entries()),
+      ),
     ).toEqual({ terms: 'accepted' });
 
     await input.uncheck();
@@ -41,7 +47,9 @@ test.describe('ads-checkbox', () => {
     await expect(input).toHaveAttribute('aria-invalid', 'true');
   });
 
-  test('supports keyboard activation and resets checkedness to its initial state', async ({ page }) => {
+  test('supports keyboard activation and resets checkedness to its initial state', async ({
+    page,
+  }) => {
     await page.locator('#sandbox').evaluate((sandbox) => {
       sandbox.innerHTML = `
         <form id="form">
@@ -60,11 +68,13 @@ test.describe('ads-checkbox', () => {
 
     await page.locator('#form').evaluate((form: HTMLFormElement) => form.reset());
     await expect(input).toBeChecked();
-    expect(await host.evaluate((element: HTMLElement & { checked: boolean }) => element.checked)).toBe(true);
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await host.evaluate((element: HTMLElement & { checked: boolean }) => element.checked),
+    ).toBe(true);
+    expect(
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ feature: 'enabled' });
   });
 
@@ -104,7 +114,9 @@ test.describe('ads-checkbox', () => {
     ).toEqual([true, false]);
   });
 
-  test('fieldset disabling is reversible without creating a disabled attribute', async ({ page }) => {
+  test('fieldset disabling is reversible without creating a disabled attribute', async ({
+    page,
+  }) => {
     await page.locator('#sandbox').evaluate((sandbox) => {
       sandbox.innerHTML = `
         <form id="form">
@@ -121,9 +133,9 @@ test.describe('ads-checkbox', () => {
     await expect(host).not.toHaveAttribute('disabled', '');
     await expect(input).toBeDisabled();
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({});
 
     await page.locator('#fieldset').evaluate((fieldset: HTMLFieldSetElement) => {
@@ -136,9 +148,9 @@ test.describe('ads-checkbox', () => {
     await expect(host).not.toHaveAttribute('disabled', '');
     await expect(input).toBeEnabled();
     expect(
-      await page.locator('#form').evaluate((form: HTMLFormElement) =>
-        Object.fromEntries(new FormData(form).entries()),
-      ),
+      await page
+        .locator('#form')
+        .evaluate((form: HTMLFormElement) => Object.fromEntries(new FormData(form).entries())),
     ).toEqual({ choice: 'yes' });
   });
 
@@ -152,7 +164,9 @@ test.describe('ads-checkbox', () => {
       const checkbox = element as HTMLElement & { click(): void };
       checkbox.click();
     });
-    expect(await host.evaluate((element: HTMLElement & { checked: boolean }) => element.checked)).toBe(true);
+    expect(
+      await host.evaluate((element: HTMLElement & { checked: boolean }) => element.checked),
+    ).toBe(true);
 
     expect(
       await host.evaluate((element) => {

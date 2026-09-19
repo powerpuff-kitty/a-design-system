@@ -14,7 +14,11 @@ export const adsInputContract = defineComponentContract({
   description: 'Form-associated single-line text control backed by a native input.',
   status: 'experimental',
   attributes: [
-    { name: 'type', type: "'text' | 'email' | 'password' | 'search' | 'tel' | 'url'", default: 'text' },
+    {
+      name: 'type',
+      type: "'text' | 'email' | 'password' | 'search' | 'tel' | 'url'",
+      default: 'text',
+    },
     { name: 'name', type: 'string', default: '' },
     { name: 'value', type: 'string', default: '' },
     { name: 'label', type: 'string', default: '' },
@@ -37,10 +41,26 @@ export const adsInputContract = defineComponentContract({
     { name: 'selectionDirection', type: "'forward' | 'backward' | 'none' | null", readonly: true },
   ],
   methods: [
-    { name: 'focus', signature: 'focus(options?: FocusOptions): void', description: 'Focuses the internal native input.' },
-    { name: 'blur', signature: 'blur(): void', description: 'Removes focus from the internal native input.' },
-    { name: 'select', signature: 'select(): void', description: 'Selects the text value when the input type supports selection.' },
-    { name: 'setSelectionRange', signature: "setSelectionRange(start: number, end: number, direction?: 'forward' | 'backward' | 'none'): void" },
+    {
+      name: 'focus',
+      signature: 'focus(options?: FocusOptions): void',
+      description: 'Focuses the internal native input.',
+    },
+    {
+      name: 'blur',
+      signature: 'blur(): void',
+      description: 'Removes focus from the internal native input.',
+    },
+    {
+      name: 'select',
+      signature: 'select(): void',
+      description: 'Selects the text value when the input type supports selection.',
+    },
+    {
+      name: 'setSelectionRange',
+      signature:
+        "setSelectionRange(start: number, end: number, direction?: 'forward' | 'backward' | 'none'): void",
+    },
     { name: 'setCustomValidity', signature: 'setCustomValidity(message: string): void' },
     { name: 'checkValidity', signature: 'checkValidity(): boolean' },
     { name: 'reportValidity', signature: 'reportValidity(): boolean' },
@@ -202,7 +222,9 @@ export class AdsInput extends FormAssociatedElement {
   }
 
   get selectionDirection(): AdsSelectionDirection | null {
-    return (this.inputElement?.selectionDirection as AdsSelectionDirection | null | undefined) ?? null;
+    return (
+      (this.inputElement?.selectionDirection as AdsSelectionDirection | null | undefined) ?? null
+    );
   }
 
   override connectedCallback(): void {

@@ -72,8 +72,7 @@ export class AdsButton extends FormAssociatedElement {
       justify-content: center;
       gap: var(--ads-button-gap, 0.5rem);
       margin: 0;
-      padding: var(--ads-button-padding-block, 0.625rem)
-        var(--ads-button-padding-inline, 0.875rem);
+      padding: var(--ads-button-padding-block, 0.625rem) var(--ads-button-padding-inline, 0.875rem);
       border: var(--ads-button-border-width, 1px) solid transparent;
       border-radius: var(--ads-button-radius, var(--ads-radius-control, 0.375rem));
       font: inherit;
@@ -165,6 +164,18 @@ export class AdsButton extends FormAssociatedElement {
     this.internals.ariaDisabled = String(this.disabled || this.formDisabled || this.loading);
   }
 
+  override click(): void {
+    this.renderRoot.querySelector<HTMLButtonElement>('button')?.click();
+  }
+
+  override focus(options?: FocusOptions): void {
+    this.renderRoot.querySelector<HTMLButtonElement>('button')?.focus(options);
+  }
+
+  override blur(): void {
+    this.renderRoot.querySelector<HTMLButtonElement>('button')?.blur();
+  }
+
   private activateForm(): void {
     const form = this.form;
     if (!form) return;
@@ -214,9 +225,11 @@ export class AdsButton extends FormAssociatedElement {
         aria-busy=${this.loading ? 'true' : 'false'}
         @click=${this.handleClick}
       >
-        ${this.loading
-          ? html`<span part="spinner" aria-hidden="true"></span>`
-          : html`<slot name="start"></slot>`}
+        ${
+          this.loading
+            ? html`<span part="spinner" aria-hidden="true"></span>`
+            : html`<slot name="start"></slot>`
+        }
         <slot></slot>
         <slot name="end"></slot>
       </button>

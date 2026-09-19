@@ -1,4 +1,6 @@
 export interface AdsElementConstructor extends CustomElementConstructor {
+  // TypeScript requires an any[] rest parameter for generic mixin constructors.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   new (...args: any[]): HTMLElement;
 }
 
@@ -42,6 +44,8 @@ export function registerAdsElement<T extends AdsElementConstructor>(
     // A constructor can only be defined once. A subclass preserves behavior
     // while allowing enterprise/custom prefixes without relying on getName().
     const AliasElement = class extends constructor {
+      // Preserve the generic constructor signature required by TypeScript mixins.
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       constructor(...args: any[]) {
         super(...args);
       }

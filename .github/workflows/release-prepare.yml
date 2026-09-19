@@ -1,0 +1,58 @@
+name: Prepare release candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: Version channel for this candidate (does not publish)
+        required: true
+        type: choice
+        default: next
+        options:
+          - next
+          - stable
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .node-version
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - name: Select prerelease mode
+        env:
+          RELEASE_CHANNEL: ${{ inputs.channel }}
+        run: |
+          if [ -f .changeset/pre.json ]; then
+            echo 'Use a checkout outside prerelease mode; existing prereleases are managed through the documented CLI flow.'
+            exit 1
+          fi
+          case "$RELEASE_CHANNEL" in
+            next) pnpm release:pre ;;
+            stable) ;;
+            *) exit 1 ;;
+          esac
+      - run: pnpm release:version
+      - run: pnpm check
+      - run: pnpm exec playwright install --with-deps chromium firefox webkit
+      - run: pnpm test:browser
+      - run: pnpm release:pack
+      - name: Record version changes for review
+        run: |
+          git add -N .changeset packages pnpm-lock.yaml
+          git diff --binary > release-artifacts/version.patch
+      - uses: actions/upload-artifact@v6
+        with:
+          name: release-candidate-${{ inputs.channel }}-${{ github.sha }}
+          path: release-artifacts/
+          if-no-files-found: error
+          retention-days: 14

@@ -19,8 +19,16 @@ export const adsRadioContract = defineComponentContract({
     { name: 'disabled', type: 'boolean', default: 'false' },
   ],
   methods: [
-    { name: 'focus', signature: 'focus(options?: FocusOptions): void', description: 'Focuses the internal native radio input.' },
-    { name: 'blur', signature: 'blur(): void', description: 'Removes focus from the internal native radio input.' },
+    {
+      name: 'focus',
+      signature: 'focus(options?: FocusOptions): void',
+      description: 'Focuses the internal native radio input.',
+    },
+    {
+      name: 'blur',
+      signature: 'blur(): void',
+      description: 'Removes focus from the internal native radio input.',
+    },
   ],
   events: [
     {

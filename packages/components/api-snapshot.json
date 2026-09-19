@@ -1,0 +1,3093 @@
+{
+  "version": 1,
+  "components": {
+    "ads-popover": {
+      "description": "Displays contextual content from a trigger.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "placement",
+          "type": "'bottom-start' | 'bottom-end' | 'top-start' | 'top-end'",
+          "default": "bottom-start"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open",
+          "type": "boolean"
+        },
+        {
+          "name": "placement",
+          "type": "'bottom-start' | 'bottom-end' | 'top-start' | 'top-end'"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-toggle",
+          "description": "Fired when the popover opens or closes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "Content for the popover trigger."
+        },
+        {
+          "name": "default",
+          "description": "Content displayed in the popover."
+        }
+      ],
+      "parts": [
+        {
+          "name": "trigger",
+          "description": "The popover trigger button."
+        },
+        {
+          "name": "popover",
+          "description": "The contextual content surface."
+        }
+      ],
+      "states": []
+    },
+    "ads-dialog": {
+      "description": "A modal dialog backed by the native dialog element.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-close",
+          "description": "Fired when the dialog closes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "title",
+          "description": "Dialog title."
+        },
+        {
+          "name": "default",
+          "description": "Dialog content."
+        },
+        {
+          "name": "actions",
+          "description": "Dialog actions."
+        }
+      ],
+      "parts": [
+        {
+          "name": "dialog",
+          "description": "The native dialog."
+        },
+        {
+          "name": "title",
+          "description": "The dialog title."
+        },
+        {
+          "name": "content",
+          "description": "The dialog content."
+        },
+        {
+          "name": "actions",
+          "description": "The dialog actions."
+        }
+      ],
+      "states": []
+    },
+    "ads-alert-dialog": {
+      "description": "A modal confirmation dialog for urgent, consequential actions.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-close",
+          "description": "Fired when the alert dialog closes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "title",
+          "description": "The alert dialog title."
+        },
+        {
+          "name": "description",
+          "description": "The alert dialog message."
+        },
+        {
+          "name": "actions",
+          "description": "Confirmation and cancellation actions."
+        }
+      ],
+      "parts": [
+        {
+          "name": "dialog",
+          "description": "The native modal alert dialog."
+        }
+      ],
+      "states": []
+    },
+    "ads-stepper": {
+      "description": "Shows progress through an ordered workflow.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "current",
+          "type": "number",
+          "default": "1"
+        }
+      ],
+      "properties": [
+        {
+          "name": "current",
+          "type": "number"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Step elements."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-pagination": {
+      "description": "Navigates between pages of a collection.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "page",
+          "type": "number",
+          "default": "1"
+        },
+        {
+          "name": "pages",
+          "type": "number",
+          "default": "1"
+        }
+      ],
+      "properties": [
+        {
+          "name": "page",
+          "type": "number"
+        },
+        {
+          "name": "pages",
+          "type": "number"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-change",
+          "description": "Fired when the page changes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [],
+      "parts": [
+        {
+          "name": "pagination",
+          "description": "The pagination navigation."
+        }
+      ],
+      "states": []
+    },
+    "ads-breadcrumb": {
+      "description": "Provides a hierarchical path for the current page.",
+      "status": "experimental",
+      "attributes": [],
+      "properties": [],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Breadcrumb links and separators."
+        }
+      ],
+      "parts": [
+        {
+          "name": "breadcrumb",
+          "description": "The navigation container."
+        }
+      ],
+      "states": []
+    },
+    "ads-tab": {
+      "description": "A selectable tab in an ADS tablist.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "selected",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Tab label."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-tab-panel": {
+      "description": "Content associated with an ADS tab.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "active",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "active",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Tab panel content."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-tabs": {
+      "description": "Organizes related content into selectable tab panels.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "string"
+        }
+      ],
+      "properties": [
+        {
+          "name": "value",
+          "type": "string"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-change",
+          "description": "Fired when the active tab changes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Tab and tab-panel elements."
+        }
+      ],
+      "parts": [
+        {
+          "name": "list",
+          "description": "The tablist container."
+        }
+      ],
+      "states": []
+    },
+    "ads-collapsible": {
+      "description": "A disclosure control that shows or hides associated content.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-toggle",
+          "description": "Fired when open state changes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "trigger",
+          "description": "Disclosure button content."
+        },
+        {
+          "name": "default",
+          "description": "Content shown while open."
+        }
+      ],
+      "parts": [
+        {
+          "name": "trigger",
+          "description": "The disclosure button."
+        },
+        {
+          "name": "content",
+          "description": "The collapsible content."
+        }
+      ],
+      "states": []
+    },
+    "ads-time-input": {
+      "description": "A form-associated native time input with constraint support.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "min",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "max",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "default": "60"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "form",
+          "type": "HTMLFormElement | null",
+          "readonly": true
+        },
+        {
+          "name": "validity",
+          "type": "ValidityState",
+          "readonly": true
+        },
+        {
+          "name": "validationMessage",
+          "type": "string",
+          "readonly": true
+        },
+        {
+          "name": "willValidate",
+          "type": "boolean",
+          "readonly": true
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "min",
+          "type": "string"
+        },
+        {
+          "name": "max",
+          "type": "string"
+        },
+        {
+          "name": "step",
+          "type": "number"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean"
+        },
+        {
+          "name": "required",
+          "type": "boolean"
+        }
+      ],
+      "methods": [
+        {
+          "name": "focus",
+          "signature": "focus(options?: FocusOptions): void"
+        },
+        {
+          "name": "blur",
+          "signature": "blur(): void"
+        },
+        {
+          "name": "checkValidity",
+          "signature": "checkValidity(): boolean"
+        },
+        {
+          "name": "reportValidity",
+          "signature": "reportValidity(): boolean"
+        },
+        {
+          "name": "setCustomValidity",
+          "signature": "setCustomValidity(message: string): void"
+        }
+      ],
+      "events": [
+        {
+          "name": "ads-input",
+          "description": "Fired while the time changes.",
+          "bubbles": true,
+          "composed": true
+        },
+        {
+          "name": "ads-change",
+          "description": "Fired when the time changes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Accessible visible label."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-date-input": {
+      "description": "A native date input with constraint support.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "min",
+          "type": "string"
+        },
+        {
+          "name": "max",
+          "type": "string"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "min",
+          "type": "string"
+        },
+        {
+          "name": "max",
+          "type": "string"
+        },
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "required",
+          "type": "boolean"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-change",
+          "description": "Fired when the date changes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Accessible visible label."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-select": {
+      "description": "A native-compatible select control.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "form",
+          "type": "HTMLFormElement | null",
+          "readonly": true
+        },
+        {
+          "name": "validity",
+          "type": "ValidityState",
+          "readonly": true
+        },
+        {
+          "name": "validationMessage",
+          "type": "string",
+          "readonly": true
+        },
+        {
+          "name": "willValidate",
+          "type": "boolean",
+          "readonly": true
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        },
+        {
+          "name": "required",
+          "type": "boolean"
+        }
+      ],
+      "methods": [
+        {
+          "name": "focus",
+          "signature": "focus(options?: FocusOptions): void"
+        },
+        {
+          "name": "blur",
+          "signature": "blur(): void"
+        },
+        {
+          "name": "checkValidity",
+          "signature": "checkValidity(): boolean"
+        },
+        {
+          "name": "reportValidity",
+          "signature": "reportValidity(): boolean"
+        },
+        {
+          "name": "setCustomValidity",
+          "signature": "setCustomValidity(message: string): void"
+        }
+      ],
+      "events": [
+        {
+          "name": "ads-change",
+          "description": "Fired when selection changes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Accessible visible label."
+        },
+        {
+          "name": "default",
+          "description": "Option elements."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-checkbox-group": {
+      "description": "Groups related checkbox controls under a shared label.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "required",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Group legend."
+        },
+        {
+          "name": "default",
+          "description": "Checkbox controls."
+        },
+        {
+          "name": "description",
+          "description": "Supporting help text."
+        },
+        {
+          "name": "error",
+          "description": "Validation message."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-range-slider": {
+      "description": "Selects a numeric range with two native sliders.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "low",
+          "type": "number",
+          "default": "0"
+        },
+        {
+          "name": "high",
+          "type": "number",
+          "default": "100"
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "default": "0"
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "default": "100"
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "default": "1"
+        }
+      ],
+      "properties": [
+        {
+          "name": "low",
+          "type": "number"
+        },
+        {
+          "name": "high",
+          "type": "number"
+        },
+        {
+          "name": "min",
+          "type": "number"
+        },
+        {
+          "name": "max",
+          "type": "number"
+        },
+        {
+          "name": "step",
+          "type": "number"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-change",
+          "description": "Fired when either value changes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [],
+      "parts": [],
+      "states": []
+    },
+    "ads-slider": {
+      "description": "A native range slider.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "value",
+          "type": "number",
+          "default": "0"
+        },
+        {
+          "name": "min",
+          "type": "number",
+          "default": "0"
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "default": "100"
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "default": "1"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "form",
+          "type": "HTMLFormElement | null",
+          "readonly": true
+        },
+        {
+          "name": "validity",
+          "type": "ValidityState",
+          "readonly": true
+        },
+        {
+          "name": "validationMessage",
+          "type": "string",
+          "readonly": true
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "number"
+        },
+        {
+          "name": "min",
+          "type": "number"
+        },
+        {
+          "name": "max",
+          "type": "number"
+        },
+        {
+          "name": "step",
+          "type": "number"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        }
+      ],
+      "methods": [
+        {
+          "name": "focus",
+          "signature": "focus(options?: FocusOptions): void"
+        },
+        {
+          "name": "blur",
+          "signature": "blur(): void"
+        },
+        {
+          "name": "checkValidity",
+          "signature": "checkValidity(): boolean"
+        },
+        {
+          "name": "reportValidity",
+          "signature": "reportValidity(): boolean"
+        }
+      ],
+      "events": [
+        {
+          "name": "ads-change",
+          "description": "Fired when the slider changes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Accessible visible label."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-number-input": {
+      "description": "A native-compatible numeric input.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "number"
+        },
+        {
+          "name": "min",
+          "type": "number"
+        },
+        {
+          "name": "max",
+          "type": "number"
+        },
+        {
+          "name": "step",
+          "type": "number",
+          "default": "1"
+        }
+      ],
+      "properties": [
+        {
+          "name": "value",
+          "type": "number"
+        },
+        {
+          "name": "min",
+          "type": "number"
+        },
+        {
+          "name": "max",
+          "type": "number"
+        },
+        {
+          "name": "step",
+          "type": "number"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Accessible visible label."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-password-input": {
+      "description": "A password input with native autocomplete semantics.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "autocomplete",
+          "type": "string"
+        }
+      ],
+      "properties": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "autocomplete",
+          "type": "string"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Accessible visible label."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-search-input": {
+      "description": "A search-specific input with native search semantics.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "placeholder",
+          "type": "string"
+        }
+      ],
+      "properties": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "placeholder",
+          "type": "string"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Accessible visible label."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-switch": {
+      "description": "Toggles a setting between on and off.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "checked",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "checked",
+          "type": "boolean"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-change",
+          "description": "Fired when the switch changes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Switch label."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-label": {
+      "description": "A styled label for a form control.",
+      "status": "experimental",
+      "attributes": [],
+      "properties": [],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Label content."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-description": {
+      "description": "Supporting help text for a form control.",
+      "status": "experimental",
+      "attributes": [],
+      "properties": [],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Description content."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-error": {
+      "description": "Validation feedback for a form control.",
+      "status": "experimental",
+      "attributes": [],
+      "properties": [],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Error content."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-field": {
+      "description": "Composes a form control with its label, description, and error content.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "required",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Visible field label."
+        },
+        {
+          "name": "description",
+          "description": "Supporting help text."
+        },
+        {
+          "name": "error",
+          "description": "Validation message."
+        },
+        {
+          "name": "default",
+          "description": "Form control."
+        }
+      ],
+      "parts": [
+        {
+          "name": "field",
+          "description": "Field wrapper."
+        },
+        {
+          "name": "label",
+          "description": "Label wrapper."
+        },
+        {
+          "name": "description",
+          "description": "Description wrapper."
+        },
+        {
+          "name": "error",
+          "description": "Error wrapper."
+        }
+      ],
+      "states": []
+    },
+    "ads-toast-item": {
+      "description": "A structured item for a toast notification.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "tone",
+          "type": "'neutral' | 'success' | 'warning' | 'danger'",
+          "default": "neutral"
+        }
+      ],
+      "properties": [
+        {
+          "name": "tone",
+          "type": "'neutral' | 'success' | 'warning' | 'danger'"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "title",
+          "description": "Toast title."
+        },
+        {
+          "name": "default",
+          "description": "Toast message."
+        },
+        {
+          "name": "actions",
+          "description": "Toast actions."
+        }
+      ],
+      "parts": [
+        {
+          "name": "item",
+          "description": "The toast item."
+        },
+        {
+          "name": "title",
+          "description": "The toast title."
+        },
+        {
+          "name": "actions",
+          "description": "The toast actions."
+        }
+      ],
+      "states": []
+    },
+    "ads-toast": {
+      "description": "Presents a transient notification to the user.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "tone",
+          "type": "'neutral' | 'success' | 'warning' | 'danger'",
+          "default": "neutral"
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "default": "true"
+        }
+      ],
+      "properties": [
+        {
+          "name": "tone",
+          "type": "'neutral' | 'success' | 'warning' | 'danger'"
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-dismiss",
+          "description": "Fired when dismissed.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Toast content."
+        }
+      ],
+      "parts": [
+        {
+          "name": "toast",
+          "description": "The toast surface."
+        },
+        {
+          "name": "dismiss",
+          "description": "The dismiss button."
+        }
+      ],
+      "states": []
+    },
+    "ads-progress-ring": {
+      "description": "Shows progress in a circular indicator.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "number"
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "default": "100"
+        }
+      ],
+      "properties": [
+        {
+          "name": "value",
+          "type": "number"
+        },
+        {
+          "name": "max",
+          "type": "number"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [],
+      "parts": [],
+      "states": []
+    },
+    "ads-visually-hidden": {
+      "description": "Visually hides content while keeping it available to assistive technology.",
+      "status": "experimental",
+      "attributes": [],
+      "properties": [],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Content for assistive technology."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-progress": {
+      "description": "Shows completion progress for a task.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "number"
+        },
+        {
+          "name": "max",
+          "type": "number",
+          "default": "100"
+        }
+      ],
+      "properties": [
+        {
+          "name": "value",
+          "type": "number"
+        },
+        {
+          "name": "max",
+          "type": "number"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Accessible progress label."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-spinner": {
+      "description": "Indicates an ongoing operation.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "default": "md"
+        }
+      ],
+      "properties": [
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [],
+      "parts": [],
+      "states": []
+    },
+    "ads-skeleton": {
+      "description": "Represents content while it is loading.",
+      "status": "experimental",
+      "attributes": [],
+      "properties": [],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Optional accessible loading label."
+        }
+      ],
+      "parts": [],
+      "states": []
+    },
+    "ads-callout": {
+      "description": "Highlights supporting guidance or important context.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "tone",
+          "type": "'neutral' | 'info' | 'success' | 'warning' | 'danger'",
+          "default": "neutral"
+        }
+      ],
+      "properties": [
+        {
+          "name": "tone",
+          "type": "'neutral' | 'info' | 'success' | 'warning' | 'danger'"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "heading",
+          "description": "Callout heading."
+        },
+        {
+          "name": "default",
+          "description": "Callout content."
+        }
+      ],
+      "parts": [
+        {
+          "name": "callout",
+          "description": "The callout surface."
+        },
+        {
+          "name": "heading",
+          "description": "The callout heading."
+        }
+      ],
+      "states": []
+    },
+    "ads-alert": {
+      "description": "Communicates an important status or message.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "tone",
+          "type": "'info' | 'success' | 'warning' | 'danger'",
+          "default": "info"
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "tone",
+          "type": "'info' | 'success' | 'warning' | 'danger'"
+        },
+        {
+          "name": "dismissible",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-dismiss",
+          "description": "Fired when dismissed.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Alert content."
+        }
+      ],
+      "parts": [
+        {
+          "name": "alert",
+          "description": "The alert surface."
+        },
+        {
+          "name": "dismiss",
+          "description": "The dismiss button."
+        }
+      ],
+      "states": []
+    },
+    "ads-copy-button": {
+      "description": "Copies a text value to the clipboard.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "properties": [
+        {
+          "name": "value",
+          "type": "string"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-copy",
+          "description": "Fired after a successful copy.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Button label."
+        }
+      ],
+      "parts": [
+        {
+          "name": "button",
+          "description": "The copy button."
+        }
+      ],
+      "states": [
+        {
+          "name": "disabled",
+          "description": "Unavailable for interaction."
+        }
+      ]
+    },
+    "ads-separator": {
+      "description": "Separates related content.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "default": "horizontal"
+        }
+      ],
+      "properties": [
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [],
+      "parts": [
+        {
+          "name": "separator",
+          "description": "The visual separator."
+        }
+      ],
+      "states": []
+    },
+    "ads-kbd": {
+      "description": "Displays a keyboard key or shortcut.",
+      "status": "experimental",
+      "attributes": [],
+      "properties": [],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Key label."
+        }
+      ],
+      "parts": [
+        {
+          "name": "key",
+          "description": "The keyboard key."
+        }
+      ],
+      "states": []
+    },
+    "ads-code": {
+      "description": "Displays inline or block code content.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "block",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "block",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Code content."
+        }
+      ],
+      "parts": [
+        {
+          "name": "code",
+          "description": "The code content."
+        },
+        {
+          "name": "pre",
+          "description": "The block code container."
+        }
+      ],
+      "states": []
+    },
+    "ads-card": {
+      "description": "A surface for grouping related content and actions.",
+      "status": "experimental",
+      "attributes": [],
+      "properties": [],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "header",
+          "description": "Card heading or introductory content."
+        },
+        {
+          "name": "default",
+          "description": "Card body content."
+        },
+        {
+          "name": "footer",
+          "description": "Card actions or supporting content."
+        }
+      ],
+      "parts": [
+        {
+          "name": "card",
+          "description": "The card surface."
+        },
+        {
+          "name": "header",
+          "description": "The card header."
+        },
+        {
+          "name": "body",
+          "description": "The card body."
+        },
+        {
+          "name": "footer",
+          "description": "The card footer."
+        }
+      ],
+      "states": []
+    },
+    "ads-badge": {
+      "description": "A compact status indicator for labels and counts.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "tone",
+          "type": "'neutral' | 'info' | 'success' | 'warning' | 'danger'",
+          "default": "neutral"
+        }
+      ],
+      "properties": [
+        {
+          "name": "tone",
+          "type": "'neutral' | 'info' | 'success' | 'warning' | 'danger'"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Badge content."
+        }
+      ],
+      "parts": [
+        {
+          "name": "badge",
+          "description": "The badge surface."
+        }
+      ],
+      "states": []
+    },
+    "ads-tag": {
+      "description": "A removable label for categorization and filtering.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "removable",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "removable",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-remove",
+          "description": "Fired when the remove button is activated.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Tag content."
+        }
+      ],
+      "parts": [
+        {
+          "name": "tag",
+          "description": "The tag surface."
+        },
+        {
+          "name": "remove",
+          "description": "The remove button."
+        }
+      ],
+      "states": []
+    },
+    "ads-avatar": {
+      "description": "Represents a person or entity with an image and accessible fallback.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "src",
+          "type": "string"
+        },
+        {
+          "name": "alt",
+          "type": "string"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'",
+          "default": "md"
+        }
+      ],
+      "properties": [
+        {
+          "name": "src",
+          "type": "string"
+        },
+        {
+          "name": "alt",
+          "type": "string"
+        },
+        {
+          "name": "size",
+          "type": "'sm' | 'md' | 'lg'"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Fallback initials or custom avatar content."
+        }
+      ],
+      "parts": [
+        {
+          "name": "avatar",
+          "description": "The avatar surface."
+        }
+      ],
+      "states": []
+    },
+    "ads-button-group": {
+      "description": "Groups related actions with consistent spacing and orientation.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "default": "horizontal"
+        }
+      ],
+      "properties": [
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'"
+        },
+        {
+          "name": "label",
+          "type": "string"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Buttons or links in the group."
+        }
+      ],
+      "parts": [
+        {
+          "name": "group",
+          "description": "The semantic action group."
+        }
+      ],
+      "states": []
+    },
+    "ads-icon-button": {
+      "description": "An accessible icon-only button requiring an explicit accessible label.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "label",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "type",
+          "type": "'button' | 'submit' | 'reset'",
+          "default": "button"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "properties": [
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "type",
+          "type": "'button' | 'submit' | 'reset'"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "string"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "The icon content."
+        }
+      ],
+      "parts": [
+        {
+          "name": "button",
+          "description": "The internal native button."
+        }
+      ],
+      "states": []
+    },
+    "ads-link": {
+      "description": "A standards-native link with ADS focus and external-link semantics.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "href",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "target",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "rel",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "download",
+          "type": "string | boolean",
+          "default": ""
+        }
+      ],
+      "properties": [
+        {
+          "name": "href",
+          "type": "string"
+        },
+        {
+          "name": "target",
+          "type": "string"
+        },
+        {
+          "name": "rel",
+          "type": "string"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [],
+      "parts": [
+        {
+          "name": "link",
+          "description": "The internal native anchor."
+        }
+      ],
+      "states": []
+    },
+    "ads-button": {
+      "description": "Accessible action control with native form submit/reset integration.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "variant",
+          "type": "'primary' | 'secondary' | 'ghost' | 'danger'",
+          "default": "primary"
+        },
+        {
+          "name": "type",
+          "type": "'button' | 'submit' | 'reset'",
+          "default": "button"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "loading",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "properties": [],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "",
+          "description": "Button label/content."
+        },
+        {
+          "name": "start",
+          "description": "Leading icon or decoration."
+        },
+        {
+          "name": "end",
+          "description": "Trailing icon or decoration."
+        }
+      ],
+      "parts": [
+        {
+          "name": "button",
+          "description": "The internal native button."
+        },
+        {
+          "name": "spinner",
+          "description": "Loading spinner rendered while loading."
+        }
+      ],
+      "states": [
+        {
+          "name": "disabled",
+          "description": "Unavailable for interaction."
+        },
+        {
+          "name": "loading",
+          "description": "Busy and unavailable for repeated activation."
+        }
+      ]
+    },
+    "ads-checkbox": {
+      "description": "Form-associated boolean control backed by a native checkbox input.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": "on"
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "indeterminate",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "form",
+          "type": "HTMLFormElement | null",
+          "readonly": true
+        },
+        {
+          "name": "validity",
+          "type": "ValidityState",
+          "readonly": true
+        },
+        {
+          "name": "validationMessage",
+          "type": "string",
+          "readonly": true
+        }
+      ],
+      "methods": [
+        {
+          "name": "focus",
+          "signature": "focus(options?: FocusOptions): void",
+          "description": "Focuses the internal native checkbox."
+        },
+        {
+          "name": "blur",
+          "signature": "blur(): void",
+          "description": "Removes focus from the internal native checkbox."
+        },
+        {
+          "name": "click",
+          "signature": "click(): void",
+          "description": "Activates the native checkbox interaction."
+        },
+        {
+          "name": "setCustomValidity",
+          "signature": "setCustomValidity(message: string): void"
+        },
+        {
+          "name": "checkValidity",
+          "signature": "checkValidity(): boolean"
+        },
+        {
+          "name": "reportValidity",
+          "signature": "reportValidity(): boolean"
+        }
+      ],
+      "events": [],
+      "slots": [
+        {
+          "name": "",
+          "description": "Checkbox label content."
+        },
+        {
+          "name": "description",
+          "description": "Supporting help text."
+        },
+        {
+          "name": "error",
+          "description": "Validation/error message."
+        }
+      ],
+      "parts": [
+        {
+          "name": "label",
+          "description": "Clickable label wrapper."
+        },
+        {
+          "name": "control",
+          "description": "Checkbox control positioning wrapper."
+        },
+        {
+          "name": "input",
+          "description": "Native checkbox input."
+        },
+        {
+          "name": "indicator",
+          "description": "Visual checked/indeterminate indicator."
+        },
+        {
+          "name": "label-text",
+          "description": "Label text/content wrapper."
+        },
+        {
+          "name": "description",
+          "description": "Description container."
+        },
+        {
+          "name": "error",
+          "description": "Error container."
+        }
+      ],
+      "states": [
+        {
+          "name": "checked",
+          "description": "The checkbox is checked."
+        },
+        {
+          "name": "indeterminate",
+          "description": "The checkbox is visually indeterminate."
+        },
+        {
+          "name": "invalid",
+          "description": "Native constraint validation currently fails."
+        },
+        {
+          "name": "disabled",
+          "description": "Disabled by attribute or containing fieldset."
+        }
+      ]
+    },
+    "ads-input": {
+      "description": "Form-associated single-line text control backed by a native input.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "'text' | 'email' | 'password' | 'search' | 'tel' | 'url'",
+          "default": "text"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "autocomplete",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "inputmode",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "pattern",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "minlength",
+          "type": "number",
+          "default": "-1"
+        },
+        {
+          "name": "maxlength",
+          "type": "number",
+          "default": "-1"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "form",
+          "type": "HTMLFormElement | null",
+          "readonly": true
+        },
+        {
+          "name": "validity",
+          "type": "ValidityState",
+          "readonly": true
+        },
+        {
+          "name": "validationMessage",
+          "type": "string",
+          "readonly": true
+        },
+        {
+          "name": "selectionStart",
+          "type": "number | null",
+          "readonly": true
+        },
+        {
+          "name": "selectionEnd",
+          "type": "number | null",
+          "readonly": true
+        },
+        {
+          "name": "selectionDirection",
+          "type": "'forward' | 'backward' | 'none' | null",
+          "readonly": true
+        }
+      ],
+      "methods": [
+        {
+          "name": "focus",
+          "signature": "focus(options?: FocusOptions): void",
+          "description": "Focuses the internal native input."
+        },
+        {
+          "name": "blur",
+          "signature": "blur(): void",
+          "description": "Removes focus from the internal native input."
+        },
+        {
+          "name": "select",
+          "signature": "select(): void",
+          "description": "Selects the text value when the input type supports selection."
+        },
+        {
+          "name": "setSelectionRange",
+          "signature": "setSelectionRange(start: number, end: number, direction?: 'forward' | 'backward' | 'none'): void"
+        },
+        {
+          "name": "setCustomValidity",
+          "signature": "setCustomValidity(message: string): void"
+        },
+        {
+          "name": "checkValidity",
+          "signature": "checkValidity(): boolean"
+        },
+        {
+          "name": "reportValidity",
+          "signature": "reportValidity(): boolean"
+        }
+      ],
+      "events": [],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Accessible visible label content."
+        },
+        {
+          "name": "start",
+          "description": "Leading icon or inline affordance."
+        },
+        {
+          "name": "end",
+          "description": "Trailing icon or inline affordance."
+        },
+        {
+          "name": "description",
+          "description": "Supporting help text."
+        },
+        {
+          "name": "error",
+          "description": "Validation/error message."
+        }
+      ],
+      "parts": [
+        {
+          "name": "label",
+          "description": "Label wrapper."
+        },
+        {
+          "name": "label-text",
+          "description": "Visible label text container."
+        },
+        {
+          "name": "control",
+          "description": "Input chrome/control container."
+        },
+        {
+          "name": "input",
+          "description": "Native input element."
+        },
+        {
+          "name": "description",
+          "description": "Description container."
+        },
+        {
+          "name": "error",
+          "description": "Error container."
+        }
+      ],
+      "states": [
+        {
+          "name": "invalid",
+          "description": "Native constraint validation currently fails."
+        },
+        {
+          "name": "disabled",
+          "description": "Disabled by attribute or containing fieldset."
+        }
+      ]
+    },
+    "ads-radio": {
+      "description": "Accessible radio option managed by an ads-radio-group.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "value",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "checked",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [],
+      "methods": [
+        {
+          "name": "focus",
+          "signature": "focus(options?: FocusOptions): void",
+          "description": "Focuses the internal native radio input."
+        },
+        {
+          "name": "blur",
+          "signature": "blur(): void",
+          "description": "Removes focus from the internal native radio input."
+        }
+      ],
+      "events": [
+        {
+          "name": "ads-radio-select",
+          "detail": "{ value: string }",
+          "description": "Internal selection request consumed by ads-radio-group.",
+          "bubbles": true,
+          "composed": true
+        },
+        {
+          "name": "ads-radio-meta-change",
+          "detail": "void",
+          "description": "Signals value/disabled metadata changes to the owning group.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "Radio label content."
+        }
+      ],
+      "parts": [
+        {
+          "name": "label",
+          "description": "Clickable label wrapper."
+        },
+        {
+          "name": "control",
+          "description": "Radio control positioning wrapper."
+        },
+        {
+          "name": "input",
+          "description": "Native radio input."
+        },
+        {
+          "name": "indicator",
+          "description": "Visual radio indicator."
+        },
+        {
+          "name": "label-text",
+          "description": "Label text/content wrapper."
+        }
+      ],
+      "states": [
+        {
+          "name": "checked",
+          "description": "This option is selected by its owning group."
+        },
+        {
+          "name": "disabled",
+          "description": "This option cannot be selected."
+        }
+      ]
+    },
+    "ads-radio-group": {
+      "description": "Form-associated single-selection group that manages ads-radio options.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "orientation",
+          "type": "'horizontal' | 'vertical'",
+          "default": "vertical"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "form",
+          "type": "HTMLFormElement | null",
+          "readonly": true
+        },
+        {
+          "name": "validity",
+          "type": "ValidityState",
+          "readonly": true
+        },
+        {
+          "name": "validationMessage",
+          "type": "string",
+          "readonly": true
+        }
+      ],
+      "methods": [
+        {
+          "name": "focus",
+          "signature": "focus(options?: FocusOptions): void",
+          "description": "Focuses the selected radio, or the first enabled option."
+        },
+        {
+          "name": "setCustomValidity",
+          "signature": "setCustomValidity(message: string): void"
+        },
+        {
+          "name": "checkValidity",
+          "signature": "checkValidity(): boolean"
+        },
+        {
+          "name": "reportValidity",
+          "signature": "reportValidity(): boolean"
+        }
+      ],
+      "events": [
+        {
+          "name": "input",
+          "detail": "Event",
+          "description": "Dispatched when user interaction changes the selected value.",
+          "bubbles": true,
+          "composed": true
+        },
+        {
+          "name": "change",
+          "detail": "Event",
+          "description": "Dispatched after user interaction commits a new selected value.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "",
+          "description": "ads-radio options."
+        },
+        {
+          "name": "label",
+          "description": "Visible group label."
+        },
+        {
+          "name": "description",
+          "description": "Supporting help text."
+        },
+        {
+          "name": "error",
+          "description": "Validation/error message."
+        }
+      ],
+      "parts": [
+        {
+          "name": "label",
+          "description": "Group label container."
+        },
+        {
+          "name": "group",
+          "description": "ARIA radiogroup wrapper."
+        },
+        {
+          "name": "description",
+          "description": "Description container."
+        },
+        {
+          "name": "error",
+          "description": "Error container."
+        }
+      ],
+      "states": [
+        {
+          "name": "invalid",
+          "description": "Required/custom constraint validation currently fails."
+        },
+        {
+          "name": "disabled",
+          "description": "Disabled by attribute or containing fieldset."
+        }
+      ]
+    },
+    "ads-textarea": {
+      "description": "Form-associated multi-line text control backed by a native textarea.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "value",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "placeholder",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "autocomplete",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "inputmode",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "name": "rows",
+          "type": "number",
+          "default": "3"
+        },
+        {
+          "name": "wrap",
+          "type": "'soft' | 'hard'",
+          "default": "soft"
+        },
+        {
+          "name": "minlength",
+          "type": "number",
+          "default": "-1"
+        },
+        {
+          "name": "maxlength",
+          "type": "number",
+          "default": "-1"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "readonly",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "required",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "form",
+          "type": "HTMLFormElement | null",
+          "readonly": true
+        },
+        {
+          "name": "validity",
+          "type": "ValidityState",
+          "readonly": true
+        },
+        {
+          "name": "validationMessage",
+          "type": "string",
+          "readonly": true
+        },
+        {
+          "name": "selectionStart",
+          "type": "number",
+          "readonly": true
+        },
+        {
+          "name": "selectionEnd",
+          "type": "number",
+          "readonly": true
+        },
+        {
+          "name": "selectionDirection",
+          "type": "'forward' | 'backward' | 'none'",
+          "readonly": true
+        }
+      ],
+      "methods": [
+        {
+          "name": "focus",
+          "signature": "focus(options?: FocusOptions): void",
+          "description": "Focuses the internal native textarea."
+        },
+        {
+          "name": "blur",
+          "signature": "blur(): void",
+          "description": "Removes focus from the internal native textarea."
+        },
+        {
+          "name": "select",
+          "signature": "select(): void",
+          "description": "Selects the full text value."
+        },
+        {
+          "name": "setSelectionRange",
+          "signature": "setSelectionRange(start: number, end: number, direction?: 'forward' | 'backward' | 'none'): void"
+        },
+        {
+          "name": "setCustomValidity",
+          "signature": "setCustomValidity(message: string): void"
+        },
+        {
+          "name": "checkValidity",
+          "signature": "checkValidity(): boolean"
+        },
+        {
+          "name": "reportValidity",
+          "signature": "reportValidity(): boolean"
+        }
+      ],
+      "events": [],
+      "slots": [
+        {
+          "name": "label",
+          "description": "Accessible visible label content."
+        },
+        {
+          "name": "description",
+          "description": "Supporting help text."
+        },
+        {
+          "name": "error",
+          "description": "Validation/error message."
+        }
+      ],
+      "parts": [
+        {
+          "name": "label",
+          "description": "Label wrapper."
+        },
+        {
+          "name": "label-text",
+          "description": "Visible label text container."
+        },
+        {
+          "name": "control",
+          "description": "Textarea chrome/control container."
+        },
+        {
+          "name": "textarea",
+          "description": "Native textarea element."
+        },
+        {
+          "name": "description",
+          "description": "Description container."
+        },
+        {
+          "name": "error",
+          "description": "Error container."
+        }
+      ],
+      "states": [
+        {
+          "name": "invalid",
+          "description": "Native constraint validation currently fails."
+        },
+        {
+          "name": "disabled",
+          "description": "Disabled by attribute or containing fieldset."
+        }
+      ]
+    },
+    "ads-drawer": {
+      "description": "A side panel for navigation, tasks, and contextual content.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "default": "false"
+        },
+        {
+          "name": "position",
+          "type": "'start' | 'end'",
+          "default": "end"
+        },
+        {
+          "name": "modal",
+          "type": "boolean",
+          "default": "true"
+        }
+      ],
+      "properties": [
+        {
+          "name": "open",
+          "type": "boolean"
+        },
+        {
+          "name": "position",
+          "type": "'start' | 'end'"
+        },
+        {
+          "name": "modal",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-close",
+          "description": "Fired when the drawer closes.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "title",
+          "description": "The drawer title."
+        },
+        {
+          "name": "default",
+          "description": "The drawer content."
+        },
+        {
+          "name": "actions",
+          "description": "Actions for the drawer."
+        }
+      ],
+      "parts": [
+        {
+          "name": "dialog",
+          "description": "The native drawer dialog."
+        },
+        {
+          "name": "title",
+          "description": "The drawer title."
+        },
+        {
+          "name": "content",
+          "description": "The drawer content region."
+        },
+        {
+          "name": "actions",
+          "description": "The drawer actions region."
+        }
+      ],
+      "states": []
+    },
+    "ads-menu": {
+      "description": "A keyboard-navigable list of actions or options.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "orientation",
+          "type": "'vertical' | 'horizontal'",
+          "default": "vertical"
+        }
+      ],
+      "properties": [
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "orientation",
+          "type": "'vertical' | 'horizontal'"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-select",
+          "description": "Fired when a menu item is activated.",
+          "bubbles": true,
+          "composed": true
+        },
+        {
+          "name": "ads-dismiss",
+          "description": "Fired when Escape is pressed while the menu is active.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Menu items and menu item groups."
+        }
+      ],
+      "parts": [
+        {
+          "name": "menu",
+          "description": "The menu container."
+        }
+      ],
+      "states": []
+    },
+    "ads-table": {
+      "description": "A responsive, accessible table surface for tabular data.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "density",
+          "type": "'comfortable' | 'compact'",
+          "default": "comfortable"
+        },
+        {
+          "name": "striped",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "density",
+          "type": "'comfortable' | 'compact'"
+        },
+        {
+          "name": "striped",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [],
+      "slots": [
+        {
+          "name": "caption",
+          "description": "An accessible table caption."
+        },
+        {
+          "name": "default",
+          "description": "Native table sections and rows."
+        }
+      ],
+      "parts": [
+        {
+          "name": "table",
+          "description": "The native table element."
+        },
+        {
+          "name": "caption",
+          "description": "The table caption."
+        }
+      ],
+      "states": []
+    },
+    "ads-tree": {
+      "description": "A keyboard-navigable hierarchy of selectable tree items.",
+      "status": "experimental",
+      "attributes": [
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "multiselectable",
+          "type": "boolean",
+          "default": "false"
+        }
+      ],
+      "properties": [
+        {
+          "name": "label",
+          "type": "string"
+        },
+        {
+          "name": "multiselectable",
+          "type": "boolean"
+        }
+      ],
+      "methods": [],
+      "events": [
+        {
+          "name": "ads-select",
+          "description": "Fired when a tree item becomes selected.",
+          "bubbles": true,
+          "composed": true
+        },
+        {
+          "name": "ads-toggle",
+          "description": "Fired when a tree item expands or collapses.",
+          "bubbles": true,
+          "composed": true
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "Nested elements with role=\"treeitem\" and role=\"group\" markup."
+        }
+      ],
+      "parts": [
+        {
+          "name": "tree",
+          "description": "The tree container."
+        },
+        {
+          "name": "item",
+          "description": "A slotted tree item."
+        },
+        {
+          "name": "group",
+          "description": "A nested tree item group."
+        }
+      ],
+      "states": []
+    }
+  }
+}

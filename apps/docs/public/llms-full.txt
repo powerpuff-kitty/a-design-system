@@ -1,0 +1,5 @@
+# A Design System — machine context
+
+The canonical component metadata is generated from `packages/components/custom-elements.json` and includes 40+ `ads-*` custom elements. The docs catalogue renders that metadata directly and provides live previews, API summaries, copyable markup, search, maturity filters, and hash-addressable component pages.
+
+The canonical runtime is framework-neutral Web Components. Use the package exports from `@a-design-system/components`; do not infer APIs that are absent from the metadata.

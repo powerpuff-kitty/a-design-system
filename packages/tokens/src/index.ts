@@ -21,9 +21,51 @@ export interface CompileTokensOptions {
   selector?: string;
 }
 
+export interface TokenModeSource {
+  name: string;
+  source: unknown;
+  selector?: string;
+}
+
+export interface CompiledTokenModes {
+  modes: readonly { name: string; result: CompiledTokenSet }[];
+  css: string;
+}
+
+export interface ContrastRequirement {
+  foreground: string;
+  background: string;
+  minimum?: number;
+}
+
+export interface ContrastResult extends ContrastRequirement {
+  ratio: number;
+  passes: boolean;
+}
+
+export interface FigmaTokenVariable {
+  name: string;
+  type: string;
+  value: unknown;
+  cssVariable: `--${string}`;
+  description?: string;
+}
+
+export interface TokenSnapshot {
+  version: 1;
+  tokens: readonly { path: string; type?: string; cssValue: string }[];
+}
+
 export interface CompiledTokenSet {
   tokens: readonly CompiledToken[];
   css: string;
+}
+
+export interface PlatformTokenOutputs {
+  css: string;
+  json: string;
+  typescript: string;
+  scss: string;
 }
 
 interface CollectedToken {
@@ -110,7 +152,11 @@ function serializeCssValue(value: unknown, type?: string): string {
   if (typeof value === 'boolean') return String(value);
 
   if (Array.isArray(value)) {
-    if (type === 'cubicBezier' && value.length === 4 && value.every((item) => typeof item === 'number')) {
+    if (
+      type === 'cubicBezier' &&
+      value.length === 4 &&
+      value.every((item) => typeof item === 'number')
+    ) {
       return `cubic-bezier(${value.map((item) => formatNumber(item as number)).join(', ')})`;
     }
     return value.map((item) => serializeCssValue(item)).join(' ');
@@ -121,9 +167,15 @@ function serializeCssValue(value: unknown, type?: string): string {
       return `${formatNumber(value.value)}${value.unit}`;
     }
 
-    if (type === 'color' && typeof value.colorSpace === 'string' && Array.isArray(value.components)) {
+    if (
+      type === 'color' &&
+      typeof value.colorSpace === 'string' &&
+      Array.isArray(value.components)
+    ) {
       const components = value.components
-        .map((component) => typeof component === 'number' ? formatNumber(component) : String(component))
+        .map((component) =>
+          typeof component === 'number' ? formatNumber(component) : String(component),
+        )
         .join(' ');
       const alpha = typeof value.alpha === 'number' ? formatNumber(value.alpha) : '1';
       const colorSpace = value.colorSpace.toLowerCase();
@@ -148,7 +200,10 @@ function serializeCssValue(value: unknown, type?: string): string {
  * Compiles a DTCG token tree into resolved token metadata and deterministic CSS
  * custom properties. References are resolved transitively and cycles fail fast.
  */
-export function compileTokens(source: unknown, options: CompileTokensOptions = {}): CompiledTokenSet {
+export function compileTokens(
+  source: unknown,
+  options: CompileTokensOptions = {},
+): CompiledTokenSet {
   if (!isRecord(source)) throw new TypeError('Token source must be an object');
 
   const collected = collectTokens(source);
@@ -162,7 +217,9 @@ export function compileTokens(source: unknown, options: CompileTokensOptions = {
     const item = byPath.get(path);
     if (!item) throw new ReferenceError(`Unknown token reference: {${path}}`);
     if (resolving.has(path)) {
-      throw new TypeError(`Circular token reference detected: ${[...resolving, path].join(' -> ')}`);
+      throw new TypeError(
+        `Circular token reference detected: ${[...resolving, path].join(' -> ')}`,
+      );
     }
 
     resolving.add(path);
@@ -181,7 +238,8 @@ export function compileTokens(source: unknown, options: CompileTokensOptions = {
     .map((item): CompiledToken => {
       const value = resolveToken(item.path);
       const cssVariable = normalizeCssName(item.path, prefix);
-      const description = typeof item.token.$description === 'string' ? item.token.$description : undefined;
+      const description =
+        typeof item.token.$description === 'string' ? item.token.$description : undefined;
 
       return {
         path: item.path,
@@ -194,8 +252,154 @@ export function compileTokens(source: unknown, options: CompileTokensOptions = {
     })
     .sort((a, b) => a.path.localeCompare(b.path));
 
-  const declarations = tokens.map((token) => `  ${token.cssVariable}: ${token.cssValue};`).join('\n');
+  const declarations = tokens
+    .map((token) => `  ${token.cssVariable}: ${token.cssValue};`)
+    .join('\n');
   const css = `${selector} {\n${declarations}\n}\n`;
 
   return { tokens, css };
+}
+
+/** Produces deterministic text artifacts for the supported token platforms. */
+export function emitTokenOutputs(result: CompiledTokenSet): PlatformTokenOutputs {
+  const json =
+    JSON.stringify(
+      Object.fromEntries(result.tokens.map((token) => [token.path, token.value])),
+      null,
+      2,
+    ) + '\n';
+  const typescript = `export const tokens = ${json} as const;\n`;
+  const scss =
+    result.tokens
+      .map((token) => `$${token.path.replace(/\./g, '-')}: ${token.cssValue};`)
+      .join('\n') + '\n';
+  return { css: result.css, json, typescript, scss };
+}
+
+/**
+ * Compiles light/dark, density, brand, or other named modes into scoped CSS.
+ * Each mode is a complete token source so references are resolved within its
+ * own graph and cannot silently depend on another mode.
+ */
+export function compileTokenModes(
+  modes: readonly TokenModeSource[],
+  options: Omit<CompileTokensOptions, 'selector'> = {},
+): CompiledTokenModes {
+  const seen = new Set<string>();
+  const compiled = modes.map(({ name, source, selector }) => {
+    if (!name || seen.has(name)) throw new TypeError(`Duplicate or empty token mode: ${name}`);
+    seen.add(name);
+    const result = compileTokens(source, {
+      ...options,
+      selector: selector ?? `[data-ads-theme="${name}"]`,
+    });
+    return { name, result };
+  });
+  return {
+    modes: compiled,
+    css: compiled.map(({ result }) => result.css).join(''),
+  };
+}
+
+/** Validates a token source without emitting platform output. */
+export function validateTokens(source: unknown): readonly string[] {
+  const result = compileTokens(source);
+  const errors: string[] = [];
+  const names = new Set<string>();
+  for (const token of result.tokens) {
+    if (names.has(token.cssVariable)) errors.push(`Duplicate CSS variable: ${token.cssVariable}`);
+    names.add(token.cssVariable);
+    if (!token.path || token.path.startsWith('.') || token.path.endsWith('.')) {
+      errors.push(`Invalid token path: ${token.path}`);
+    }
+  }
+  return errors;
+}
+
+function parseSrgbColor(value: unknown): [number, number, number] | undefined {
+  if (typeof value !== 'string') return undefined;
+  const hex = value.trim().match(/^#([\da-f]{3}|[\da-f]{6})$/i)?.[1];
+  if (!hex) return undefined;
+  const expanded = hex.length === 3 ? [...hex].map((part) => `${part}${part}`).join('') : hex;
+  return [0, 2, 4].map((index) => Number.parseInt(expanded.slice(index, index + 2), 16) / 255) as [
+    number,
+    number,
+    number,
+  ];
+}
+
+function relativeLuminance(rgb: [number, number, number]): number {
+  const linear = rgb.map((channel) =>
+    channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
+  );
+  return 0.2126 * (linear[0] ?? 0) + 0.7152 * (linear[1] ?? 0) + 0.0722 * (linear[2] ?? 0);
+}
+
+/** Checks token color pairs against WCAG contrast thresholds. */
+export function validateContrast(
+  result: CompiledTokenSet,
+  requirements: readonly ContrastRequirement[],
+): readonly ContrastResult[] {
+  const values = new Map(result.tokens.map((token) => [token.path, token.value]));
+  return requirements.map((requirement) => {
+    const foreground = parseSrgbColor(values.get(requirement.foreground));
+    const background = parseSrgbColor(values.get(requirement.background));
+    if (!foreground || !background) {
+      throw new TypeError(
+        `Contrast tokens must resolve to #rgb or #rrggbb colors: ${requirement.foreground}, ${requirement.background}`,
+      );
+    }
+    const foregroundLuminance = relativeLuminance(foreground);
+    const backgroundLuminance = relativeLuminance(background);
+    const ratio =
+      (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) /
+      (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
+    const minimum = requirement.minimum ?? 4.5;
+    return { ...requirement, minimum, ratio, passes: ratio >= minimum };
+  });
+}
+
+/** Emits a stable, tool-agnostic variable inventory for Figma exchange tooling. */
+export function emitFigmaMetadata(result: CompiledTokenSet): readonly FigmaTokenVariable[] {
+  return result.tokens.map((token) => ({
+    name: token.path,
+    type: token.type ?? 'unknown',
+    value: token.value,
+    cssVariable: token.cssVariable,
+    ...(token.description ? { description: token.description } : {}),
+  }));
+}
+
+/** Captures the public token shape used for compatibility comparisons. */
+export function createTokenSnapshot(result: CompiledTokenSet): TokenSnapshot {
+  return {
+    version: 1,
+    tokens: result.tokens.map(({ path, type, cssValue }) => ({
+      path,
+      ...(type ? { type } : {}),
+      cssValue,
+    })),
+  };
+}
+
+/** Returns breaking changes relative to a prior snapshot. */
+export function compareTokenSnapshot(
+  previous: TokenSnapshot,
+  current: CompiledTokenSet,
+): readonly string[] {
+  if (previous.version !== 1)
+    throw new TypeError(`Unsupported token snapshot version: ${previous.version}`);
+  const next = createTokenSnapshot(current);
+  const before = new Map(previous.tokens.map((token) => [token.path, token]));
+  const breaking: string[] = [];
+  for (const token of next.tokens) {
+    const prior = before.get(token.path);
+    if (!prior) continue;
+    if (prior.cssValue !== token.cssValue || prior.type !== token.type) breaking.push(token.path);
+  }
+  for (const token of previous.tokens) {
+    if (!next.tokens.some((currentToken) => currentToken.path === token.path))
+      breaking.push(token.path);
+  }
+  return breaking.sort();
 }
