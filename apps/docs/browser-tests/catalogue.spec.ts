@@ -1,6 +1,10 @@
+import { readFileSync } from 'node:fs';
 import { expect, test } from '@playwright/test';
-import examples from '../src/examples.json';
 
+// The Node runner does not apply Vite's browser JSON import transformation.
+const examples: Record<string, string> = JSON.parse(
+  readFileSync(new URL('../src/examples.json', import.meta.url), 'utf8'),
+);
 const tags = Object.keys(examples);
 
 for (const theme of ['minimal-light', 'minimal-dark', 'minimal-high-contrast']) {
