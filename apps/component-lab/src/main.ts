@@ -33,7 +33,7 @@ function installTheme(theme: LabTheme): void {
       background: var(--ads-color-surface-page);
       --ads-focus-color: var(--ads-color-focus-ring);
       --ads-disabled-opacity: var(--ads-opacity-disabled);
-      --ads-control-size: var(--ads-size-control-default);
+      --ads-control-size: var(--ads-size-control-current, var(--ads-size-control-default));
     }
 
     * { box-sizing: border-box; }
