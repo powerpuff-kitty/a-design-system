@@ -57,6 +57,18 @@
       "types": "./src/copy-button.ts",
       "import": "./dist/copy-button.js"
     },
+    "./description": {
+      "types": "./src/description.ts",
+      "import": "./dist/description.js"
+    },
+    "./error": {
+      "types": "./src/error.ts",
+      "import": "./dist/error.js"
+    },
+    "./field": {
+      "types": "./src/field.ts",
+      "import": "./dist/field.js"
+    },
     "./format-bytes": {
       "types": "./src/format-bytes.ts",
       "import": "./dist/format-bytes.js"
@@ -88,6 +100,10 @@
     "./kbd": {
       "types": "./src/kbd.ts",
       "import": "./dist/kbd.js"
+    },
+    "./label": {
+      "types": "./src/label.ts",
+      "import": "./dist/label.js"
     },
     "./link": {
       "types": "./src/link.ts",
