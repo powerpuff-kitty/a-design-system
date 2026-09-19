@@ -44,6 +44,7 @@ export type { AdsRelativeTimeNumeric, AdsRelativeTimeStyle } from './relative-ti
 export type { AdsRadioSelectDetail } from './radio.js';
 export { AdsRadioGroup, adsRadioGroupContract } from './radio-group.js';
 export type { AdsRadioGroupOrientation } from './radio-group.js';
+export { AdsSelect, adsSelectContract } from './select.js';
 export { AdsSeparator, adsSeparatorContract } from './separator.js';
 export type { AdsSeparatorOrientation } from './separator.js';
 export { AdsSkeleton, adsSkeletonContract } from './skeleton.js';
