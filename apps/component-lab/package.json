@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@a-design-system/components": "workspace:*",
-    "@a-design-system/tokens": "workspace:*"
+    "@a-design-system/tokens": "workspace:*",
+    "@a-design-system/css": "workspace:*"
   },
   "devDependencies": {
     "vite": "^8.3.0"
