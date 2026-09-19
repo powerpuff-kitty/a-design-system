@@ -196,6 +196,7 @@ export class AdsCheckbox extends FormAssociatedElement {
   private defaultChecked = false;
   private defaultCheckedCaptured = false;
   private customValidityMessage = '';
+  private groupDisabled = false;
 
   override connectedCallback(): void {
     if (!this.defaultCheckedCaptured) {
@@ -241,6 +242,12 @@ export class AdsCheckbox extends FormAssociatedElement {
     void this.updateComplete.then(() => this.inputElement?.click());
   }
 
+  setGroupDisabled(disabled: boolean): void {
+    if (this.groupDisabled === disabled) return;
+    this.groupDisabled = disabled;
+    this.syncNativeState();
+  }
+
   setCustomValidity(message: string): void {
     this.customValidityMessage = message;
     if (this.inputElement) {
@@ -268,7 +275,7 @@ export class AdsCheckbox extends FormAssociatedElement {
     const input = this.inputElement;
     if (!input) return;
 
-    const disabled = this.disabled || this.formDisabled;
+    const disabled = this.disabled || this.formDisabled || this.groupDisabled;
     input.checked = this.checked;
     input.indeterminate = this.indeterminate;
     input.value = this.value;
@@ -313,7 +320,7 @@ export class AdsCheckbox extends FormAssociatedElement {
   }
 
   override render() {
-    const disabled = this.disabled || this.formDisabled;
+    const disabled = this.disabled || this.formDisabled || this.groupDisabled;
 
     return html`
       <label part="label">
