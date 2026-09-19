@@ -37,13 +37,17 @@ export const adsInputContract = defineComponentContract({
     { name: 'selectionDirection', type: "'forward' | 'backward' | 'none' | null", readonly: true },
   ],
   methods: [
-    { name: 'focus', signature: 'focus(options?: FocusOptions): void', description: 'Focuses the internal native input.' },
-    { name: 'blur', signature: 'blur(): void', description: 'Removes focus from the internal native input.' },
-    { name: 'select', signature: 'select(): void', description: 'Selects the text value when the input type supports selection.' },
+    { name: 'focus', signature: 'focus(options?: FocusOptions): void' },
+    { name: 'blur', signature: 'blur(): void' },
+    { name: 'select', signature: 'select(): void' },
     { name: 'setSelectionRange', signature: "setSelectionRange(start: number, end: number, direction?: 'forward' | 'backward' | 'none'): void" },
     { name: 'setCustomValidity', signature: 'setCustomValidity(message: string): void' },
     { name: 'checkValidity', signature: 'checkValidity(): boolean' },
     { name: 'reportValidity', signature: 'reportValidity(): boolean' },
+  ],
+  events: [
+    { name: 'input', detail: 'Event', bubbles: true, composed: true },
+    { name: 'change', detail: 'Event', bubbles: true, composed: true },
   ],
   slots: [
     { name: 'label', description: 'Accessible visible label content.' },
@@ -82,22 +86,16 @@ export class AdsInput extends FormAssociatedElement {
       color: var(--ads-input-color, var(--ads-color-text-default, #111111));
       font: inherit;
     }
-
-    :host([hidden]) {
-      display: none;
-    }
-
+    :host([hidden]) { display: none; }
     [part='label'] {
       display: grid;
       gap: var(--ads-input-label-gap, 0.375rem);
     }
-
     [part='label-text'] {
       font-size: var(--ads-input-label-font-size, 0.875rem);
       font-weight: var(--ads-input-label-font-weight, var(--ads-font-weight-medium, 500));
       line-height: 1.3;
     }
-
     [part='control'] {
       box-sizing: border-box;
       display: flex;
@@ -112,23 +110,19 @@ export class AdsInput extends FormAssociatedElement {
         border-color var(--ads-motion-duration-fast, 120ms),
         box-shadow var(--ads-motion-duration-fast, 120ms);
     }
-
     [part='control']:focus-within {
       border-color: var(--ads-input-focus-border-color, var(--ads-color-focus-ring, currentColor));
       box-shadow: 0 0 0 var(--ads-focus-width, 2px)
         color-mix(in srgb, var(--ads-focus-color, var(--ads-color-focus-ring, currentColor)) 24%, transparent);
     }
-
     :host(:state(invalid)) [part='control'] {
       border-color: var(--ads-input-invalid-border-color, var(--ads-color-state-danger, #9a251f));
     }
-
     :host([disabled]) [part='control'],
     :host(:state(form-disabled)) [part='control'] {
       cursor: not-allowed;
       opacity: var(--ads-disabled-opacity, var(--ads-opacity-disabled, 0.5));
     }
-
     input {
       min-inline-size: 0;
       inline-size: 100%;
@@ -139,36 +133,26 @@ export class AdsInput extends FormAssociatedElement {
       font: inherit;
       line-height: 1.4;
     }
-
     input::placeholder {
       color: var(--ads-input-placeholder-color, var(--ads-color-text-subtle, #76766f));
       opacity: 1;
     }
-
     ::slotted([slot='start']),
-    ::slotted([slot='end']) {
-      flex: none;
-    }
-
+    ::slotted([slot='end']) { flex: none; }
     [part='description'],
     [part='error'] {
       margin-block-start: var(--ads-input-message-gap, 0.375rem);
       font-size: var(--ads-input-message-font-size, 0.8125rem);
       line-height: 1.4;
     }
-
     [part='description'] {
       color: var(--ads-input-description-color, var(--ads-color-text-muted, #5d5d57));
     }
-
     [part='error'] {
       color: var(--ads-input-error-color, var(--ads-color-state-danger, #9a251f));
     }
-
     @media (prefers-reduced-motion: reduce) {
-      [part='control'] {
-        transition: none;
-      }
+      [part='control'] { transition: none; }
     }
   `;
 
@@ -188,19 +172,17 @@ export class AdsInput extends FormAssociatedElement {
 
   @query('input') private inputElement?: HTMLInputElement;
   @state() private invalid = false;
-
   private defaultValue = '';
   private defaultValueCaptured = false;
   private customValidityMessage = '';
 
-  get selectionStart(): number | null {
-    return this.inputElement?.selectionStart ?? null;
+  /** Specialized inputs retain their native type without duplicating form logic. */
+  protected get nativeType(): AdsInputType {
+    return this.type;
   }
 
-  get selectionEnd(): number | null {
-    return this.inputElement?.selectionEnd ?? null;
-  }
-
+  get selectionStart(): number | null { return this.inputElement?.selectionStart ?? null; }
+  get selectionEnd(): number | null { return this.inputElement?.selectionEnd ?? null; }
   get selectionDirection(): AdsSelectionDirection | null {
     return (this.inputElement?.selectionDirection as AdsSelectionDirection | null | undefined) ?? null;
   }
@@ -212,46 +194,23 @@ export class AdsInput extends FormAssociatedElement {
     }
     super.connectedCallback();
   }
-
-  override firstUpdated(): void {
-    this.syncNativeState();
-  }
-
+  override firstUpdated(): void { this.syncNativeState(); }
   override updated(changed: PropertyValues<this>): void {
     if (
-      changed.has('value') ||
-      changed.has('type') ||
-      changed.has('required') ||
-      changed.has('pattern') ||
-      changed.has('minLength') ||
-      changed.has('maxLength') ||
-      changed.has('disabled') ||
-      changed.has('readOnly')
-    ) {
-      this.syncNativeState();
-    }
+      changed.has('value') || changed.has('type') || changed.has('required') ||
+      changed.has('pattern') || changed.has('minLength') || changed.has('maxLength') ||
+      changed.has('disabled') || changed.has('readOnly')
+    ) this.syncNativeState();
   }
-
   override focus(options?: FocusOptions): void {
-    if (this.inputElement) {
-      this.inputElement.focus(options);
-      return;
-    }
-    void this.updateComplete.then(() => this.inputElement?.focus(options));
+    if (this.inputElement) this.inputElement.focus(options);
+    else void this.updateComplete.then(() => this.inputElement?.focus(options));
   }
-
-  override blur(): void {
-    this.inputElement?.blur();
-  }
-
-  select(): void {
-    this.inputElement?.select();
-  }
-
+  override blur(): void { this.inputElement?.blur(); }
+  select(): void { this.inputElement?.select(); }
   setSelectionRange(start: number, end: number, direction?: AdsSelectionDirection): void {
     this.inputElement?.setSelectionRange(start, end, direction);
   }
-
   setCustomValidity(message: string): void {
     this.customValidityMessage = message;
     if (this.inputElement) {
@@ -259,74 +218,51 @@ export class AdsInput extends FormAssociatedElement {
       this.syncNativeState();
     }
   }
-
   protected override onFormDisabledChange(): void {
     void this.updateComplete.then(() => this.syncNativeState());
   }
-
   formResetCallback(): void {
     this.value = this.defaultValue;
     this.syncNativeState();
   }
-
   formStateRestoreCallback(state: string | File | FormData | null): void {
     if (typeof state !== 'string') return;
     this.value = state;
     this.syncNativeState();
   }
-
   private syncNativeState(): void {
     const input = this.inputElement;
     if (!input) return;
-
     const disabled = this.disabled || this.formDisabled;
     if (input.value !== this.value) input.value = this.value;
-    if (input.validationMessage !== this.customValidityMessage && this.customValidityMessage) {
-      input.setCustomValidity(this.customValidityMessage);
-    } else if (!this.customValidityMessage && input.validity.customError) {
-      input.setCustomValidity('');
-    }
-
+    input.setCustomValidity(this.customValidityMessage);
     this.internals.ariaDisabled = String(disabled);
     this.setFormValue(disabled ? null : this.value, this.value);
-
-    if (input.validity.valid) {
-      this.setValidity({});
-      this.invalid = false;
-      this.internals.states.delete('invalid');
-      this.internals.ariaInvalid = 'false';
-      return;
-    }
-
+    this.invalid = !input.validity.valid;
     this.setValidity(validityStateToFlags(input.validity), input.validationMessage, input);
-    this.invalid = true;
-    this.internals.states.add('invalid');
-    this.internals.ariaInvalid = 'true';
+    this.internals.ariaInvalid = String(this.invalid);
+    if (this.invalid) this.internals.states.add('invalid');
+    else this.internals.states.delete('invalid');
   }
-
   private handleInput(event: InputEvent): void {
-    const input = event.currentTarget as HTMLInputElement;
-    this.value = input.value;
+    this.value = (event.currentTarget as HTMLInputElement).value;
     this.syncNativeState();
   }
-
-  private handleChange(): void {
+  private handleChange(event: Event): void {
+    event.stopPropagation();
     this.syncNativeState();
+    this.dispatchEvent(new Event('change', { bubbles: true, composed: true }));
   }
-
   override render() {
     const disabled = this.disabled || this.formDisabled;
-
     return html`
       <label part="label">
-        <span part="label-text">
-          <slot name="label">${this.label}</slot>
-        </span>
+        <span part="label-text"><slot name="label">${this.label}</slot></span>
         <span part="control">
           <slot name="start"></slot>
           <input
             part="input"
-            .type=${this.type}
+            .type=${this.nativeType}
             .value=${this.value}
             .placeholder=${this.placeholder}
             .autocomplete=${this.autocomplete}
@@ -338,7 +274,7 @@ export class AdsInput extends FormAssociatedElement {
             ?readonly=${this.readOnly}
             ?required=${this.required}
             aria-describedby="description error"
-            aria-invalid=${this.invalid ? 'true' : 'false'}
+            aria-invalid=${String(this.invalid)}
             @input=${this.handleInput}
             @change=${this.handleChange}
           />
@@ -350,11 +286,7 @@ export class AdsInput extends FormAssociatedElement {
     `;
   }
 }
-
 registerAdsElement('input', AdsInput);
-
 declare global {
-  interface HTMLElementTagNameMap {
-    'ads-input': AdsInput;
-  }
+  interface HTMLElementTagNameMap { 'ads-input': AdsInput; }
 }
