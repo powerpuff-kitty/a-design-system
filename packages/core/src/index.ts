@@ -81,3 +81,5 @@ export class DisclosureState extends EventTarget {
 }
 
 export * from './workspace.js';
+
+export * from './command-palette.js';
