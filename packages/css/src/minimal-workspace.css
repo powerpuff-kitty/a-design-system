@@ -1,0 +1,179 @@
+@layer ads.layout {
+  .ads-workspace {
+    display: grid;
+    grid-template-columns:
+      var(--ads-workspace-rail-size, var(--ads-size-rail, 3.25rem))
+      var(--ads-workspace-tools-size, var(--ads-size-inspector, 18rem))
+      minmax(0, 1fr)
+      var(--ads-workspace-document-size, var(--ads-size-inspector, 18rem));
+    grid-template-areas: "rail tools result document";
+    gap: var(--ads-workspace-gap, var(--ads-space-3, 0.75rem));
+    align-items: start;
+    min-inline-size: 0;
+  }
+
+  .ads-workspace[data-tools-collapsed="true"] {
+    grid-template-columns:
+      var(--ads-workspace-rail-size, var(--ads-size-rail, 3.25rem))
+      var(--ads-workspace-collapsed-size, var(--ads-size-target-minimum, 2.75rem))
+      minmax(0, 1fr)
+      var(--ads-workspace-document-size, var(--ads-size-inspector, 18rem));
+  }
+
+  .ads-workspace[data-document-collapsed="true"] {
+    grid-template-columns:
+      var(--ads-workspace-rail-size, var(--ads-size-rail, 3.25rem))
+      var(--ads-workspace-tools-size, var(--ads-size-inspector, 18rem))
+      minmax(0, 1fr)
+      var(--ads-workspace-collapsed-size, var(--ads-size-target-minimum, 2.75rem));
+  }
+
+  .ads-workspace[data-tools-collapsed="true"][data-document-collapsed="true"] {
+    grid-template-columns:
+      var(--ads-workspace-rail-size, var(--ads-size-rail, 3.25rem))
+      var(--ads-workspace-collapsed-size, var(--ads-size-target-minimum, 2.75rem))
+      minmax(0, 1fr)
+      var(--ads-workspace-collapsed-size, var(--ads-size-target-minimum, 2.75rem));
+  }
+
+  .ads-workspace__rail {
+    grid-area: rail;
+    position: sticky;
+    inset-block-start: var(--ads-space-3, 0.75rem);
+    display: flex;
+    min-inline-size: 0;
+    flex-direction: column;
+    gap: var(--ads-space-1, 0.25rem);
+  }
+
+  .ads-workspace__result {
+    grid-area: result;
+    min-inline-size: 0;
+    overflow: hidden;
+    border: var(--ads-border-width-hairline, 1px) solid var(--ads-color-line-default, #d9d9d2);
+    border-radius: var(--ads-radius-panel, 0);
+    background: var(--ads-color-surface-default, #fff);
+  }
+
+  .ads-workspace__tools { grid-area: tools; }
+  .ads-workspace__document { grid-area: document; }
+
+  .ads-workspace__tools,
+  .ads-workspace__document {
+    min-inline-size: 0;
+    max-block-size: calc(100dvh - var(--ads-space-8, 3rem));
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  .ads-workspace__tools[data-pinned="true"],
+  .ads-workspace__document[data-pinned="true"] {
+    position: sticky;
+    inset-block-start: var(--ads-space-3, 0.75rem);
+  }
+
+  .ads-workspace__panel-controls {
+    display: flex;
+    min-block-size: var(--ads-size-control-compact, 2rem);
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--ads-space-1, 0.25rem);
+    margin-block-end: var(--ads-space-2, 0.5rem);
+    border-block-end: var(--ads-border-width-hairline, 1px) solid var(--ads-color-line-default, #d9d9d2);
+  }
+
+  .ads-workspace[data-tools-collapsed="true"] .ads-workspace__tools .ads-workspace__panel-content,
+  .ads-workspace[data-document-collapsed="true"] .ads-workspace__document .ads-workspace__panel-content {
+    display: none;
+  }
+
+  .ads-workspace__mobile-launchers {
+    display: none;
+  }
+
+  @media (max-width: 1199px) {
+    .ads-workspace,
+    .ads-workspace[data-tools-collapsed="true"],
+    .ads-workspace[data-document-collapsed="true"],
+    .ads-workspace[data-tools-collapsed="true"][data-document-collapsed="true"] {
+      grid-template-columns:
+        var(--ads-workspace-rail-size, var(--ads-size-rail, 3.25rem))
+        minmax(0, 1fr);
+      grid-template-areas:
+        "rail result"
+        "rail tools"
+        "rail document";
+    }
+
+    .ads-workspace__rail,
+    .ads-workspace__tools[data-pinned="true"],
+    .ads-workspace__document[data-pinned="true"] {
+      position: static;
+    }
+
+    .ads-workspace__tools,
+    .ads-workspace__document {
+      max-block-size: none;
+      overflow: visible;
+      scrollbar-gutter: auto;
+    }
+  }
+
+  @media (max-width: 639px) {
+    .ads-workspace,
+    .ads-workspace[data-tools-collapsed="true"],
+    .ads-workspace[data-document-collapsed="true"],
+    .ads-workspace[data-tools-collapsed="true"][data-document-collapsed="true"] {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "result"
+        "rail";
+    }
+
+    .ads-workspace__rail {
+      flex-direction: row;
+      overflow-x: auto;
+      padding-block: var(--ads-space-1, 0.25rem);
+    }
+
+    .ads-workspace__tools,
+    .ads-workspace__document {
+      display: none;
+      position: fixed;
+      inset: auto 0 0 0;
+      z-index: var(--ads-workspace-sheet-z, 40);
+      max-block-size: min(76dvh, 46rem);
+      overflow-y: auto;
+      padding:
+        var(--ads-space-3, 0.75rem)
+        var(--ads-space-3, 0.75rem)
+        max(var(--ads-space-4, 1rem), env(safe-area-inset-bottom));
+      border-block-start: var(--ads-border-width-hairline, 1px) solid var(--ads-color-line-default, #d9d9d2);
+      background: var(--ads-color-surface-floating, var(--ads-color-surface-default, #fff));
+      box-shadow: var(--ads-elevation-overlay, none);
+    }
+
+    .ads-workspace__tools[data-mobile-open="true"],
+    .ads-workspace__document[data-mobile-open="true"] {
+      display: block;
+    }
+
+    .ads-workspace[data-tools-collapsed="true"] .ads-workspace__tools .ads-workspace__panel-content,
+    .ads-workspace[data-document-collapsed="true"] .ads-workspace__document .ads-workspace__panel-content {
+      display: block;
+    }
+
+    .ads-workspace__mobile-launchers {
+      position: fixed;
+      inset-inline-end: var(--ads-space-3, 0.75rem);
+      inset-block-end: max(var(--ads-space-3, 0.75rem), env(safe-area-inset-bottom));
+      z-index: var(--ads-workspace-launcher-z, 39);
+      display: flex;
+      gap: var(--ads-space-1, 0.25rem);
+      padding: var(--ads-space-1, 0.25rem);
+      border: var(--ads-border-width-hairline, 1px) solid var(--ads-color-line-control, #6b6b65);
+      background: var(--ads-color-surface-floating, var(--ads-color-surface-default, #fff));
+      box-shadow: var(--ads-elevation-overlay, none);
+    }
+  }
+}
