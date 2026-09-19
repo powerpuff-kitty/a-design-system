@@ -1,0 +1,33 @@
+name: Integration toolchain
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/integration-toolchain.yml'
+permissions:
+  contents: read
+jobs:
+  toolchain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: 0f379bbb1b9ef5a83cccf2f38ed25a7756a18d87
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - run: corepack enable
+      - run: pnpm install --frozen-lockfile
+      - name: Capture dependency tree with relative links preserved
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/ads-toolchain
+          find . -type d -name node_modules -prune -print0 | tar --null -T - -czf /tmp/ads-toolchain/dependencies.tar.gz
+          corepack pack pnpm@10.17.1 -o /tmp/ads-toolchain/pnpm-corepack.tgz
+      - uses: actions/upload-artifact@v6
+        with:
+          name: integration-toolchain
+          path: /tmp/ads-toolchain/
+          retention-days: 1
