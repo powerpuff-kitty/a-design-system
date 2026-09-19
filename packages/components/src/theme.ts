@@ -44,6 +44,10 @@ export class AdsTheme extends LitElement {
     :host([hidden]) {
       display: none;
     }
+
+    [part='content'] {
+      display: contents;
+    }
   `;
 
   @property({ reflect: true })
@@ -80,7 +84,7 @@ export class AdsTheme extends LitElement {
   }
 
   override render() {
-    return html`<span part="content"><slot></slot></span>`;
+    return html`<div part="content"><slot></slot></div>`;
   }
 }
 
