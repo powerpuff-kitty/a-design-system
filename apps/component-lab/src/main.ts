@@ -9,6 +9,7 @@ import minimalDark from '@a-design-system/tokens/themes/minimal-dark.json';
 import minimalHighContrast from '@a-design-system/tokens/themes/minimal-high-contrast.json';
 
 type LabTheme = 'minimal-light' | 'minimal-dark' | 'minimal-high-contrast';
+type LabDensity = 'compact' | 'default' | 'comfortable';
 
 const THEMES = {
   'minimal-light': minimalLight,
@@ -19,6 +20,11 @@ const THEMES = {
 function selectedTheme(): LabTheme {
   const requested = new URLSearchParams(window.location.search).get('theme');
   return requested && Object.hasOwn(THEMES, requested) ? requested as LabTheme : 'minimal-light';
+}
+
+function selectedDensity(): LabDensity {
+  const requested = new URLSearchParams(window.location.search).get('density');
+  return requested === 'compact' || requested === 'comfortable' ? requested : 'default';
 }
 
 function installTheme(theme: LabTheme): void {
@@ -73,6 +79,7 @@ function installTheme(theme: LabTheme): void {
 }
 
 installTheme(selectedTheme());
+document.documentElement.dataset.adsDensity = selectedDensity();
 
 // Browser tests and future visual fixtures wait for this marker before
 // interacting with custom elements. It guarantees module evaluation,
