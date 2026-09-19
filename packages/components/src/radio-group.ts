@@ -73,7 +73,7 @@ export class AdsRadioGroup extends FormAssociatedElement {
   static override styles = css`
     :host {
       display: block;
-      color: var(--ads-radio-group-color, #111114);
+      color: var(--ads-radio-group-color, var(--ads-color-text-default, #111111));
       font: inherit;
     }
 
@@ -85,7 +85,7 @@ export class AdsRadioGroup extends FormAssociatedElement {
       display: block;
       margin-block-end: var(--ads-radio-group-label-gap, 0.5rem);
       font-size: var(--ads-radio-group-label-font-size, 0.875rem);
-      font-weight: var(--ads-radio-group-label-font-weight, 600);
+      font-weight: var(--ads-radio-group-label-font-weight, var(--ads-font-weight-medium, 500));
       line-height: 1.3;
     }
 
@@ -117,11 +117,11 @@ export class AdsRadioGroup extends FormAssociatedElement {
     }
 
     [part='description'] {
-      color: var(--ads-radio-group-description-color, #606068);
+      color: var(--ads-radio-group-description-color, var(--ads-color-text-muted, #5d5d57));
     }
 
     [part='error'] {
-      color: var(--ads-radio-group-error-color, #b42318);
+      color: var(--ads-radio-group-error-color, var(--ads-color-state-danger, #9a251f));
     }
   `;
 
