@@ -13,6 +13,8 @@ export type { AdsCalloutVariant } from './callout.js';
 export { AdsCard, adsCardContract } from './card.js';
 export type { AdsCardVariant } from './card.js';
 export { AdsCheckbox, adsCheckboxContract } from './checkbox.js';
+export { AdsCheckboxGroup, adsCheckboxGroupContract } from './checkbox-group.js';
+export type { AdsCheckboxGroupOrientation } from './checkbox-group.js';
 export { AdsCode, adsCodeContract } from './code.js';
 export { AdsCopyButton, adsCopyButtonContract } from './copy-button.js';
 export { AdsDescription, adsDescriptionContract } from './description.js';
