@@ -168,6 +168,10 @@
     "./runtime": {
       "types": "./src/runtime/index.ts",
       "import": "./dist/runtime/index.js"
+    },
+    "./checkbox-group": {
+      "types": "./src/checkbox-group.ts",
+      "import": "./dist/checkbox-group.js"
     }
   },
   "files": [
