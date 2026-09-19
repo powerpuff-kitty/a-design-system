@@ -55,6 +55,12 @@ The repository starts with `tokens`, `core`, and `components`; the remaining wor
 - initial Lit-based `<ads-button>` Web Component
 - unit-test and CI foundations
 
+## Reference visual theme
+
+ADS ships a first-party **Minimal** reference theme: paper-like surfaces, neutral ink, hairline structure, sharp geometry, restrained semantic color, compact control chrome, and functional motion. It is implemented as DTCG theme data rather than product-specific CSS and includes light, dark, and high-contrast variants.
+
+See [docs/minimal-theme.md](docs/minimal-theme.md). Downstream products may use, extend, or replace the reference theme without changing ADS component semantics.
+
 ## Status
 
 Early development. The public API is not stable yet.
