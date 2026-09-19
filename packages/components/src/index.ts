@@ -10,3 +10,6 @@ export type { AdsRadioGroupOrientation } from './radio-group.js';
 export { AdsTextarea, adsTextareaContract } from './textarea.js';
 export type { AdsTextareaWrap } from './textarea.js';
 export * from './runtime/index.js';
+
+export { AdsTheme, adsThemeContract } from './theme.js';
+export type { AdsDensity, AdsThemeName } from './theme.js';
