@@ -14,7 +14,7 @@ export const adsFormatNumberContract = defineComponentContract({
   attributes: [
     { name: 'value', type: 'number', default: '0' },
     { name: 'locale', type: 'string', default: '' },
-    { name: 'style', type: "'decimal' | 'percent' | 'currency' | 'unit'", default: 'decimal' },
+    { name: 'format-style', type: "'decimal' | 'percent' | 'currency' | 'unit'", default: 'decimal' },
     { name: 'currency', type: 'string', default: '' },
     { name: 'unit', type: 'string', default: '' },
     { name: 'notation', type: "'standard' | 'scientific' | 'engineering' | 'compact'", default: 'standard' },
@@ -46,7 +46,7 @@ export class AdsFormatNumber extends LitElement {
 
   @property({ type: Number }) value = 0;
   @property() locale = '';
-  @property({ attribute: 'style' }) formatStyle: AdsNumberStyle = 'decimal';
+  @property({ attribute: 'format-style' }) formatStyle: AdsNumberStyle = 'decimal';
   @property() currency = '';
   @property() unit = '';
   @property() notation: AdsNumberNotation = 'standard';
