@@ -1,5 +1,6 @@
 import * as components from '@a-design-system/components';
 import type { AdsComponentContract } from '@a-design-system/core';
+import exampleData from './examples.json';
 
 export interface CatalogEntry {
   id: string;
@@ -10,15 +11,7 @@ export interface CatalogEntry {
   contract?: AdsComponentContract;
 }
 
-const examples: Record<string, string> = {
-  'ads-button': '<ads-button>Save changes</ads-button>',
-  'ads-input': '<ads-input name="project" label="Project name" value="Untitled project">\n  <span slot="description">A name for your next idea.</span>\n</ads-input>',
-  'ads-textarea': '<ads-textarea name="notes" label="Notes" value="Make room for the work."></ads-textarea>',
-  'ads-checkbox': '<ads-checkbox name="notifications" value="enabled" checked>Enable notifications</ads-checkbox>',
-  'ads-radio': '<ads-radio-group label="Choice" value="one">\n  <ads-radio value="one">First option</ads-radio>\n  <ads-radio value="two">Second option</ads-radio>\n</ads-radio-group>',
-  'ads-radio-group': '<ads-radio-group name="plan" label="Plan" value="personal">\n  <ads-radio value="personal">Personal</ads-radio>\n  <ads-radio value="team">Team</ads-radio>\n  <ads-radio value="enterprise" disabled>Enterprise</ads-radio>\n</ads-radio-group>',
-  'a-design-system-theme': '<a-design-system-theme theme="minimal-dark">\n  <ads-button>Scoped dark theme</ads-button>\n</a-design-system-theme>',
-};
+const examples: Readonly<Record<string, string>> = exampleData;
 
 function isContract(value: unknown): value is AdsComponentContract {
   if (typeof value !== 'object' || value === null) return false;
@@ -26,21 +19,27 @@ function isContract(value: unknown): value is AdsComponentContract {
   return typeof item.tagName === 'string' && typeof item.name === 'string' && typeof item.status === 'string';
 }
 
-// Availability comes from this exact build, not from issue checkboxes or branch claims.
+// Fail visibly instead of concealing a broken registration or fabricating an empty preview.
 export const componentEntries: CatalogEntry[] = (Object.values(components) as unknown[])
   .filter(isContract)
-  .filter((contract) => Boolean(customElements.get(contract.tagName)))
   .sort((a, b) => a.name.localeCompare(b.name))
-  .map((contract) => ({
-    id: contract.tagName,
-    title: contract.name,
-    description: contract.description,
-    status: contract.status,
-    markup: examples[contract.tagName] ?? `<${contract.tagName}></${contract.tagName}>`,
-    contract,
-  }));
+  .map((contract) => {
+    if (!customElements.get(contract.tagName)) {
+      throw new Error(`Exported component is not registered: ${contract.tagName}`);
+    }
+    const markup = examples[contract.tagName];
+    if (!markup) throw new Error(`Missing component example: ${contract.tagName}`);
+    return {
+      id: contract.tagName,
+      title: contract.name,
+      description: contract.description,
+      status: contract.status,
+      markup,
+      contract,
+    };
+  });
 
-// These are transparent markup starters, not advertised as complete backend-connected applications.
+// These are transparent markup starters, not complete backend-connected applications.
 export const recipeEntries: CatalogEntry[] = [
   {
     id: 'layout-settings', title: 'Settings form', status: 'markup starter',
