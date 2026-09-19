@@ -49,11 +49,11 @@ export const adsCheckboxContract = defineComponentContract({
   cssCustomProperties: [
     { name: '--ads-checkbox-size', default: '1.125rem' },
     { name: '--ads-checkbox-gap', default: '0.5rem' },
-    { name: '--ads-checkbox-border-color', default: '#8a8a93' },
-    { name: '--ads-checkbox-background', default: '#fff' },
-    { name: '--ads-checkbox-checked-background', default: '#111114' },
-    { name: '--ads-checkbox-checked-color', default: '#fff' },
-    { name: '--ads-checkbox-radius', default: '0.25rem' },
+    { name: '--ads-checkbox-border-color', default: 'var(--ads-color-line-control, #6b6b65)' },
+    { name: '--ads-checkbox-background', default: 'var(--ads-color-surface-default, #fff)' },
+    { name: '--ads-checkbox-checked-background', default: 'var(--ads-color-action-primary, #111111)' },
+    { name: '--ads-checkbox-checked-color', default: 'var(--ads-color-action-primaryText, #fff)' },
+    { name: '--ads-checkbox-radius', default: 'var(--ads-radius-control, 0px)' },
   ],
   states: [
     { name: 'checked', description: 'The checkbox is checked.' },
@@ -67,7 +67,7 @@ export class AdsCheckbox extends FormAssociatedElement {
   static override styles = css`
     :host {
       display: inline-block;
-      color: var(--ads-checkbox-color, #111114);
+      color: var(--ads-checkbox-color, var(--ads-color-text-default, #111111));
       font: inherit;
     }
 
@@ -109,10 +109,10 @@ export class AdsCheckbox extends FormAssociatedElement {
       inline-size: 100%;
       block-size: 100%;
       place-items: center;
-      border: var(--ads-checkbox-border-width, 1px) solid var(--ads-checkbox-border-color, #8a8a93);
-      border-radius: var(--ads-checkbox-radius, 0.25rem);
-      background: var(--ads-checkbox-background, #fff);
-      color: var(--ads-checkbox-checked-color, #fff);
+      border: var(--ads-checkbox-border-width, 1px) solid var(--ads-checkbox-border-color, var(--ads-color-line-control, #6b6b65));
+      border-radius: var(--ads-checkbox-radius, var(--ads-radius-control, 0px));
+      background: var(--ads-checkbox-background, var(--ads-color-surface-default, #fff));
+      color: var(--ads-checkbox-checked-color, var(--ads-color-action-primaryText, #fff));
       transition:
         background-color var(--ads-motion-duration-fast, 120ms),
         border-color var(--ads-motion-duration-fast, 120ms),
@@ -120,14 +120,14 @@ export class AdsCheckbox extends FormAssociatedElement {
     }
 
     input:focus-visible + [part='indicator'] {
-      outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, currentColor);
+      outline: var(--ads-focus-width, 2px) solid var(--ads-focus-color, var(--ads-color-focus-ring, currentColor));
       outline-offset: var(--ads-focus-offset, 2px);
     }
 
     input:checked + [part='indicator'],
     input:indeterminate + [part='indicator'] {
-      border-color: var(--ads-checkbox-checked-background, #111114);
-      background: var(--ads-checkbox-checked-background, #111114);
+      border-color: var(--ads-checkbox-checked-background, var(--ads-color-action-primary, #111111));
+      background: var(--ads-checkbox-checked-background, var(--ads-color-action-primary, #111111));
     }
 
     input:checked + [part='indicator']::after {
@@ -150,13 +150,13 @@ export class AdsCheckbox extends FormAssociatedElement {
     }
 
     :host(:state(invalid)) [part='indicator'] {
-      border-color: var(--ads-checkbox-invalid-border-color, #b42318);
+      border-color: var(--ads-checkbox-invalid-border-color, var(--ads-color-state-danger, #9a251f));
     }
 
     :host([disabled]) [part='label'],
     :host(:state(form-disabled)) [part='label'] {
       cursor: not-allowed;
-      opacity: var(--ads-disabled-opacity, 0.5);
+      opacity: var(--ads-disabled-opacity, var(--ads-opacity-disabled, 0.5));
     }
 
     [part='description'],
@@ -168,11 +168,11 @@ export class AdsCheckbox extends FormAssociatedElement {
     }
 
     [part='description'] {
-      color: var(--ads-checkbox-description-color, #606068);
+      color: var(--ads-checkbox-description-color, var(--ads-color-text-muted, #5d5d57));
     }
 
     [part='error'] {
-      color: var(--ads-checkbox-error-color, #b42318);
+      color: var(--ads-checkbox-error-color, var(--ads-color-state-danger, #9a251f));
     }
 
     @media (prefers-reduced-motion: reduce) {
